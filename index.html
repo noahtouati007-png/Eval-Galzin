@@ -16,7 +16,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark)}
 
-/* ═══ LOCK ═══ */
+/* ── LOCK ── */
 #lock-screen{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px}
 #lock-screen.hidden{display:none}
 .lock-logo{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--gold-light)}
@@ -29,12 +29,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .lock-btn{padding:13px;border-radius:10px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:background .15s}
 .lock-btn:hover,.lock-btn:active{background:var(--gold-light)}
-.lock-hint{font-size:.7rem;color:#4a3c26;text-align:center}
 
-/* ═══ TOPBAR ═══ */
-.topbar{background:var(--dark);color:var(--gold-light);padding:0 16px;height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:100;gap:8px}
-.topbar-brand{font-family:'DM Serif Display',serif;font-size:1.2rem;letter-spacing:.02em;white-space:nowrap}
-.topbar-brand span{color:var(--cream);opacity:.4;margin:0 6px}
+/* ── TOPBAR ── */
+.topbar{background:var(--dark);color:var(--gold-light);padding:0 14px;height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:100;gap:8px}
+.topbar-brand{font-family:'DM Serif Display',serif;font-size:1.15rem;letter-spacing:.02em;white-space:nowrap}
+.topbar-brand span{color:var(--cream);opacity:.4;margin:0 5px}
 .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .sync-badge{font-size:.68rem;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:4px;white-space:nowrap}
 .sync-ok{background:rgba(74,140,92,.2);color:#86efac}
@@ -42,236 +41,211 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 .sync-err{background:rgba(201,79,79,.2);color:#fca5a5}
 .spinner{display:inline-block;width:10px;height:10px;border:2px solid rgba(232,185,107,.3);border-top-color:var(--gold-light);border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ═══ HAMBURGER ═══ */
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:transparent;border:none}
 .hamburger span{display:block;width:20px;height:2px;background:var(--gold-light);border-radius:2px;transition:all .2s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-/* ═══ NAV (desktop) ═══ */
-.topbar-nav{display:flex;gap:4px}
-.nav-btn{background:transparent;border:none;color:var(--muted);padding:7px 14px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;transition:all .15s;white-space:nowrap}
+.topbar-nav{display:flex;gap:3px}
+.nav-btn{background:transparent;border:none;color:var(--muted);padding:7px 12px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;transition:all .15s;white-space:nowrap}
 .nav-btn:hover{background:rgba(200,150,62,.12);color:var(--gold-light)}
 .nav-btn.active{background:rgba(200,150,62,.2);color:var(--gold-light)}
 
-/* ═══ LAYOUT ═══ */
+/* ── LAYOUT ── */
 .app{display:flex;height:100vh;padding-top:var(--topbar-h)}
-
-/* ═══ OVERLAY (mobile) ═══ */
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;top:var(--topbar-h)}
 
-/* ═══ SIDEBAR ═══ */
-.sidebar{
-  width:var(--sidebar-w);flex-shrink:0;background:var(--warm-white);
-  border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;
-  position:relative;z-index:50;
-}
-.sidebar-header{padding:16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.sidebar-title{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
-.btn-new{width:100%;background:var(--gold);color:white;border:none;padding:10px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:8px;justify-content:center}
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--warm-white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:50}
+.sidebar-header{padding:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-title{font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:9px}
+.btn-new{width:100%;background:var(--gold);color:white;border:none;padding:10px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.87rem;font-weight:500;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:7px;justify-content:center}
 .btn-new:hover,.btn-new:active{background:var(--gold-light)}
-.profiles-list{flex:1;overflow-y:auto;padding:10px}
-.profile-card{padding:12px 14px;border-radius:10px;cursor:pointer;margin-bottom:5px;border:1.5px solid transparent;transition:all .15s;position:relative;padding-right:36px}
+.profiles-list{flex:1;overflow-y:auto;padding:9px}
+.profile-card{padding:11px 13px;border-radius:9px;cursor:pointer;margin-bottom:5px;border:1.5px solid transparent;transition:all .15s;position:relative;padding-right:34px}
 .profile-card:hover,.profile-card:active{background:var(--gold-pale);border-color:var(--border)}
 .profile-card.selected{background:var(--gold-pale);border-color:var(--gold)}
-.profile-name{font-weight:500;font-size:.92rem;color:var(--dark);margin-bottom:3px}
-.profile-meta{font-size:.72rem;color:var(--muted);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
-.profile-badge{font-size:.65rem;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.profile-name{font-weight:500;font-size:.9rem;color:var(--dark);margin-bottom:3px}
+.profile-meta{font-size:.71rem;color:var(--muted);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.profile-badge{font-size:.64rem;font-weight:600;padding:2px 6px;border-radius:20px;white-space:nowrap}
 .badge-formation{background:#FEE2E2;color:#991B1B}
 .badge-vendeur{background:#FEF3C7;color:#92400E}
 .badge-adjoint{background:#D1FAE5;color:#065F46}
-.profile-delete{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:opacity .15s;font-size:.9rem}
+.profile-delete{position:absolute;right:7px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:opacity .15s;font-size:.88rem}
 .profile-card:hover .profile-delete{opacity:1}
 .profile-delete:hover{color:var(--red-soft)}
 
-/* ═══ MAIN ═══ */
+/* ── MAIN ── */
 .main{flex:1;overflow-y:auto;background:var(--cream);min-width:0}
-
-/* ═══ WELCOME ═══ */
 .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;text-align:center;padding:40px 24px}
 .welcome-icon{font-size:2.5rem;margin-bottom:16px;opacity:.4}
-.welcome h2{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--mid);margin-bottom:8px}
-.welcome p{color:var(--muted);max-width:320px;line-height:1.6;font-size:.9rem}
+.welcome h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--mid);margin-bottom:8px}
+.welcome p{color:var(--muted);max-width:300px;line-height:1.6;font-size:.88rem}
 
-/* ═══ EVAL HEADER ═══ */
-.eval-header{padding:20px 20px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* ── EVAL HEADER ── */
+.eval-header{padding:18px 18px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .eval-name-block{min-width:0;flex:1}
-.eval-name-block h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--dark);margin-bottom:3px;word-break:break-word}
-.eval-name-block p{font-size:.82rem;color:var(--muted)}
-.score-display{background:var(--dark);color:var(--gold-light);padding:14px 22px;border-radius:12px;text-align:center;min-width:140px;flex-shrink:0}
-.score-val{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1}
-.score-max{font-size:.7rem;color:var(--muted);margin-top:2px}
-.score-level{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;padding:3px 10px;border-radius:20px}
+.eval-name-block h2{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--dark);margin-bottom:3px;word-break:break-word}
+.eval-name-block p{font-size:.8rem;color:var(--muted)}
+.score-display{background:var(--dark);color:var(--gold-light);padding:13px 20px;border-radius:12px;text-align:center;min-width:130px;flex-shrink:0}
+.score-val{font-family:'DM Serif Display',serif;font-size:2.1rem;line-height:1}
+.score-max{font-size:.68rem;color:var(--muted);margin-top:2px}
+.score-level{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:6px;padding:3px 9px;border-radius:20px}
 .level-formation{background:#7F1D1D;color:#FEE2E2}
 .level-vendeur{background:#78350F;color:#FEF3C7}
 .level-adjoint{background:#064E3B;color:#D1FAE5}
 
-/* ═══ EVAL INFO PILLS ═══ */
-.eval-info-block{padding:12px 20px 0;display:flex;gap:6px;flex-wrap:wrap}
-.eval-info-pill{display:flex;align-items:center;gap:4px;background:var(--warm-white);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.77rem;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
+/* ── INFO PILLS ── */
+.eval-info-block{padding:10px 18px 0;display:flex;gap:6px;flex-wrap:wrap}
+.eval-info-pill{display:flex;align-items:center;gap:4px;background:var(--warm-white);border:1px solid var(--border);border-radius:20px;padding:5px 11px;font-size:.76rem;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
 .eval-info-pill:hover,.eval-info-pill:active{border-color:var(--gold);color:var(--dark);background:var(--gold-pale)}
 .eval-info-pill strong{color:var(--dark);font-weight:500}
 
-/* ═══ PROGRESS ═══ */
-.progress-section{padding:14px 20px 0}
+/* ── PROGRESS ── */
+.progress-section{padding:13px 18px 0}
 .progress-bar-wrap{background:var(--border);border-radius:100px;height:8px;overflow:hidden}
 .progress-bar-fill{height:100%;border-radius:100px;transition:width .4s ease;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
 .progress-markers{position:relative;height:32px;margin-top:4px}
-.progress-marker-label{position:absolute;transform:translateX(-50%);font-size:.66rem;white-space:nowrap;text-align:center;line-height:1.3;transition:color .3s}
-.progress-ends{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:2px}
+.progress-marker-label{position:absolute;transform:translateX(-50%);font-size:.65rem;white-space:nowrap;text-align:center;line-height:1.3;transition:color .3s}
+.progress-ends{display:flex;justify-content:space-between;font-size:.69rem;color:var(--muted);margin-top:2px}
 
-/* ═══ ACTIONS ═══ */
-.eval-actions{padding:10px 20px 0;display:flex;gap:7px;flex-wrap:wrap}
-.btn-action{padding:7px 13px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--warm-white);color:var(--mid);transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+/* ── ACTIONS ── */
+.eval-actions{padding:9px 18px 0;display:flex;gap:7px;flex-wrap:wrap}
+.btn-action{padding:7px 12px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.79rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--warm-white);color:var(--mid);transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
 .btn-action:hover,.btn-action:active{background:var(--gold-pale);border-color:var(--gold);color:var(--dark)}
 
-/* ═══ THEMES ═══ */
-.themes-container{padding:14px 20px 60px}
-.theme-block{margin-bottom:12px;border:1px solid var(--border);border-radius:12px;background:var(--warm-white);overflow:hidden;box-shadow:var(--shadow)}
-.theme-header{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s;border-bottom:1px solid transparent;gap:8px;min-height:52px}
+/* ── THEMES ── */
+.themes-container{padding:13px 18px 20px}
+.theme-block{margin-bottom:11px;border:1px solid var(--border);border-radius:12px;background:var(--warm-white);overflow:hidden;box-shadow:var(--shadow)}
+.theme-header{padding:12px 15px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s;border-bottom:1px solid transparent;gap:7px;min-height:50px}
 .theme-header:hover,.theme-header:active{background:var(--gold-pale)}
 .theme-header.open{border-bottom-color:var(--border)}
-.theme-info{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
-.theme-name{font-weight:600;font-size:.88rem;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.theme-score-chip{display:flex;align-items:center;gap:7px;flex-shrink:0}
-.theme-pts{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--gold);white-space:nowrap}
-.theme-pts span{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--muted)}
-.theme-validate-btn{font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1.5px solid var(--green-soft);background:transparent;color:var(--green-soft);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.theme-info{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
+.theme-name{font-weight:600;font-size:.87rem;color:var(--dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.theme-score-chip{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.theme-pts{font-family:'DM Serif Display',serif;font-size:.92rem;color:var(--gold);white-space:nowrap}
+.theme-pts span{font-family:'DM Sans',sans-serif;font-size:.67rem;color:var(--muted)}
+.theme-validate-btn{font-size:.69rem;font-weight:600;padding:3px 9px;border-radius:20px;border:1.5px solid var(--green-soft);background:transparent;color:var(--green-soft);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .theme-validate-btn:hover,.theme-validate-btn:active{background:var(--green-soft);color:white}
 .theme-validate-btn.all-done{background:var(--green-soft);color:white;opacity:.75;cursor:default}
-.theme-chevron{color:var(--muted);font-size:.75rem;transition:transform .2s;flex-shrink:0}
+.theme-chevron{color:var(--muted);font-size:.72rem;transition:transform .2s;flex-shrink:0}
 .theme-chevron.open{transform:rotate(180deg)}
 .theme-progress-bar{height:3px;background:var(--border)}
 .theme-progress-fill{height:100%;background:var(--green-soft);transition:width .3s ease}
-
-/* ═══ CRITERIA ═══ */
 .criteria-list{padding:0}
-.criterion-row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:10px;transition:background .1s;min-height:48px}
+.criterion-row{display:flex;align-items:center;padding:10px 15px;border-bottom:1px solid var(--border);gap:10px;transition:background .1s;min-height:46px}
 .criterion-row:last-child{border-bottom:none}
 .criterion-row:hover{background:rgba(200,150,62,.04)}
-.criterion-toggle{flex-shrink:0;width:32px;height:32px;border-radius:8px;border:2px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:.9rem;touch-action:manipulation}
+.criterion-toggle{flex-shrink:0;width:32px;height:32px;border-radius:8px;border:2px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:.88rem;touch-action:manipulation}
 .criterion-toggle.on{background:var(--green-soft);border-color:var(--green-soft);color:white}
 .criterion-toggle.off{color:transparent}
-.criterion-text{flex:1;font-size:.83rem;color:var(--mid);line-height:1.4;min-width:0}
+.criterion-text{flex:1;font-size:.82rem;color:var(--mid);line-height:1.4;min-width:0}
 .criterion-text.validated{color:var(--dark)}
 .criterion-pts{flex-shrink:0;font-size:.72rem;font-weight:600;color:var(--gold);background:var(--gold-pale);padding:2px 7px;border-radius:20px;white-space:nowrap}
-.criterion-formation{flex-shrink:0;font-size:.63rem;color:var(--muted);padding:2px 6px;border-radius:20px;background:var(--cream);border:1px solid var(--border);white-space:nowrap;display:none}
-.criterion-delete{flex-shrink:0;background:transparent;border:none;color:var(--border);cursor:pointer;font-size:.85rem;padding:6px;border-radius:4px;transition:color .15s;touch-action:manipulation}
+.criterion-delete{flex-shrink:0;background:transparent;border:none;color:var(--border);cursor:pointer;font-size:.82rem;padding:6px;border-radius:4px;transition:color .15s;touch-action:manipulation}
 .criterion-row:hover .criterion-delete{color:var(--muted)}
 .criterion-delete:hover{color:var(--red-soft)!important}
 .criterion-row.deleted{opacity:.35;text-decoration:line-through}
 .criterion-row.deleted .criterion-toggle{pointer-events:none}
 
-/* ═══ MODALS ═══ */
+/* ── NOTES ── */
+.notes-section{margin:0 18px 40px;border:1px solid var(--border);border-radius:12px;background:var(--warm-white);overflow:hidden;box-shadow:var(--shadow)}
+.notes-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--gold-pale)}
+.notes-title{font-weight:600;font-size:.9rem;color:var(--dark);display:flex;align-items:center;gap:8px}
+.notes-save-btn{font-size:.75rem;font-weight:600;padding:5px 13px;border-radius:20px;border:none;background:var(--gold);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;opacity:0;pointer-events:none}
+.notes-save-btn.dirty{opacity:1;pointer-events:all}
+.notes-save-btn:hover{background:var(--gold-light)}
+.notes-save-btn.saving{background:var(--muted);cursor:default}
+.notes-textarea{width:100%;border:none;outline:none;padding:14px 16px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--mid);background:transparent;resize:none;min-height:120px;line-height:1.6}
+.notes-textarea::placeholder{color:var(--border)}
+.notes-meta{padding:6px 16px 10px;font-size:.68rem;color:var(--muted)}
+
+/* ── MODALS ── */
 .modal-backdrop{position:fixed;inset:0;background:rgba(28,24,16,.65);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 @media(min-width:640px){.modal-backdrop{align-items:center}}
 .modal-backdrop.open{opacity:1;pointer-events:all}
-.modal{background:var(--warm-white);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-width:480px;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform .25s;max-height:92vh;overflow-y:auto}
-@media(min-width:640px){.modal{border-radius:18px;padding:32px}}
+.modal{background:var(--warm-white);border-radius:20px 20px 0 0;padding:20px 18px 28px;width:100%;max-width:480px;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform .25s;max-height:92vh;overflow-y:auto}
+@media(min-width:640px){.modal{border-radius:18px;padding:30px}}
 .modal-backdrop.open .modal{transform:translateY(0)}
-.modal-handle{width:40px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 20px;display:block}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 18px;display:block}
 @media(min-width:640px){.modal-handle{display:none}}
-.modal h3{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:18px;color:var(--dark)}
-.form-group{margin-bottom:13px}
-.form-label{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px}
-.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--dark);background:var(--cream);transition:border-color .15s;outline:none;-webkit-appearance:none}
+.modal h3{font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:16px;color:var(--dark)}
+.form-group{margin-bottom:12px}
+.form-label{font-size:.74rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px}
+.form-input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--dark);background:var(--cream);transition:border-color .15s;outline:none;-webkit-appearance:none}
 .form-input:focus{border-color:var(--gold)}
-.modal-actions{display:flex;gap:10px;margin-top:20px}
-.btn-cancel{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--muted);transition:all .15s}
+.modal-actions{display:flex;gap:9px;margin-top:18px}
+.btn-cancel{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--muted)}
 .btn-cancel:hover{background:var(--cream)}
-.btn-confirm{flex:2;padding:12px;border:none;border-radius:8px;background:var(--gold);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:background .15s}
+.btn-confirm{flex:2;padding:11px;border:none;border-radius:8px;background:var(--gold);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;transition:background .15s}
 .btn-confirm:hover,.btn-confirm:active{background:var(--gold-light)}
+.btn-confirm:disabled{opacity:.5;cursor:default}
 .modal-danger h3{color:var(--red-soft)}
-.btn-danger{flex:2;padding:12px;border:none;border-radius:8px;background:var(--red-soft);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:background .15s}
-.btn-danger:hover,.btn-danger:active{background:#A03A3A}
-
-/* ═══ BOUTIQUE CAROUSEL ═══ */
-.boutique-carousel{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;max-height:160px;overflow-y:auto;padding:2px}
-.boutique-chip{padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.79rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none;touch-action:manipulation}
+.btn-danger{flex:2;padding:11px;border:none;border-radius:8px;background:var(--red-soft);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500}
+.btn-danger:hover{background:#A03A3A}
+.btn-danger:disabled{opacity:.5;cursor:default}
+.boutique-carousel{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;max-height:155px;overflow-y:auto;padding:2px}
+.boutique-chip{padding:6px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.78rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none}
 .boutique-chip:hover,.boutique-chip:active{background:var(--gold-pale);border-color:var(--gold-light)}
 .boutique-chip.selected{background:var(--gold);border-color:var(--gold);color:white;font-weight:500}
-
-/* ═══ RAPPEL CHIPS ═══ */
 .rappel-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
-.rappel-chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.79rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none}
-.rappel-chip:hover,.rappel-chip:active{background:var(--gold-pale);border-color:var(--gold-light)}
+.rappel-chip{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.78rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none}
+.rappel-chip:hover{background:var(--gold-pale);border-color:var(--gold-light)}
 .rappel-chip.selected{background:var(--dark);border-color:var(--dark);color:var(--gold-light);font-weight:500}
 
-/* ═══ STATS ═══ */
-.stats-view{padding:20px 20px 60px}
-.stats-title{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:20px;color:var(--dark)}
-.boutique-group{margin-bottom:28px}
-.boutique-group-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
-.boutique-group-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--dark)}
-.boutique-group-meta{font-size:.72rem;color:var(--muted);background:var(--warm-white);border:1px solid var(--border);padding:2px 10px;border-radius:20px;white-space:nowrap}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.stat-card{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .15s}
+/* ── STATS ── */
+.stats-view{padding:18px 18px 60px}
+.stats-title{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:18px;color:var(--dark)}
+.boutique-group{margin-bottom:24px}
+.boutique-group-header{display:flex;align-items:center;gap:10px;margin-bottom:11px;flex-wrap:wrap}
+.boutique-group-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--dark)}
+.boutique-group-meta{font-size:.7rem;color:var(--muted);background:var(--warm-white);border:1px solid var(--border);padding:2px 9px;border-radius:20px;white-space:nowrap}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:11px}
+.stat-card{background:var(--warm-white);border:1px solid var(--border);border-radius:11px;padding:15px;box-shadow:var(--shadow);cursor:pointer;transition:all .15s}
 .stat-card:hover,.stat-card:active{border-color:var(--gold);background:var(--gold-pale)}
-.stat-card-name{font-size:.95rem;font-weight:500;color:var(--dark);margin-bottom:4px}
-.stat-card-sub{font-size:.75rem;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
-.stat-bar-wrap{background:var(--border);border-radius:100px;height:5px;overflow:hidden;margin-bottom:7px}
+.stat-card-name{font-size:.92rem;font-weight:500;color:var(--dark);margin-bottom:3px}
+.stat-card-sub{font-size:.72rem;color:var(--muted);margin-bottom:9px;display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.stat-bar-wrap{background:var(--border);border-radius:100px;height:5px;overflow:hidden;margin-bottom:6px}
 .stat-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-.stat-numbers{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+.stat-numbers{display:flex;justify-content:space-between;font-size:.73rem;color:var(--muted)}
 .stat-score{font-weight:600;color:var(--gold)}
 .stats-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:14px;text-align:center;padding:40px 24px}
 .stats-locked-icon{font-size:2.5rem}
 .stats-locked h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--mid)}
-.stats-locked p{color:var(--muted);max-width:280px;line-height:1.6;font-size:.9rem}
+.stats-locked p{color:var(--muted);max-width:280px;line-height:1.6;font-size:.88rem}
 .stats-lock-form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;max-width:320px}
-.stats-lock-input{flex:1;min-width:150px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;background:var(--warm-white);transition:border-color .15s;color:var(--dark);-webkit-appearance:none}
+.stats-lock-input{flex:1;min-width:140px;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;background:var(--warm-white);transition:border-color .15s;color:var(--dark);-webkit-appearance:none}
 .stats-lock-input:focus{border-color:var(--gold)}
 .stats-lock-input.error{border-color:var(--red-soft);animation:shake .3s}
-.stats-lock-btn{padding:10px 18px;border-radius:8px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;white-space:nowrap}
+.stats-lock-btn{padding:10px 16px;border-radius:8px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer}
 
-/* ═══ MISC ═══ */
-.empty-profiles{padding:28px 12px;text-align:center;color:var(--muted);font-size:.85rem}
-.empty-profiles p{margin-top:7px;line-height:1.5}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--dark);color:var(--gold-light);padding:9px 20px;border-radius:30px;font-size:.83rem;font-weight:500;z-index:999;transition:transform .3s;pointer-events:none;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+/* ── MISC ── */
+.empty-profiles{padding:26px 10px;text-align:center;color:var(--muted);font-size:.83rem}
+.empty-profiles p{margin-top:6px;line-height:1.5}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--dark);color:var(--gold-light);padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:500;z-index:999;transition:transform .3s;pointer-events:none;white-space:nowrap;max-width:88vw;overflow:hidden;text-overflow:ellipsis}
 .toast.show{transform:translateX(-50%) translateY(0)}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-/* ═══ RESPONSIVE — Mobile ═══ */
+/* ── RESPONSIVE MOBILE ── */
 @media(max-width:768px){
-  :root{--sidebar-w:260px}
   .hamburger{display:flex}
   .topbar-nav{display:none}
-  .sidebar{
-    position:fixed;top:var(--topbar-h);left:0;bottom:0;
-    transform:translateX(-100%);transition:transform .25s;z-index:50;
-  }
+  .sidebar{position:fixed;top:var(--topbar-h);left:0;bottom:0;transform:translateX(-100%);transition:transform .25s;z-index:50}
   .sidebar.open{transform:translateX(0)}
   .sidebar-overlay.open{display:block}
-  .criterion-formation{display:none!important}
   .profile-delete{opacity:1}
-  .criterion-pts{font-size:.7rem;padding:2px 6px}
 }
-
-/* ═══ TABLET (768-1024) ═══ */
-@media(min-width:768px) and (max-width:1024px){
+/* ── TABLET ── */
+@media(min-width:769px) and (max-width:1024px){
   :root{--sidebar-w:240px}
-  .criterion-formation{display:none}
-  .eval-header{padding:20px 24px 0}
-  .eval-info-block{padding:12px 24px 0}
-  .progress-section{padding:14px 24px 0}
-  .eval-actions{padding:10px 24px 0}
-  .themes-container{padding:14px 24px 60px}
-  .stats-view{padding:20px 24px 60px}
 }
-
-/* ═══ DESKTOP ═══ */
+/* ── DESKTOP ── */
 @media(min-width:1025px){
-  .topbar{padding:0 28px}
-  .criterion-formation{display:inline}
-  .eval-header{padding:24px 32px 0}
-  .eval-info-block{padding:12px 32px 0}
-  .progress-section{padding:16px 32px 0}
-  .eval-actions{padding:10px 32px 0}
-  .themes-container{padding:16px 32px 60px}
-  .stats-view{padding:28px 32px 60px}
-  .stats-title{font-size:1.5rem}
+  .topbar{padding:0 26px}
+  .eval-header,.eval-info-block,.progress-section,.eval-actions,.themes-container,.notes-section{padding-left:28px;padding-right:28px}
+  .notes-section{margin-left:28px;margin-right:28px}
+  .stats-view{padding:24px 28px 60px}
 }
 </style>
 </head>
@@ -286,23 +260,22 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
     <input class="lock-input" id="main-pw" type="password" placeholder="••••••••" autocomplete="current-password" />
     <button class="lock-btn" onclick="unlockApp()">Accéder →</button>
   </div>
-  <div class="lock-hint">Accès réservé aux managers Galzin</div>
 </div>
 
 <!-- APP -->
 <div id="app-wrapper" style="display:none">
   <div class="topbar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <div style="display:flex;align-items:center;gap:9px">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
         <span></span><span></span><span></span>
       </button>
-      <div class="topbar-brand">Galzin <span>|</span> Éval. Poste</div>
+      <div class="topbar-brand">Galzin <span>|</span> Éval.</div>
     </div>
     <div class="topbar-right">
       <div class="sync-badge sync-ok" id="sync-badge">✓ Sync</div>
       <nav class="topbar-nav">
         <button class="nav-btn active" onclick="setView('eval')" id="nav-eval">Évaluations</button>
-        <button class="nav-btn" onclick="setView('stats')" id="nav-stats">🔒 Tableau de bord</button>
+        <button class="nav-btn" onclick="setView('stats')" id="nav-stats">🔒 Dashboard</button>
       </nav>
     </div>
   </div>
@@ -314,14 +287,13 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
       <div class="sidebar-header">
         <div class="sidebar-title">Collaborateurs</div>
         <button class="btn-new" onclick="openNewProfileModal()">＋ Nouveau profil</button>
-        <!-- Nav mobile dans la sidebar -->
-        <div style="display:flex;gap:6px;margin-top:10px" id="sidebar-nav-mobile">
-          <button class="btn-action" style="flex:1;justify-content:center;font-size:.78rem" onclick="setView('eval');closeSidebar()" id="snav-eval">📋 Évals</button>
-          <button class="btn-action" style="flex:1;justify-content:center;font-size:.78rem" onclick="setView('stats');closeSidebar()" id="snav-stats">🔒 Dashboard</button>
+        <div style="display:flex;gap:6px;margin-top:9px">
+          <button class="btn-action" style="flex:1;justify-content:center;font-size:.76rem" onclick="setView('eval');closeSidebar()">📋 Évals</button>
+          <button class="btn-action" style="flex:1;justify-content:center;font-size:.76rem" onclick="setView('stats');closeSidebar()">🔒 Dashboard</button>
         </div>
       </div>
       <div class="profiles-list" id="profiles-list">
-        <div class="empty-profiles"><div style="font-size:1.4rem">⏳</div><p>Chargement…</p></div>
+        <div class="empty-profiles"><div style="font-size:1.3rem">⏳</div><p>Chargement…</p></div>
       </div>
     </aside>
 
@@ -360,7 +332,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-new')">Annuler</button>
-      <button class="btn-confirm" id="btn-create-profile" onclick="createProfile()">Créer le profil</button>
+      <button class="btn-confirm" id="btn-create" onclick="createProfile()">Créer le profil</button>
     </div>
   </div>
 </div>
@@ -370,10 +342,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
   <div class="modal modal-danger">
     <div class="modal-handle"></div>
     <h3>Supprimer ce profil ?</h3>
-    <p style="color:var(--muted);font-size:.88rem;line-height:1.6">Toutes les données de <strong id="delete-name"></strong> seront supprimées définitivement de la base de données. Cette action est irréversible.</p>
+    <p style="color:var(--muted);font-size:.87rem;line-height:1.6">Toutes les données et notes de <strong id="delete-name"></strong> seront supprimées définitivement. Irréversible.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-delete')">Annuler</button>
-      <button class="btn-danger" id="btn-confirm-delete" onclick="confirmDeleteProfile()">Supprimer définitivement</button>
+      <button class="btn-danger" id="btn-del-confirm" onclick="confirmDeleteProfile()">Supprimer</button>
     </div>
   </div>
 </div>
@@ -383,7 +355,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
   <div class="modal modal-danger">
     <div class="modal-handle"></div>
     <h3>Désactiver ce critère ?</h3>
-    <p style="color:var(--muted);font-size:.88rem;line-height:1.6">Ce critère sera masqué uniquement pour ce profil et ne comptera plus dans son score. Réactivable à tout moment.</p>
+    <p style="color:var(--muted);font-size:.87rem;line-height:1.6">Ce critère sera masqué pour ce profil uniquement. Réactivable à tout moment.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-delete-criterion')">Annuler</button>
       <button class="btn-danger" onclick="confirmDeleteCriterion()">Désactiver</button>
@@ -425,17 +397,17 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-evalinfo')">Annuler</button>
-      <button class="btn-confirm" onclick="saveEvalInfo()">Enregistrer</button>
+      <button class="btn-confirm" id="btn-save-evalinfo" onclick="saveEvalInfo()">Enregistrer</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL : MDP tableau de bord -->
+<!-- MODAL : MDP dashboard -->
 <div class="modal-backdrop" id="modal-stats-pw">
   <div class="modal">
     <div class="modal-handle"></div>
     <h3>🔒 Tableau de bord</h3>
-    <p style="color:var(--muted);font-size:.87rem;margin-bottom:14px">Accès protégé — managers uniquement.</p>
+    <p style="color:var(--muted);font-size:.86rem;margin-bottom:13px">Accès protégé — managers uniquement.</p>
     <div class="form-group">
       <label class="form-label">Mot de passe</label>
       <input class="form-input" id="stats-pw-input" type="password" placeholder="••••••••" autocomplete="current-password" />
@@ -450,187 +422,185 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-// SUPABASE CONFIG
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════════════════════
 const SB_URL = 'https://fgvvfycyxulnwzttczyq.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZndnZmeWN5eHVsbnd6dHRjenlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDI2MzAsImV4cCI6MjA4OTkxODYzMH0.0-NzalmqzSpOSUofuBg-q-cBfql7xKvU101is7s4uWQ';
-const SB_HDR = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'return=representation' };
+const H = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'return=representation' };
 
-async function sbGet(table, qs='') {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { headers:SB_HDR });
-  if (!r.ok) throw new Error(`GET ${table}: ${r.status}`);
-  return r.json();
-}
-async function sbPost(table, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}`, { method:'POST', headers:SB_HDR, body:JSON.stringify(body) });
-  if (!r.ok) throw new Error(`POST ${table}: ${await r.text()}`);
-  return r.json();
-}
-async function sbPatch(table, qs, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'PATCH', headers:SB_HDR, body:JSON.stringify(body) });
-  if (!r.ok) throw new Error(`PATCH ${table}: ${await r.text()}`);
-  return r.json();
-}
-async function sbDelete(table, qs) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'DELETE', headers:{...SB_HDR, Prefer:'return=minimal'} });
-  if (!r.ok) throw new Error(`DELETE ${table}: ${await r.text()}`);
-}
-// Upsert check — résolution par contrainte unique (profile_id, criterion_id)
-async function sbUpsert(profileId, criterionId, checked, disabled) {
-  const r = await fetch(`${SB_URL}/rest/v1/eval_checks`, {
-    method:'POST',
-    headers:{...SB_HDR, Prefer:'resolution=merge-duplicates,return=minimal'},
-    body:JSON.stringify({ profile_id:profileId, criterion_id:criterionId, checked, disabled })
-  });
-  if (!r.ok) throw new Error(`UPSERT check: ${await r.text()}`);
-}
+const api = {
+  async get(table, qs='') {
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { headers:H });
+    if (!r.ok) throw new Error(`GET ${table} ${r.status}: ${await r.text()}`);
+    return r.json();
+  },
+  async post(table, body) {
+    const r = await fetch(`${SB_URL}/rest/v1/${table}`, { method:'POST', headers:H, body:JSON.stringify(body) });
+    if (!r.ok) throw new Error(`POST ${table} ${r.status}: ${await r.text()}`);
+    return r.json();
+  },
+  async patch(table, qs, body) {
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'PATCH', headers:H, body:JSON.stringify(body) });
+    if (!r.ok) throw new Error(`PATCH ${table} ${r.status}: ${await r.text()}`);
+    return r.json();
+  },
+  async del(table, qs) {
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'DELETE', headers:{...H, Prefer:'return=minimal'} });
+    if (!r.ok) throw new Error(`DELETE ${table} ${r.status}: ${await r.text()}`);
+  },
+  // Upsert avec la contrainte nommée exacte
+  async upsertCheck(profileId, criterionId, checked, disabled) {
+    const r = await fetch(`${SB_URL}/rest/v1/eval_checks`, {
+      method:'POST',
+      headers:{...H, Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({ profile_id:profileId, criterion_id:criterionId, checked, disabled })
+    });
+    if (!r.ok) throw new Error(`UPSERT check ${r.status}: ${await r.text()}`);
+  },
+  // Upsert note (contrainte profile_unique)
+  async upsertNote(profileId, content) {
+    const r = await fetch(`${SB_URL}/rest/v1/eval_notes`, {
+      method:'POST',
+      headers:{...H, Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({ profile_id:profileId, content })
+    });
+    if (!r.ok) throw new Error(`UPSERT note ${r.status}: ${await r.text()}`);
+  }
+};
 
-// ═══════════════════════════════════════════════════════════════
-// CONSTANTES MÉTIER
-// ═══════════════════════════════════════════════════════════════
-const MAIN_PW  = 'noix';
-const STATS_PW = 'noix';
+// ═══════════════════════════════════════════════════════
+// DONNÉES MÉTIER
+// ═══════════════════════════════════════════════════════
+const MAIN_PW = 'noix', STATS_PW = 'noix';
 
-// Vraies boutiques depuis shop_meta.__list__
 const BOUTIQUES = [
-  'Millau Moulin','Millau PLR','Millau Tine','Millau Bonald','Millau Peugeot',
-  'Semailles','Balaruc','St Jean',
-  'Pompignane','Lattes','Carnon','Soriech','St Éloi','Castelnau-le-Lez',
-  'Port Marianne','Eugène et Marie',
-  'Palavas','Palavas Quai','Pérols','Candillargues',
-  'Baillargues','Maurin','Sabines','Gare St Roch',
-  'Poussan','Pignan',
-  'Rodez','Baraqueville','Primaube',
-  'St Affrique Verdun','St Affrique Borel',
-  'Plateforme'
-].sort((a,b) => a.localeCompare(b,'fr'));
-
-// IDs valides — utilisés pour validation côté front avant envoi BDD
-const VALID_CRITERION_IDS = new Set();
+  'Baillargues','Balaruc','Baraqueville','Candillargues','Carnon',
+  'Castelnau-le-Lez','Eugène et Marie','Gare St Roch','Lattes',
+  'Maurin','Millau Bonald','Millau Moulin','Millau Peugeot',
+  'Millau PLR','Millau Tine','Palavas','Palavas Quai','Pérols',
+  'Pignan','Pompignane','Port Marianne','Poussan','Primaube',
+  'Rodez','Sabines','Semailles','Soriech','St Affrique Borel',
+  'St Affrique Verdun','St Éloi','St Jean','Plateforme'
+];
 
 const THEMES = [
   { id:'encaissement', name:'Encaissement', emoji:'💳', criteria:[
-    {id:'enc_01',text:'Taper sur la caisse avec le rendu monnaie, tiroir fermé',pts:1,formation:'J1'},
-    {id:'enc_02',text:'Encaissement Tickets Restaurant, avoir, double paiement',pts:1,formation:'J1'},
-    {id:'enc_03',text:'Usage du stylo faux billet ou du détecteur systématiquement',pts:1,formation:'J1'},
-    {id:'enc_04',text:'Sait passer une commande Client sur la caisse',pts:1,formation:'J1'},
-    {id:'enc_05',text:'Sait annuler une commande Client',pts:1,formation:'J1'},
-    {id:'enc_06',text:'Sait déclarer les invendus du soir (périmé, cassé, dégustation, transformable)',pts:1,formation:'J1'},
-    {id:'enc_07',text:'Connaissance des moyens d\'encaissements interdits',pts:1,formation:'J1'},
-    {id:'enc_08',text:'Effectuer une fermeture caisse / ouverture caisse / prélèvements du Midi',pts:1,formation:'J1'},
-    {id:'enc_09',text:'Effectuer un transfert de produits vers un autre magasin',pts:1,formation:'R'},
-    {id:'enc_10',text:'Sait remettre en banque les poches prélèvements',pts:1,formation:'R'},
-    {id:'enc_11',text:'Connaît la procédure en cas de ticket à annuler',pts:1,formation:'R'},
-    {id:'enc_12',text:'Maîtrise sa caisse, pas d\'erreur et papiers de caisse toujours impeccables',pts:1,formation:'R'},
+    {id:'enc_01',text:'Taper sur la caisse avec le rendu monnaie, tiroir fermé',pts:1,f:'J1'},
+    {id:'enc_02',text:'Encaissement Tickets Restaurant, avoir, double paiement',pts:1,f:'J1'},
+    {id:'enc_03',text:'Usage du stylo faux billet ou du détecteur systématiquement',pts:1,f:'J1'},
+    {id:'enc_04',text:'Sait passer une commande Client sur la caisse',pts:1,f:'J1'},
+    {id:'enc_05',text:'Sait annuler une commande Client',pts:1,f:'J1'},
+    {id:'enc_06',text:'Sait déclarer les invendus du soir (périmé, cassé, dégustation, transformable)',pts:1,f:'J1'},
+    {id:'enc_07',text:'Connaissance des moyens d\'encaissements interdits',pts:1,f:'J1'},
+    {id:'enc_08',text:'Effectuer une fermeture caisse / ouverture caisse / prélèvements du Midi',pts:1,f:'J1'},
+    {id:'enc_09',text:'Effectuer un transfert de produits vers un autre magasin',pts:1,f:'R'},
+    {id:'enc_10',text:'Sait remettre en banque les poches prélèvements',pts:1,f:'R'},
+    {id:'enc_11',text:'Connaît la procédure en cas de ticket à annuler',pts:1,f:'R'},
+    {id:'enc_12',text:'Maîtrise sa caisse, pas d\'erreur et papiers de caisse toujours impeccables',pts:1,f:'R'},
   ]},
   { id:'accueil', name:'Accueil & Vente', emoji:'😊', criteria:[
-    {id:'acc_01',text:'Connaît nos SPÉCIALITÉS (Flaunes, Fouace, Rissole, Farçou, Tielle, Pain au levain…)',pts:1,formation:'J1'},
-    {id:'acc_02',text:'Connaît les phrases d\'accroche « Bonjour, Bienvenue… »',pts:1,formation:'J1'},
-    {id:'acc_03',text:'Accueil téléphonique (Maison + prénom à votre service)',pts:1,formation:'J1'},
-    {id:'acc_04',text:'Propose une formule ou un achat supplémentaire systématiquement (jamais « avec ça ? »)',pts:1,formation:'J1'},
-    {id:'acc_05',text:'Propose la carte fidélité GRATUITÉ tout le temps',pts:1,formation:'J1'},
-    {id:'acc_06',text:'Sait pratiquer le chemin client',pts:1,formation:'J1'},
-    {id:'acc_07',text:'Sourire en toute circonstance, accueil chaleureux',pts:1,formation:'J1'},
-    {id:'acc_08',text:'Toujours sa tenue de travail, polo ou tablier',pts:1,formation:'J1'},
-    {id:'acc_09',text:'Connaît les offres supplémentaires',pts:1,formation:'J1'},
-    {id:'acc_10',text:'Taux de carte fidélité ok',pts:1,formation:'J1'},
-    {id:'acc_11',text:'CONNAÎT nos OFFRES ? 6 sur 8 = OUI dans la colonne',pts:1,formation:'J1'},
-    {id:'acc_12',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,formation:'J1'},
-    {id:'acc_13',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,formation:'J1'},
-    {id:'acc_14',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,formation:'J1'},
-    {id:'acc_15',text:'CHEMIN CLIENT maîtrisé à chaque passage manager — 5 pts',pts:5,formation:'R'},
+    {id:'acc_01',text:'Connaît nos SPÉCIALITÉS (Flaunes, Fouace, Rissole, Farçou, Tielle, Pain au levain…)',pts:1,f:'J1'},
+    {id:'acc_02',text:'Connaît les phrases d\'accroche « Bonjour, Bienvenue… »',pts:1,f:'J1'},
+    {id:'acc_03',text:'Accueil téléphonique (Maison + prénom à votre service)',pts:1,f:'J1'},
+    {id:'acc_04',text:'Propose une formule ou un achat supplémentaire systématiquement (jamais « avec ça ? »)',pts:1,f:'J1'},
+    {id:'acc_05',text:'Propose la carte fidélité GRATUITÉ tout le temps',pts:1,f:'J1'},
+    {id:'acc_06',text:'Sait pratiquer le chemin client',pts:1,f:'J1'},
+    {id:'acc_07',text:'Sourire en toute circonstance, accueil chaleureux',pts:1,f:'J1'},
+    {id:'acc_08',text:'Toujours sa tenue de travail, polo ou tablier',pts:1,f:'J1'},
+    {id:'acc_09',text:'Connaît les offres supplémentaires',pts:1,f:'J1'},
+    {id:'acc_10',text:'Taux de carte fidélité ok',pts:1,f:'J1'},
+    {id:'acc_11',text:'CONNAÎT nos OFFRES ? 6 sur 8 = OUI dans la colonne',pts:1,f:'J1'},
+    {id:'acc_12',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,f:'J1'},
+    {id:'acc_13',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,f:'J1'},
+    {id:'acc_14',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,f:'J1'},
+    {id:'acc_15',text:'CHEMIN CLIENT maîtrisé à chaque passage manager — 5 pts',pts:5,f:'R'},
   ]},
   { id:'production', name:'Production', emoji:'🥪', criteria:[
-    {id:'pro_01',text:'Sait taper les « FABRIQUÉS » sur la caisse',pts:1,formation:'J2'},
-    {id:'pro_02',text:'Sandwich',pts:1,formation:'J2'},
-    {id:'pro_03',text:'Wrap',pts:1,formation:'J2'},
-    {id:'pro_04',text:'Tacos',pts:1,formation:'J2'},
-    {id:'pro_05',text:'Salades',pts:1,formation:'J2'},
-    {id:'pro_06',text:'Panini',pts:1,formation:'J2'},
-    {id:'pro_07',text:'Viennois crudités',pts:1,formation:'J2'},
-    {id:'pro_08',text:'Bagnat thon et bagnat tenders',pts:1,formation:'J2'},
-    {id:'pro_09',text:'Hot-dog',pts:1,formation:'J2'},
-    {id:'pro_10',text:'Pizza',pts:1,formation:'J2'},
-    {id:'pro_11',text:'Les produits fabriqués sont beaux et appétitifs, respectueux des fiches recette',pts:1,formation:'J2'},
-    {id:'pro_12',text:'Réflexe de reproduire si besoin en rayon',pts:1,formation:'R'},
-    {id:'pro_13',text:'Maîtrise des quantités à effectuer pour éviter la sous et sur production',pts:1,formation:'R'},
+    {id:'pro_01',text:'Sait taper les « FABRIQUÉS » sur la caisse',pts:1,f:'J2'},
+    {id:'pro_02',text:'Sandwich',pts:1,f:'J2'},{id:'pro_03',text:'Wrap',pts:1,f:'J2'},
+    {id:'pro_04',text:'Tacos',pts:1,f:'J2'},{id:'pro_05',text:'Salades',pts:1,f:'J2'},
+    {id:'pro_06',text:'Panini',pts:1,f:'J2'},{id:'pro_07',text:'Viennois crudités',pts:1,f:'J2'},
+    {id:'pro_08',text:'Bagnat thon et bagnat tenders',pts:1,f:'J2'},
+    {id:'pro_09',text:'Hot-dog',pts:1,f:'J2'},{id:'pro_10',text:'Pizza',pts:1,f:'J2'},
+    {id:'pro_11',text:'Les produits fabriqués sont beaux et appétitifs, respectueux des fiches recette',pts:1,f:'J2'},
+    {id:'pro_12',text:'Réflexe de reproduire si besoin en rayon',pts:1,f:'R'},
+    {id:'pro_13',text:'Maîtrise des quantités à effectuer pour éviter la sous et sur production',pts:1,f:'R'},
   ]},
   { id:'rayon', name:'Mise en rayon', emoji:'🧁', criteria:[
-    {id:'ray_01',text:'Rayon pains : approvisionner et mise en valeur des produits',pts:1,formation:'J3'},
-    {id:'ray_02',text:'Rayon pâtisserie : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'J3'},
-    {id:'ray_03',text:'Rayon viennoiserie : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'J3'},
-    {id:'ray_04',text:'Rayon snaking : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'J3'},
-    {id:'ray_05',text:'Dégustation en fonction de l\'heure respectée',pts:1,formation:'J3'},
-    {id:'ray_06',text:'À 13h30 on met les pizzas au frais (pas à l\'air libre)',pts:1,formation:'J3'},
-    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres et appétissantes) — 5 pts',pts:5,formation:'R'},
-    {id:'ray_08',text:'Théâtralise tout : pain, pizza, viennoiserie, sandwichs pour visuel formule',pts:1,formation:'R'},
+    {id:'ray_01',text:'Rayon pains : approvisionner et mise en valeur des produits',pts:1,f:'J3'},
+    {id:'ray_02',text:'Rayon pâtisserie : plan vitrine respecté, homogénéité et rigueur',pts:1,f:'J3'},
+    {id:'ray_03',text:'Rayon viennoiserie : plan vitrine respecté, homogénéité et rigueur',pts:1,f:'J3'},
+    {id:'ray_04',text:'Rayon snaking : plan vitrine respecté, homogénéité et rigueur',pts:1,f:'J3'},
+    {id:'ray_05',text:'Dégustation en fonction de l\'heure respectée',pts:1,f:'J3'},
+    {id:'ray_06',text:'À 13h30 on met les pizzas au frais (pas à l\'air libre)',pts:1,f:'J3'},
+    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres) — 5 pts',pts:5,f:'R'},
+    {id:'ray_08',text:'Théâtralise tout : pain, pizza, viennoiserie, sandwichs pour visuel formule',pts:1,f:'R'},
   ]},
   { id:'cuisson', name:'Cuisson', emoji:'🔥', criteria:[
-    {id:'cui_01',text:'Connaît PLAN PLACAGE + CUISSON affichés (viennoiserie, baguette…)',pts:1,formation:'J2'},
-    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise / Victoire / Pain frais',pts:1,formation:'J2'},
-    {id:'cui_03',text:'Maîtrise cuisson viennoiserie',pts:1,formation:'J2'},
-    {id:'cui_04',text:'Maîtrise cuisson des pizzas',pts:1,formation:'J2'},
-    {id:'cui_05',text:'Maîtrise cuisson pains spéciaux',pts:1,formation:'J2'},
-    {id:'cui_06',text:'Programmation four pour le lendemain',pts:1,formation:'J2'},
-    {id:'cui_07',text:'Anticipe les cuissons pour réappro boutique et évite les ruptures',pts:1,formation:'J2'},
+    {id:'cui_01',text:'Connaît PLAN PLACAGE + CUISSON affichés',pts:1,f:'J2'},
+    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise / Victoire / Pain frais',pts:1,f:'J2'},
+    {id:'cui_03',text:'Maîtrise cuisson viennoiserie',pts:1,f:'J2'},
+    {id:'cui_04',text:'Maîtrise cuisson des pizzas',pts:1,f:'J2'},
+    {id:'cui_05',text:'Maîtrise cuisson pains spéciaux',pts:1,f:'J2'},
+    {id:'cui_06',text:'Programmation four pour le lendemain',pts:1,f:'J2'},
+    {id:'cui_07',text:'Anticipe les cuissons pour réappro boutique et évite les ruptures',pts:1,f:'J2'},
   ]},
   { id:'energie', name:'Réflexe Énergie', emoji:'⚡', criteria:[
-    {id:'ene_01',text:'Éteint les lumières inutiles',pts:1,formation:'J3'},
-    {id:'ene_02',text:'Éteint le four entre les cuissons',pts:1,formation:'J3'},
-    {id:'ene_03',text:'Gestion CLIM correcte, chambre de pousse',pts:1,formation:'R'},
-    {id:'ene_04',text:'Pas de four pizza ou pain allumé inutilement, gestion énergie globale',pts:1,formation:'R'},
+    {id:'ene_01',text:'Éteint les lumières inutiles',pts:1,f:'J3'},
+    {id:'ene_02',text:'Éteint le four entre les cuissons',pts:1,f:'J3'},
+    {id:'ene_03',text:'Gestion CLIM correcte, chambre de pousse',pts:1,f:'R'},
+    {id:'ene_04',text:'Pas de four pizza ou pain allumé inutilement, gestion énergie globale',pts:1,f:'R'},
   ]},
   { id:'hygiene', name:'Entretien / Hygiène & DLC', emoji:'🧼', criteria:[
-    {id:'hyg_01',text:'Sait nettoyer les rayons et mettre en place les vitrines selon TABLETTE NETTOYAGE',pts:1,formation:'J2'},
-    {id:'hyg_02',text:'Planning de nettoyage suivi et respecté sur tablette',pts:1,formation:'J2'},
-    {id:'hyg_03',text:'Connaît et applique les DLC sur les articles en rayon et dans les frigos avec rigueur',pts:1,formation:'J2'},
-    {id:'hyg_04',text:'Connaît le relevé de T°C sur la tablette (2 x par jour)',pts:1,formation:'J2'},
-    {id:'hyg_05',text:'Connaît la traçabilité sur la tablette (photo DLC) des ingrédients utilisés',pts:1,formation:'J2'},
-    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable — 3 pts',pts:3,formation:'J3'},
-    {id:'hyg_07',text:'A l\'œil sur le nettoyage de zones non identifiées sur la tablette (prises, recoins…)',pts:1,formation:'R'},
+    {id:'hyg_01',text:'Sait nettoyer les rayons et mettre en place les vitrines selon TABLETTE NETTOYAGE',pts:1,f:'J2'},
+    {id:'hyg_02',text:'Planning de nettoyage suivi et respecté sur tablette',pts:1,f:'J2'},
+    {id:'hyg_03',text:'Connaît et applique les DLC sur les articles en rayon et dans les frigos avec rigueur',pts:1,f:'J2'},
+    {id:'hyg_04',text:'Connaît le relevé de T°C sur la tablette (2 x par jour)',pts:1,f:'J2'},
+    {id:'hyg_05',text:'Connaît la traçabilité sur la tablette (photo DLC) des ingrédients utilisés',pts:1,f:'J2'},
+    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable — 3 pts',pts:3,f:'J3'},
+    {id:'hyg_07',text:'A l\'œil sur le nettoyage de zones non identifiées sur la tablette',pts:1,f:'R'},
   ]},
   { id:'fermeture', name:'Fermeture', emoji:'🔒', criteria:[
-    {id:'fer_01',text:'Procédures mise en sachet le soir et saisie invendus PAIN',pts:1,formation:'J1'},
-    {id:'fer_02',text:'Connaît les emplacements des interrupteurs',pts:1,formation:'J1'},
-    {id:'fer_03',text:'Mise en route des alarmes',pts:1,formation:'J5'},
-    {id:'fer_04',text:'Connaît le code de la boîte à clefs',pts:1,formation:'J5'},
-    {id:'fer_05',text:'Effectue un chemin de départ : T° frigo/congélateur/vitrines — four éteint — lumières',pts:1,formation:'J5'},
-    {id:'fer_06',text:'Sait fermer seule la boutique',pts:1,formation:'J5'},
+    {id:'fer_01',text:'Procédures mise en sachet le soir et saisie invendus PAIN',pts:1,f:'J1'},
+    {id:'fer_02',text:'Connaît les emplacements des interrupteurs',pts:1,f:'J1'},
+    {id:'fer_03',text:'Mise en route des alarmes',pts:1,f:'J5'},
+    {id:'fer_04',text:'Connaît le code de la boîte à clefs',pts:1,f:'J5'},
+    {id:'fer_05',text:'Effectue un chemin de départ : T° frigo/congélateur/vitrines — four éteint — lumières',pts:1,f:'J5'},
+    {id:'fer_06',text:'Sait fermer seule la boutique',pts:1,f:'J5'},
   ]},
   { id:'ouverture', name:'Ouverture', emoji:'🌅', criteria:[
-    {id:'ouv_01',text:'Maîtrise pointage BL ou sur tablette (CONSERVE ou MANQUANT)',pts:1,formation:'J8'},
-    {id:'ouv_02',text:'Maîtrise LA RECETTE DORURE',pts:1,formation:'J8'},
-    {id:'ouv_03',text:'Maîtrise timing cuisson avant ouverture de la boutique (pains et viennoiserie)',pts:1,formation:'J8'},
-    {id:'ouv_04',text:'Maîtrise la « 13h » sur la tablette (inventaire)',pts:1,formation:'J8'},
-    {id:'ouv_05',text:'Maîtrise la feuille de commande Surgelés',pts:1,formation:'J8'},
-    {id:'ouv_06',text:'Maîtrise la mise en rayon d\'ouverture (plus tôt en rayon, plus tôt vendu)',pts:1,formation:'J8'},
-    {id:'ouv_07',text:'Alerte le manager en cas de soucis livraisons ou dysfonctionnement',pts:1,formation:'R'},
+    {id:'ouv_01',text:'Maîtrise pointage BL ou sur tablette (CONSERVE ou MANQUANT)',pts:1,f:'J8'},
+    {id:'ouv_02',text:'Maîtrise LA RECETTE DORURE',pts:1,f:'J8'},
+    {id:'ouv_03',text:'Maîtrise timing cuisson avant ouverture de la boutique',pts:1,f:'J8'},
+    {id:'ouv_04',text:'Maîtrise la « 13h » sur la tablette (inventaire)',pts:1,f:'J8'},
+    {id:'ouv_05',text:'Maîtrise la feuille de commande Surgelés',pts:1,f:'J8'},
+    {id:'ouv_06',text:'Maîtrise la mise en rayon d\'ouverture (plus tôt en rayon, plus tôt vendu)',pts:1,f:'J8'},
+    {id:'ouv_07',text:'Alerte le manager en cas de soucis livraisons ou dysfonctionnement',pts:1,f:'R'},
   ]},
   { id:'posture', name:'Posture & Professionnalisme', emoji:'⭐', criteria:[
-    {id:'pos_01',text:'Toujours ponctuel(le) et présent(e) à son poste (sauf cas exceptionnel)',pts:1,formation:'R'},
-    {id:'pos_02',text:'Capacité à donner des directives précises',pts:1,formation:'R'},
-    {id:'pos_03',text:'Écoute et réactions des collègues aux directives données',pts:1,formation:'R'},
-    {id:'pos_04',text:'Maintient une énergie professionnelle, dynamique, sereine et chaleureuse',pts:1,formation:'R'},
-    {id:'pos_05',text:'Capacité à trouver des solutions en cas de dysfonctionnement',pts:1,formation:'R'},
-    {id:'pos_06',text:'S\'intéresse au chiffre d\'affaire et fait en sorte que celui-ci progresse',pts:1,formation:'R'},
-    {id:'pos_07',text:'A pour réflexe d\'approvisionner les vitrines en viennoiserie, pain, snaking…',pts:1,formation:'R'},
-    {id:'pos_08',text:'Passe le relais + consignes',pts:1,formation:'R'},
-    {id:'pos_09',text:'Sait transmettre son savoir avec une bonne pédagogie',pts:1,formation:'R'},
-    {id:'pos_10',text:'Repère les futurs bons éléments en formation',pts:1,formation:'R'},
-    {id:'pos_11',text:'Montre l\'exemple',pts:1,formation:'R'},
-    {id:'pos_12',text:'Augmente nettement le chiffre d\'affaire sur ses heures en poste',pts:1,formation:'R'},
+    {id:'pos_01',text:'Toujours ponctuel(le) et présent(e) à son poste (sauf cas exceptionnel)',pts:1,f:'R'},
+    {id:'pos_02',text:'Capacité à donner des directives précises',pts:1,f:'R'},
+    {id:'pos_03',text:'Écoute et réactions des collègues aux directives données',pts:1,f:'R'},
+    {id:'pos_04',text:'Maintient une énergie professionnelle, dynamique, sereine et chaleureuse',pts:1,f:'R'},
+    {id:'pos_05',text:'Capacité à trouver des solutions en cas de dysfonctionnement',pts:1,f:'R'},
+    {id:'pos_06',text:'S\'intéresse au chiffre d\'affaire et fait en sorte que celui-ci progresse',pts:1,f:'R'},
+    {id:'pos_07',text:'A pour réflexe d\'approvisionner les vitrines en viennoiserie, pain, snaking…',pts:1,f:'R'},
+    {id:'pos_08',text:'Passe le relais + consignes',pts:1,f:'R'},
+    {id:'pos_09',text:'Sait transmettre son savoir avec une bonne pédagogie',pts:1,f:'R'},
+    {id:'pos_10',text:'Repère les futurs bons éléments en formation',pts:1,f:'R'},
+    {id:'pos_11',text:'Montre l\'exemple',pts:1,f:'R'},
+    {id:'pos_12',text:'Augmente nettement le chiffre d\'affaire sur ses heures en poste',pts:1,f:'R'},
   ]},
 ];
 
-// Construire le Set des IDs valides
-THEMES.forEach(t => t.criteria.forEach(c => VALID_CRITERION_IDS.add(c.id)));
-const MAX_SCORE = THEMES.reduce((s,t) => s + t.criteria.reduce((a,c) => a+c.pts, 0), 0); // 105
+const VALID_IDS = new Set(THEMES.flatMap(t => t.criteria.map(c => c.id)));
+const MAX_SCORE = THEMES.reduce((s,t) => s + t.criteria.reduce((a,c) => a+c.pts, 0), 0);
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════════════════
-let profiles = []; // [{ id, name, poste, boutique, date_entree, eval_for, eval_by, eval_date, rappel_months, _checks:{cid:{checked,disabled}} }]
+// ═══════════════════════════════════════════════════════
+let profiles = [];  // chaque profil a un _checks:{cid:{checked,disabled}} et _note:string
 let currentProfileId = null;
 let currentView = 'eval';
 let statsUnlocked = false;
@@ -640,132 +610,115 @@ let openThemes = {};
 let newBoutiqueSelected = '';
 let eiBoutiqueSelected = '';
 let eiRappelSelected = 0;
+let noteDirty = false;
+let noteSaveTimer = null;
 
-// ═══════════════════════════════════════════════════════════════
-// SÉCURITÉ — validation côté client avant tout envoi BDD
-// ═══════════════════════════════════════════════════════════════
-function assertValidCriterionId(cid) {
-  if (!VALID_CRITERION_IDS.has(cid)) throw new Error(`criterion_id invalide: ${cid}`);
-}
-function assertValidProfileId(pid) {
-  if (!pid || typeof pid !== 'string' || !/^[0-9a-f-]{36}$/.test(pid))
-    throw new Error(`profile_id invalide: ${pid}`);
-  if (!profiles.find(p => p.id === pid))
-    throw new Error(`profile_id inconnu: ${pid}`);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// SYNC STATUS
-// ═══════════════════════════════════════════════════════════════
-function setSyncStatus(state, msg) {
-  const el = document.getElementById('sync-badge');
-  el.className = 'sync-badge ' + (state==='ok'?'sync-ok':state==='saving'?'sync-saving':'sync-err');
-  el.innerHTML = state==='saving' ? `<span class="spinner"></span> ${msg}` : msg;
-}
-
-// ═══════════════════════════════════════════════════════════════
-// LOAD
-// ═══════════════════════════════════════════════════════════════
-async function loadAllProfiles() {
-  try {
-    setSyncStatus('saving', 'Chargement…');
-    const [profs, checks] = await Promise.all([
-      sbGet('eval_profiles', '?order=created_at.asc'),
-      sbGet('eval_checks', '?select=profile_id,criterion_id,checked,disabled')
-    ]);
-    // Indexer les checks par profil — on ne garde que les criterion_id valides
-    const byProfile = {};
-    for (const c of checks) {
-      if (!VALID_CRITERION_IDS.has(c.criterion_id)) continue; // ignore les orphelins
-      if (!byProfile[c.profile_id]) byProfile[c.profile_id] = {};
-      byProfile[c.profile_id][c.criterion_id] = { checked: !!c.checked, disabled: !!c.disabled };
-    }
-    profiles = profs.map(p => ({
-      id: p.id, name: p.name, poste: p.poste||'', boutique: p.boutique||'',
-      date_entree: p.date_entree||'', eval_for: p.eval_for||p.name,
-      eval_by: p.eval_by||'', eval_date: p.eval_date||'', rappel_months: p.rappel_months||0,
-      _checks: byProfile[p.id] || {}
-    }));
-    setSyncStatus('ok', '✓ Sync');
-    renderSidebar(); renderCurrentView();
-  } catch(e) {
-    setSyncStatus('err', '⚠ Hors ligne');
-    showToast('Erreur réseau — réessayez');
-    console.error(e);
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════
-function getProfile(id) { return profiles.find(p => p.id === id); }
-function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// ═══════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2600);
 }
-function getLevel(score) {
-  if (score < 70) return { label:'Formation', cls:'level-formation', badgeCls:'badge-formation' };
-  if (score < 85) return { label:'Vendeur', cls:'level-vendeur', badgeCls:'badge-vendeur' };
-  return { label:'Adjoint / Responsable', cls:'level-adjoint', badgeCls:'badge-adjoint' };
+function sync(state, msg) {
+  const el = document.getElementById('sync-badge');
+  el.className = 'sync-badge ' + {'ok':'sync-ok','saving':'sync-saving','err':'sync-err'}[state];
+  el.innerHTML = state==='saving' ? `<span class="spinner"></span> ${msg}` : msg;
 }
-function computeScore(p) {
-  let s = 0;
-  THEMES.forEach(t => t.criteria.forEach(c => {
-    const ch = p._checks[c.id];
-    if (ch && ch.checked && !ch.disabled) s += c.pts;
-  }));
-  return s;
+function getLevel(s) {
+  if (s<70) return {label:'Formation',cls:'level-formation',badgeCls:'badge-formation'};
+  if (s<85) return {label:'Vendeur',cls:'level-vendeur',badgeCls:'badge-vendeur'};
+  return {label:'Adjoint / Resp.',cls:'level-adjoint',badgeCls:'badge-adjoint'};
 }
-function computeMax(p) {
-  let m = 0;
-  THEMES.forEach(t => t.criteria.forEach(c => {
-    const ch = p._checks[c.id];
-    if (!ch || !ch.disabled) m += c.pts;
-  }));
-  return m;
+function score(p) {
+  return THEMES.reduce((s,t) => s + t.criteria.reduce((a,c) => {
+    const ch=p._checks[c.id]; return (ch&&ch.checked&&!ch.disabled) ? a+c.pts : a;
+  }, 0), 0);
+}
+function maxPts(p) {
+  return THEMES.reduce((s,t) => s + t.criteria.reduce((a,c) => {
+    const ch=p._checks[c.id]; return (!ch||!ch.disabled) ? a+c.pts : a;
+  }, 0), 0);
+}
+function getProfile(id) { return profiles.find(p=>p.id===id); }
+function assertPid(pid) {
+  if (!pid || !/^[0-9a-f-]{36}$/.test(pid) || !getProfile(pid)) throw new Error('profile_id invalide: '+pid);
+}
+function assertCid(cid) {
+  if (!VALID_IDS.has(cid)) throw new Error('criterion_id invalide: '+cid);
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// LOAD — chargement depuis Supabase
+// ═══════════════════════════════════════════════════════
+async function loadAll() {
+  try {
+    sync('saving', 'Chargement…');
+    const [profs, checks, notes] = await Promise.all([
+      api.get('eval_profiles', '?order=created_at.asc'),
+      api.get('eval_checks', '?select=profile_id,criterion_id,checked,disabled'),
+      api.get('eval_notes', '?select=profile_id,content,updated_at')
+    ]);
+    // Index checks par profil (ignorer les criterion_id orphelins)
+    const chByProf = {};
+    for (const c of checks) {
+      if (!VALID_IDS.has(c.criterion_id)) continue;
+      if (!chByProf[c.profile_id]) chByProf[c.profile_id] = {};
+      chByProf[c.profile_id][c.criterion_id] = { checked:!!c.checked, disabled:!!c.disabled };
+    }
+    // Index notes par profil
+    const noteByProf = {};
+    for (const n of notes) noteByProf[n.profile_id] = { content:n.content||'', updated_at:n.updated_at };
+
+    profiles = profs.map(p => ({
+      id:p.id, name:p.name, poste:p.poste||'', boutique:p.boutique||'',
+      date_entree:p.date_entree||'', eval_for:p.eval_for||p.name,
+      eval_by:p.eval_by||'', eval_date:p.eval_date||'', rappel_months:p.rappel_months||0,
+      _checks: chByProf[p.id] || {},
+      _note: noteByProf[p.id]?.content || '',
+      _note_updated: noteByProf[p.id]?.updated_at || null
+    }));
+    sync('ok', '✓ Sync');
+    renderSidebar(); renderCurrentView();
+  } catch(e) {
+    sync('err', '⚠ Hors ligne');
+    showToast('Erreur réseau — vérifiez la connexion');
+    console.error(e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
 // SIDEBAR MOBILE
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function toggleSidebar() {
-  const s = document.getElementById('sidebar');
-  const o = document.getElementById('sidebar-overlay');
-  const h = document.getElementById('hamburger');
-  const isOpen = s.classList.contains('open');
-  s.classList.toggle('open', !isOpen);
-  o.classList.toggle('open', !isOpen);
-  h.classList.toggle('open', !isOpen);
+  const open = document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open', open);
+  document.getElementById('hamburger').classList.toggle('open', open);
 }
 function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
+  ['sidebar','sidebar-overlay','hamburger'].forEach(id => document.getElementById(id).classList.remove('open'));
 }
 
-// ═══════════════════════════════════════════════════════════════
-// SECURITY
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════════
 function unlockApp() {
-  const pw = document.getElementById('main-pw').value;
-  if (pw === MAIN_PW) {
+  if (document.getElementById('main-pw').value === MAIN_PW) {
     document.getElementById('lock-screen').classList.add('hidden');
     document.getElementById('app-wrapper').style.display = 'block';
-    loadAllProfiles();
+    loadAll();
   } else {
     const el = document.getElementById('main-pw');
     el.classList.add('error'); el.value = '';
-    setTimeout(() => el.classList.remove('error'), 600);
+    setTimeout(()=>el.classList.remove('error'), 600);
     showToast('Mot de passe incorrect');
   }
 }
 function unlockStats() {
-  const pw = document.getElementById('stats-pw-input').value;
-  if (pw === STATS_PW) {
+  if (document.getElementById('stats-pw-input').value === STATS_PW) {
     statsUnlocked = true; closeModal('modal-stats-pw');
     currentView = 'stats';
     document.getElementById('nav-eval').classList.remove('active');
@@ -774,488 +727,488 @@ function unlockStats() {
   } else {
     const el = document.getElementById('stats-pw-input');
     el.classList.add('error'); el.value = '';
-    setTimeout(() => el.classList.remove('error'), 600);
+    setTimeout(()=>el.classList.remove('error'), 600);
   }
 }
 function unlockStatsInline() {
-  const pw = document.getElementById('stats-pw-inline').value;
-  if (pw === STATS_PW) { statsUnlocked = true; renderStats(); }
-  else {
+  if (document.getElementById('stats-pw-inline').value === STATS_PW) {
+    statsUnlocked = true; renderStats();
+  } else {
     const el = document.getElementById('stats-pw-inline');
     el.classList.add('error'); el.value = '';
-    setTimeout(() => el.classList.remove('error'), 600);
+    setTimeout(()=>el.classList.remove('error'), 600);
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // RENDER SIDEBAR
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderSidebar() {
   const list = document.getElementById('profiles-list');
   if (!profiles.length) {
-    list.innerHTML = `<div class="empty-profiles"><div style="font-size:1.5rem">👤</div><p>Créez un profil pour commencer une évaluation.</p></div>`;
+    list.innerHTML = `<div class="empty-profiles"><div style="font-size:1.4rem">👤</div><p>Créez un profil pour commencer.</p></div>`;
     return;
   }
   list.innerHTML = profiles.map(p => {
-    const score = computeScore(p), max = computeMax(p), lv = getLevel(score);
+    const s=score(p), m=maxPts(p), lv=getLevel(s);
     return `<div class="profile-card${p.id===currentProfileId?' selected':''}" onclick="selectProfile('${p.id}');closeSidebar()">
-      <div class="profile-name">${escHtml(p.name)}</div>
+      <div class="profile-name">${esc(p.name)}</div>
       <div class="profile-meta">
         <span class="profile-badge ${lv.badgeCls}">${lv.label}</span>
-        <span>${score}/${max} pts</span>
-        ${p.boutique ? `<span>· ${escHtml(p.boutique)}</span>` : ''}
+        <span>${s}/${m}</span>
+        ${p.boutique?`<span>· ${esc(p.boutique)}</span>`:''}
       </div>
-      <button class="profile-delete" onclick="event.stopPropagation();openDeleteProfileModal('${p.id}')" title="Supprimer">🗑</button>
+      <button class="profile-delete" onclick="event.stopPropagation();openDeleteModal('${p.id}')">🗑</button>
     </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // RENDER EVAL
-// ═══════════════════════════════════════════════════════════════
-function renderEval(profileId) {
-  const p = getProfile(profileId); if (!p) return;
-  const score = computeScore(p), maxP = computeMax(p), lv = getLevel(score);
-  const pct = maxP > 0 ? (score / maxP * 100) : 0;
-  const pct70 = (70 / MAX_SCORE * 100).toFixed(1);
-  const pct85 = (85 / MAX_SCORE * 100).toFixed(1);
+// ═══════════════════════════════════════════════════════
+function renderEval(pid) {
+  const p = getProfile(pid); if(!p) return;
+  const s=score(p), m=maxPts(p), lv=getLevel(s);
+  const pct = m>0 ? (s/m*100) : 0;
+  const pct70 = (70/MAX_SCORE*100).toFixed(1);
+  const pct85 = (85/MAX_SCORE*100).toFixed(1);
   const evalDate = p.eval_date ? new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR') : '—';
+  const noteUpdated = p._note_updated ? new Date(p._note_updated).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : null;
 
   let html = `
   <div class="eval-header">
     <div class="eval-name-block">
-      <h2>${escHtml(p.name)}</h2>
-      <p>${p.poste?escHtml(p.poste):''}${p.boutique?' · '+escHtml(p.boutique):''}${p.date_entree?' · Entrée le '+new Date(p.date_entree+'T00:00:00').toLocaleDateString('fr-FR'):''}</p>
+      <h2>${esc(p.name)}</h2>
+      <p>${p.poste?esc(p.poste):''}${p.boutique?' · '+esc(p.boutique):''}${p.date_entree?' · Entrée le '+new Date(p.date_entree+'T00:00:00').toLocaleDateString('fr-FR'):''}</p>
     </div>
     <div class="score-display">
-      <div class="score-val">${score}</div>
+      <div class="score-val">${s}</div>
       <div class="score-max">/ ${MAX_SCORE} pts</div>
       <div class="score-level ${lv.cls}">${lv.label}</div>
     </div>
   </div>
 
   <div class="eval-info-block">
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">✍️ <strong>${escHtml(p.eval_for||p.name)}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">👤 Par : <strong>${escHtml(p.eval_by||'—')}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">🏪 <strong>${escHtml(p.boutique||'—')}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">📅 <strong>${evalDate}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">🗓 <strong>${p.rappel_months?`Dans ${p.rappel_months} mois`:'Pas de rappel'}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${pid}')">✍️ <strong>${esc(p.eval_for||p.name)}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${pid}')">👤 Par : <strong>${esc(p.eval_by||'—')}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${pid}')">🏪 <strong>${esc(p.boutique||'—')}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${pid}')">📅 <strong>${evalDate}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${pid}')">🗓 <strong>${p.rappel_months?`Dans ${p.rappel_months} mois`:'Pas de rappel'}</strong></div>
   </div>
 
   <div class="progress-section">
     <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
     <div class="progress-markers">
-      <span class="progress-marker-label" style="left:${pct70}%;color:${score>=70?'var(--gold)':'var(--muted)'}">70<br><span style="font-size:.58rem">Formation</span></span>
-      <span class="progress-marker-label" style="left:${pct85}%;color:${score>=85?'var(--gold)':'var(--muted)'}">85<br><span style="font-size:.58rem">Vendeur</span></span>
+      <span class="progress-marker-label" style="left:${pct70}%;color:${s>=70?'var(--gold)':'var(--muted)'}">70<br><span style="font-size:.58rem">Form.</span></span>
+      <span class="progress-marker-label" style="left:${pct85}%;color:${s>=85?'var(--gold)':'var(--muted)'}">85<br><span style="font-size:.58rem">Vend.</span></span>
     </div>
-    <div class="progress-ends"><span>0</span><span style="font-weight:500;color:${score>0?'var(--gold)':'var(--muted)'}">${score} / ${MAX_SCORE} pts</span><span>${MAX_SCORE}</span></div>
+    <div class="progress-ends"><span>0</span><span style="font-weight:500;color:${s>0?'var(--gold)':'var(--muted)'}">${s} / ${MAX_SCORE} pts</span><span>${MAX_SCORE}</span></div>
   </div>
 
   <div class="eval-actions">
     <button class="btn-action" onclick="toggleAllThemes(true)">▼ Tout ouvrir</button>
     <button class="btn-action" onclick="toggleAllThemes(false)">▲ Tout fermer</button>
-    <button class="btn-action" onclick="resetEval('${profileId}')">↺ Réinitialiser</button>
+    <button class="btn-action" onclick="resetEval('${pid}')">↺ Réinit.</button>
   </div>
   <div class="themes-container">`;
 
   THEMES.forEach(theme => {
     const isOpen = openThemes[theme.id] !== false;
-    let themeScore=0, themeMax=0, themeChecked=0, themeActive=0;
+    let ts=0, tm=0, tc=0, ta=0;
     theme.criteria.forEach(c => {
-      const ch = p._checks[c.id];
-      if (!ch || !ch.disabled) { themeMax += c.pts; themeActive++; }
-      if (ch && ch.checked && !ch.disabled) { themeScore += c.pts; themeChecked++; }
+      const ch=p._checks[c.id];
+      if(!ch||!ch.disabled){tm+=c.pts;ta++;}
+      if(ch&&ch.checked&&!ch.disabled){ts+=c.pts;tc++;}
     });
-    const allDone = themeActive > 0 && themeChecked === themeActive;
-    const themePct = themeActive > 0 ? (themeChecked / themeActive * 100) : 0;
-
+    const allDone = ta>0 && tc===ta;
+    const tpct = ta>0?(tc/ta*100):0;
     html += `<div class="theme-block">
       <div class="theme-header${isOpen?' open':''}" onclick="toggleTheme('${theme.id}')">
         <div class="theme-info">
-          <span style="font-size:1rem;flex-shrink:0">${theme.emoji}</span>
+          <span style="font-size:.98rem;flex-shrink:0">${theme.emoji}</span>
           <span class="theme-name">${theme.name}</span>
         </div>
         <div class="theme-score-chip">
-          <span class="theme-pts">${themeScore}<span>/${themeMax}</span></span>
+          <span class="theme-pts">${ts}<span>/${tm}</span></span>
           <button class="theme-validate-btn${allDone?' all-done':''}"
-            onclick="event.stopPropagation();validateAllTheme('${profileId}','${theme.id}')"
+            onclick="event.stopPropagation();validateAllTheme('${pid}','${theme.id}')"
           >${allDone?'✓ Fait':'✓ Tout'}</button>
           <span class="theme-chevron${isOpen?' open':''}">▾</span>
         </div>
       </div>
-      <div class="theme-progress-bar"><div class="theme-progress-fill" style="width:${themePct.toFixed(0)}%"></div></div>
+      <div class="theme-progress-bar"><div class="theme-progress-fill" style="width:${tpct.toFixed(0)}%"></div></div>
       <div class="criteria-list" style="${isOpen?'':'display:none'}">`;
-
     theme.criteria.forEach(c => {
-      const ch = p._checks[c.id] || {};
-      const isDis = !!ch.disabled, isCh = !!ch.checked && !isDis;
+      const ch=p._checks[c.id]||{}, isDis=!!ch.disabled, isCh=!!ch.checked&&!isDis;
       html += `<div class="criterion-row${isDis?' deleted':''}">
-        <button class="criterion-toggle ${isCh?'on':'off'}" onclick="${isDis?'':` toggleCriterion('${profileId}','${c.id}')`}">${isCh?'✓':''}</button>
-        <span class="criterion-text${isCh?' validated':''}">${escHtml(c.text)}</span>
-        <span class="criterion-formation">Form. ${c.formation}</span>
+        <button class="criterion-toggle ${isCh?'on':'off'}" onclick="${isDis?'':` toggleCheck('${pid}','${c.id}')`}">${isCh?'✓':''}</button>
+        <span class="criterion-text${isCh?' validated':''}">${esc(c.text)}</span>
         <span class="criterion-pts">+${c.pts}pt${c.pts>1?'s':''}</span>
         <button class="criterion-delete"
-          onclick="${isDis?`reactivateCriterion('${profileId}','${c.id}')`:` openDeleteCriterionModal('${profileId}','${c.id}')`}"
+          onclick="${isDis?`reactivate('${pid}','${c.id}')`:` openDisableModal('${pid}','${c.id}')`}"
           title="${isDis?'Réactiver':'Désactiver'}">${isDis?'↩':'✕'}</button>
       </div>`;
     });
     html += `</div></div>`;
   });
-  html += `</div>`;
+
+  html += `</div>
+  <!-- NOTES -->
+  <div class="notes-section">
+    <div class="notes-header">
+      <div class="notes-title">📝 Notes sur ${esc(p.eval_for||p.name)}</div>
+      <button class="notes-save-btn" id="notes-save-btn" onclick="saveNote('${pid}')">Enregistrer</button>
+    </div>
+    <textarea class="notes-textarea" id="notes-textarea"
+      placeholder="Observations générales, axes d'amélioration, points forts à noter…"
+      oninput="onNoteInput('${pid}')"
+    >${esc(p._note)}</textarea>
+    <div class="notes-meta">${noteUpdated ? `Dernière sauvegarde : ${noteUpdated}` : 'Aucune note enregistrée'}</div>
+  </div>`;
+
   document.getElementById('eval-panel').innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// NOTES
+// ═══════════════════════════════════════════════════════
+function onNoteInput(pid) {
+  const btn = document.getElementById('notes-save-btn');
+  if (btn) btn.classList.add('dirty');
+  clearTimeout(noteSaveTimer);
+  noteSaveTimer = setTimeout(() => saveNote(pid), 4000); // autosave 4s
+}
+
+async function saveNote(pid) {
+  try { assertPid(pid); } catch(e) { return; }
+  const ta = document.getElementById('notes-textarea');
+  const btn = document.getElementById('notes-save-btn');
+  if (!ta) return;
+  const content = ta.value;
+  const p = getProfile(pid);
+  if (!p) return;
+  if (btn) { btn.classList.add('saving'); btn.textContent = 'Sauvegarde…'; btn.disabled = true; }
+  try {
+    sync('saving', 'Sync note…');
+    await api.upsertNote(pid, content);
+    p._note = content;
+    p._note_updated = new Date().toISOString();
+    sync('ok', '✓ Sync');
+    if (btn) { btn.classList.remove('dirty','saving'); btn.textContent = 'Enregistrer'; btn.disabled = false; }
+    // Mettre à jour la date dans la meta sans re-render complet
+    const meta = document.querySelector('.notes-meta');
+    if (meta) meta.textContent = 'Dernière sauvegarde : ' + new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    sync('err', '⚠ Erreur'); showToast('Erreur sauvegarde note');
+    if (btn) { btn.classList.remove('saving'); btn.textContent = 'Enregistrer'; btn.disabled = false; }
+    console.error(e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
 // RENDER STATS
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderStats() {
   const panel = document.getElementById('stats-panel');
   if (!statsUnlocked) {
     panel.innerHTML = `<div class="stats-locked">
-      <div class="stats-locked-icon">🔒</div>
-      <h2>Tableau de bord protégé</h2>
+      <div class="stats-locked-icon">🔒</div><h2>Tableau de bord protégé</h2>
       <p>Accès réservé aux managers.</p>
       <div class="stats-lock-form">
         <input class="stats-lock-input" id="stats-pw-inline" type="password" placeholder="Mot de passe"
           onkeydown="if(event.key==='Enter')unlockStatsInline()" />
         <button class="stats-lock-btn" onclick="unlockStatsInline()">Accéder →</button>
-      </div>
-    </div>`; return;
+      </div></div>`; return;
   }
   if (!profiles.length) {
-    panel.innerHTML = `<div class="stats-view"><div class="welcome" style="min-height:60vh">
-      <div class="welcome-icon">📊</div><h2>Aucun profil</h2><p>Créez des profils pour voir le tableau de bord.</p>
+    panel.innerHTML = `<div class="stats-view"><div class="welcome" style="min-height:70vh">
+      <div class="welcome-icon">📊</div><h2>Aucun profil</h2>
     </div></div>`; return;
   }
-
-  // Grouper par boutique, triées alphabétiquement
   const byBoutique = {};
   profiles.forEach(p => {
-    const key = p.boutique || '— Boutique non définie';
-    if (!byBoutique[key]) byBoutique[key] = [];
-    byBoutique[key].push(p);
+    const k = p.boutique || '— Non définie';
+    if (!byBoutique[k]) byBoutique[k] = [];
+    byBoutique[k].push(p);
   });
-  const sortedBoutiques = Object.keys(byBoutique).sort((a,b) => a.localeCompare(b,'fr'));
-
+  const sorted = Object.keys(byBoutique).sort((a,b)=>a.localeCompare(b,'fr'));
   let html = `<div class="stats-view"><div class="stats-title">Tableau de bord</div>`;
-
-  sortedBoutiques.forEach(boutique => {
-    const bps = byBoutique[boutique];
-    const avgScore = bps.reduce((acc,p) => acc + computeScore(p), 0) / bps.length;
-    const avgMax   = bps.reduce((acc,p) => acc + computeMax(p), 0)   / bps.length;
+  sorted.forEach(b => {
+    const bps = byBoutique[b];
+    const avg = bps.reduce((a,p)=>a+score(p),0)/bps.length;
+    const avgm = bps.reduce((a,p)=>a+maxPts(p),0)/bps.length;
     html += `<div class="boutique-group">
       <div class="boutique-group-header">
-        <div class="boutique-group-title">🏪 ${escHtml(boutique)}</div>
-        <div class="boutique-group-meta">${bps.length} personne${bps.length>1?'s':''} · moy. ${avgScore.toFixed(1)}/${avgMax.toFixed(0)} pts</div>
+        <div class="boutique-group-title">🏪 ${esc(b)}</div>
+        <div class="boutique-group-meta">${bps.length} pers. · moy. ${avg.toFixed(1)}/${avgm.toFixed(0)}</div>
       </div>
       <div class="stats-grid">`;
     bps.forEach(p => {
-      const score = computeScore(p), max = computeMax(p), lv = getLevel(score), pct = max>0?(score/max*100):0;
+      const s=score(p),m=maxPts(p),lv=getLevel(s),pct=m>0?(s/m*100):0;
+      const hasNote = !!p._note;
       html += `<div class="stat-card" onclick="selectProfile('${p.id}');setView('eval')">
-        <div class="stat-card-name">${escHtml(p.name)}</div>
+        <div class="stat-card-name">${esc(p.name)}${hasNote?' 📝':''}</div>
         <div class="stat-card-sub">
-          <span class="profile-badge ${lv.badgeCls}" style="font-size:.65rem;padding:2px 7px;border-radius:20px">${lv.label}</span>
-          ${p.eval_by ? `<span>· ${escHtml(p.eval_by)}</span>` : ''}
-          ${p.eval_date ? `<span>· ${new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR')}</span>` : ''}
+          <span class="profile-badge ${lv.badgeCls}" style="font-size:.63rem;padding:2px 6px;border-radius:20px">${lv.label}</span>
+          ${p.eval_by?`<span>· ${esc(p.eval_by)}</span>`:''}
+          ${p.eval_date?`<span>· ${new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR')}</span>`:''}
         </div>
         <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
-        <div class="stat-numbers"><span>Score : <strong class="stat-score">${score}</strong>/${max} pts</span><span>${pct.toFixed(0)}%</span></div>
+        <div class="stat-numbers"><span>Score : <strong class="stat-score">${s}</strong>/${m}</span><span>${pct.toFixed(0)}%</span></div>
       </div>`;
     });
     html += `</div></div>`;
   });
-
-  html += `<div class="stats-title" style="font-size:1.1rem;margin-top:8px;margin-bottom:14px">Moyennes par thème</div><div class="stats-grid">`;
-  THEMES.forEach(theme => {
-    const totalMax = theme.criteria.reduce((a,c) => a+c.pts, 0);
-    const avg = profiles.reduce((acc,p) => acc + theme.criteria.reduce((a,c) => {
-      const ch = p._checks[c.id]; if(ch&&ch.disabled)return a; if(ch&&ch.checked)return a+c.pts; return a;
-    }, 0), 0) / profiles.length;
-    const pct = (avg/totalMax*100);
+  html += `<div class="stats-title" style="font-size:1rem;margin-top:6px;margin-bottom:13px">Moyennes par thème</div><div class="stats-grid">`;
+  THEMES.forEach(t => {
+    const tm = t.criteria.reduce((a,c)=>a+c.pts,0);
+    const avg = profiles.reduce((acc,p) => acc + t.criteria.reduce((a,c) => {
+      const ch=p._checks[c.id]; if(ch&&ch.disabled)return a; if(ch&&ch.checked)return a+c.pts; return a;
+    },0), 0) / profiles.length;
+    const pct = (avg/tm*100);
     html += `<div class="stat-card" style="cursor:default">
-      <div class="stat-card-name">${theme.emoji} ${theme.name}</div>
+      <div class="stat-card-name">${t.emoji} ${t.name}</div>
       <div class="stat-card-sub">Moyenne équipe</div>
       <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
-      <div class="stat-numbers"><span>Moy : <strong class="stat-score">${avg.toFixed(1)}</strong>/${totalMax}</span><span>${pct.toFixed(0)}%</span></div>
+      <div class="stat-numbers"><span>Moy : <strong class="stat-score">${avg.toFixed(1)}</strong>/${tm}</span><span>${pct.toFixed(0)}%</span></div>
     </div>`;
   });
   html += `</div></div>`;
   panel.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// BOUTIQUE CAROUSEL — propre, sans inline onclick
-// ═══════════════════════════════════════════════════════════════
-function renderBoutiqueCarousel(containerId, selected) {
-  const old = document.getElementById(containerId);
+// ═══════════════════════════════════════════════════════
+// BOUTIQUE CAROUSEL
+// ═══════════════════════════════════════════════════════
+function renderCarousel(cid, selected) {
+  const old = document.getElementById(cid);
   old.innerHTML = BOUTIQUES.map(b =>
-    `<div class="boutique-chip${b===selected?' selected':''}" data-boutique="${escHtml(b)}">${escHtml(b)}</div>`
+    `<div class="boutique-chip${b===selected?' selected':''}" data-b="${esc(b)}">${esc(b)}</div>`
   ).join('');
-  // Cloner pour purger les anciens listeners
   const fresh = old.cloneNode(true);
   old.parentNode.replaceChild(fresh, old);
-  document.getElementById(containerId).addEventListener('click', function(e) {
-    const chip = e.target.closest('.boutique-chip'); if (!chip) return;
-    const val = chip.getAttribute('data-boutique');
-    this.querySelectorAll('.boutique-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById(cid).addEventListener('click', function(e) {
+    const chip = e.target.closest('.boutique-chip'); if(!chip) return;
+    const v = chip.getAttribute('data-b');
+    this.querySelectorAll('.boutique-chip').forEach(c=>c.classList.remove('selected'));
     chip.classList.add('selected');
-    if (containerId === 'new-boutique-carousel') newBoutiqueSelected = val;
-    else eiBoutiqueSelected = val;
+    if (cid==='new-boutique-carousel') newBoutiqueSelected=v; else eiBoutiqueSelected=v;
   });
 }
-
 function selectRappel(el) {
-  eiRappelSelected = parseInt(el.dataset.val) || 0;
-  document.querySelectorAll('.rappel-chip').forEach(c => c.classList.remove('selected'));
+  eiRappelSelected = parseInt(el.dataset.val)||0;
+  document.querySelectorAll('.rappel-chip').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
 }
 
-// ═══════════════════════════════════════════════════════════════
-// ACTIONS PROFIL
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// PROFIL ACTIONS
+// ═══════════════════════════════════════════════════════
 function openNewProfileModal() {
-  document.getElementById('input-name').value = '';
-  document.getElementById('input-poste').value = '';
-  document.getElementById('input-date').value = '';
-  newBoutiqueSelected = '';
-  renderBoutiqueCarousel('new-boutique-carousel', '');
+  document.getElementById('input-name').value='';
+  document.getElementById('input-poste').value='';
+  document.getElementById('input-date').value='';
+  newBoutiqueSelected='';
+  renderCarousel('new-boutique-carousel','');
   document.getElementById('modal-new').classList.add('open');
-  setTimeout(() => document.getElementById('input-name').focus(), 300);
+  setTimeout(()=>document.getElementById('input-name').focus(),300);
 }
-
 async function createProfile() {
-  const name = document.getElementById('input-name').value.trim();
-  if (!name) { showToast('Saisissez un nom'); return; }
-  const btn = document.getElementById('btn-create-profile');
-  btn.disabled = true; btn.textContent = 'Enregistrement…';
-  const body = {
-    name, poste: document.getElementById('input-poste').value.trim(),
-    boutique: newBoutiqueSelected,
-    date_entree: document.getElementById('input-date').value || null,
-    eval_for: name, eval_by: '', eval_date: new Date().toISOString().slice(0,10), rappel_months: 0
-  };
+  const name=document.getElementById('input-name').value.trim();
+  if(!name){showToast('Saisissez un nom');return;}
+  const btn=document.getElementById('btn-create');
+  btn.disabled=true; btn.textContent='Création…';
   try {
-    setSyncStatus('saving', 'Enregistrement…');
-    const [created] = await sbPost('eval_profiles', body);
-    profiles.push({ ...created, _checks: {} });
-    setSyncStatus('ok', '✓ Sync');
-    closeModal('modal-new');
-    selectProfile(created.id); renderSidebar();
+    sync('saving','Enregistrement…');
+    const [created]=await api.post('eval_profiles',{
+      name, poste:document.getElementById('input-poste').value.trim(),
+      boutique:newBoutiqueSelected,
+      date_entree:document.getElementById('input-date').value||null,
+      eval_for:name, eval_by:'', eval_date:new Date().toISOString().slice(0,10), rappel_months:0
+    });
+    profiles.push({...created,_checks:{},_note:'',_note_updated:null});
+    sync('ok','✓ Sync');
+    closeModal('modal-new'); selectProfile(created.id); renderSidebar();
     showToast(`Profil « ${name} » créé`);
-  } catch(e) {
-    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur lors de la création');
-    console.error(e);
-  } finally {
-    btn.disabled = false; btn.textContent = 'Créer le profil';
-  }
+  } catch(e) { sync('err','⚠ Erreur'); showToast('Erreur création'); console.error(e); }
+  finally { btn.disabled=false; btn.textContent='Créer le profil'; }
 }
-
-function openDeleteProfileModal(id) {
-  pendingDeleteProfileId = id;
-  document.getElementById('delete-name').textContent = getProfile(id)?.name || '';
+function openDeleteModal(id) {
+  pendingDeleteProfileId=id;
+  document.getElementById('delete-name').textContent=getProfile(id)?.name||'';
   document.getElementById('modal-delete').classList.add('open');
 }
 async function confirmDeleteProfile() {
-  if (!pendingDeleteProfileId) return;
-  const btn = document.getElementById('btn-confirm-delete');
-  btn.disabled = true; btn.textContent = 'Suppression…';
+  if(!pendingDeleteProfileId)return;
+  const btn=document.getElementById('btn-del-confirm');
+  btn.disabled=true; btn.textContent='Suppression…';
   try {
-    setSyncStatus('saving', 'Suppression…');
-    await sbDelete('eval_profiles', `?id=eq.${pendingDeleteProfileId}`);
-    profiles = profiles.filter(p => p.id !== pendingDeleteProfileId);
-    if (currentProfileId === pendingDeleteProfileId) currentProfileId = null;
-    setSyncStatus('ok', '✓ Sync');
+    sync('saving','Suppression…');
+    await api.del('eval_profiles',`?id=eq.${pendingDeleteProfileId}`);
+    profiles=profiles.filter(p=>p.id!==pendingDeleteProfileId);
+    if(currentProfileId===pendingDeleteProfileId)currentProfileId=null;
+    sync('ok','✓ Sync');
     closeModal('modal-delete'); renderSidebar(); renderCurrentView(); showToast('Profil supprimé');
-  } catch(e) { setSyncStatus('err', '⚠ Erreur'); showToast('Erreur lors de la suppression'); console.error(e); }
-  finally { btn.disabled = false; btn.textContent = 'Supprimer définitivement'; }
+  } catch(e){ sync('err','⚠ Erreur'); showToast('Erreur suppression'); console.error(e); }
+  finally{ btn.disabled=false; btn.textContent='Supprimer'; }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// ACTIONS CRITÈRES — avec validation stricte des IDs
-// ═══════════════════════════════════════════════════════════════
-async function toggleCriterion(profileId, criterionId) {
-  try {
-    assertValidProfileId(profileId);
-    assertValidCriterionId(criterionId);
-  } catch(e) { showToast('Erreur de validation'); console.error(e); return; }
-
-  const p = getProfile(profileId);
-  const ch = p._checks[criterionId] || { checked:false, disabled:false };
-  const newVal = !ch.checked;
-  // Optimistic update
-  p._checks[criterionId] = { checked:newVal, disabled:false };
+// ═══════════════════════════════════════════════════════
+// CRITÈRES
+// ═══════════════════════════════════════════════════════
+async function toggleCheck(pid, cid) {
+  try { assertPid(pid); assertCid(cid); } catch(e) { showToast('Erreur validation'); return; }
+  const p=getProfile(pid), ch=p._checks[cid]||{checked:false,disabled:false};
+  const nv=!ch.checked;
+  p._checks[cid]={checked:nv,disabled:false};
   renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving', 'Sync…');
-    await sbUpsert(profileId, criterionId, newVal, false);
-    setSyncStatus('ok', '✓ Sync');
+    sync('saving','Sync…');
+    await api.upsertCheck(pid,cid,nv,false);
+    sync('ok','✓ Sync');
   } catch(e) {
-    p._checks[criterionId] = ch; // rollback
-    renderSidebar(); renderCurrentView();
-    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
+    p._checks[cid]=ch; renderSidebar(); renderCurrentView();
+    sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
   }
 }
-
-function openDeleteCriterionModal(profileId, criterionId) {
-  try { assertValidProfileId(profileId); assertValidCriterionId(criterionId); }
-  catch(e) { showToast('Erreur de validation'); return; }
-  pendingDeleteCriterion = { profileId, criterionId };
+function openDisableModal(pid,cid) {
+  try{assertPid(pid);assertCid(cid);}catch(e){showToast('Erreur');return;}
+  pendingDeleteCriterion={pid,cid};
   document.getElementById('modal-delete-criterion').classList.add('open');
 }
 async function confirmDeleteCriterion() {
-  if (!pendingDeleteCriterion) return;
-  const { profileId, criterionId } = pendingDeleteCriterion;
-  try { assertValidProfileId(profileId); assertValidCriterionId(criterionId); }
-  catch(e) { showToast('Erreur de validation'); return; }
-  const p = getProfile(profileId);
-  const old = { ...p._checks[criterionId] };
-  p._checks[criterionId] = { checked:false, disabled:true };
+  if(!pendingDeleteCriterion)return;
+  const{pid,cid}=pendingDeleteCriterion;
+  try{assertPid(pid);assertCid(cid);}catch(e){showToast('Erreur');return;}
+  const p=getProfile(pid), old={...p._checks[cid]};
+  p._checks[cid]={checked:false,disabled:true};
   closeModal('modal-delete-criterion'); renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving', 'Sync…');
-    await sbUpsert(profileId, criterionId, false, true);
-    setSyncStatus('ok', '✓ Sync'); showToast('Critère désactivé');
+    sync('saving','Sync…');
+    await api.upsertCheck(pid,cid,false,true);
+    sync('ok','✓ Sync'); showToast('Critère désactivé');
   } catch(e) {
-    p._checks[criterionId] = old; renderSidebar(); renderCurrentView();
-    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
+    p._checks[cid]=old; renderSidebar(); renderCurrentView();
+    sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
   }
 }
-async function reactivateCriterion(profileId, criterionId) {
-  try { assertValidProfileId(profileId); assertValidCriterionId(criterionId); }
-  catch(e) { showToast('Erreur de validation'); return; }
-  const p = getProfile(profileId);
-  const old = { ...p._checks[criterionId] };
-  p._checks[criterionId] = { checked:false, disabled:false };
+async function reactivate(pid,cid) {
+  try{assertPid(pid);assertCid(cid);}catch(e){showToast('Erreur');return;}
+  const p=getProfile(pid), old={...p._checks[cid]};
+  p._checks[cid]={checked:false,disabled:false};
   renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving', 'Sync…');
-    await sbUpsert(profileId, criterionId, false, false);
-    setSyncStatus('ok', '✓ Sync'); showToast('Critère réactivé');
+    sync('saving','Sync…');
+    await api.upsertCheck(pid,cid,false,false);
+    sync('ok','✓ Sync'); showToast('Critère réactivé');
   } catch(e) {
-    p._checks[criterionId] = old; renderSidebar(); renderCurrentView();
-    setSyncStatus('err', '⚠ Erreur'); console.error(e);
+    p._checks[cid]=old; renderSidebar(); renderCurrentView();
+    sync('err','⚠ Erreur'); console.error(e);
+  }
+}
+async function validateAllTheme(pid,tid) {
+  try{assertPid(pid);}catch(e){return;}
+  const theme=THEMES.find(t=>t.id===tid); if(!theme)return;
+  const p=getProfile(pid);
+  const todo=theme.criteria.filter(c=>{const ch=p._checks[c.id];return(!ch||!ch.disabled)&&(!ch||!ch.checked);});
+  if(!todo.length)return;
+  const snap={};
+  todo.forEach(c=>{snap[c.id]={...p._checks[c.id]};p._checks[c.id]={checked:true,disabled:false};});
+  renderSidebar(); renderCurrentView();
+  try {
+    sync('saving','Sync…');
+    await Promise.all(todo.map(c=>api.upsertCheck(pid,c.id,true,false)));
+    sync('ok','✓ Sync'); showToast(`${todo.length} critère${todo.length>1?'s':''} validé${todo.length>1?'s':''}`);
+  } catch(e) {
+    todo.forEach(c=>{p._checks[c.id]=snap[c.id];}); renderSidebar(); renderCurrentView();
+    sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
+  }
+}
+async function resetEval(pid) {
+  try{assertPid(pid);}catch(e){return;}
+  if(!confirm('Réinitialiser toutes les cases cochées ?'))return;
+  const p=getProfile(pid), snap=JSON.parse(JSON.stringify(p._checks));
+  const toReset=Object.entries(snap).filter(([,v])=>v.checked).map(([k])=>k);
+  toReset.forEach(cid=>{if(p._checks[cid])p._checks[cid].checked=false;});
+  renderSidebar(); renderCurrentView();
+  try {
+    sync('saving','Sync…');
+    await Promise.all(toReset.map(cid=>api.upsertCheck(pid,cid,false,snap[cid].disabled)));
+    sync('ok','✓ Sync'); showToast('Évaluation réinitialisée');
+  } catch(e) {
+    p._checks=snap; renderSidebar(); renderCurrentView();
+    sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
   }
 }
 
-async function validateAllTheme(profileId, themeId) {
-  try { assertValidProfileId(profileId); }
-  catch(e) { showToast('Erreur de validation'); return; }
-  const theme = THEMES.find(t => t.id === themeId); if (!theme) return;
-  const p = getProfile(profileId);
-  const toCheck = theme.criteria.filter(c => {
-    const ch = p._checks[c.id];
-    return (!ch || !ch.disabled) && (!ch || !ch.checked);
-  });
-  if (!toCheck.length) return;
-  const snapshots = {};
-  toCheck.forEach(c => { snapshots[c.id] = { ...p._checks[c.id] }; p._checks[c.id] = { checked:true, disabled:false }; });
-  renderSidebar(); renderCurrentView();
-  try {
-    setSyncStatus('saving', 'Sync…');
-    await Promise.all(toCheck.map(c => sbUpsert(profileId, c.id, true, false)));
-    setSyncStatus('ok', '✓ Sync');
-    showToast(`${toCheck.length} critère${toCheck.length>1?'s':''} validé${toCheck.length>1?'s':''}`);
-  } catch(e) {
-    toCheck.forEach(c => { p._checks[c.id] = snapshots[c.id]; });
-    renderSidebar(); renderCurrentView();
-    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
-  }
-}
-
-async function resetEval(profileId) {
-  try { assertValidProfileId(profileId); }
-  catch(e) { showToast('Erreur de validation'); return; }
-  if (!confirm('Réinitialiser toutes les cases cochées pour ce profil ?')) return;
-  const p = getProfile(profileId);
-  const snapshots = JSON.parse(JSON.stringify(p._checks));
-  const checkedIds = Object.entries(snapshots).filter(([,v]) => v.checked).map(([k]) => k);
-  checkedIds.forEach(cid => { if (p._checks[cid]) p._checks[cid].checked = false; });
-  renderSidebar(); renderCurrentView();
-  try {
-    setSyncStatus('saving', 'Sync…');
-    await Promise.all(checkedIds.map(cid => sbUpsert(profileId, cid, false, snapshots[cid].disabled)));
-    setSyncStatus('ok', '✓ Sync'); showToast('Évaluation réinitialisée');
-  } catch(e) {
-    p._checks = snapshots; renderSidebar(); renderCurrentView();
-    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // EVAL INFO MODAL
-// ═══════════════════════════════════════════════════════════════
-function openEvalInfoModal(profileId) {
-  try { assertValidProfileId(profileId); } catch(e) { return; }
-  const p = getProfile(profileId);
-  document.getElementById('ei-for').value  = p.eval_for  || p.name;
-  document.getElementById('ei-by').value   = p.eval_by   || '';
-  document.getElementById('ei-date').value = p.eval_date || new Date().toISOString().slice(0,10);
-  eiBoutiqueSelected = p.boutique || '';
-  eiRappelSelected   = p.rappel_months || 0;
-  renderBoutiqueCarousel('ei-boutique-carousel', eiBoutiqueSelected);
-  document.querySelectorAll('.rappel-chip').forEach(c =>
-    c.classList.toggle('selected', parseInt(c.dataset.val) === eiRappelSelected)
-  );
-  document.getElementById('modal-evalinfo').dataset.profileId = profileId;
+// ═══════════════════════════════════════════════════════
+function openEvalInfoModal(pid) {
+  try{assertPid(pid);}catch(e){return;}
+  const p=getProfile(pid);
+  document.getElementById('ei-for').value=p.eval_for||p.name;
+  document.getElementById('ei-by').value=p.eval_by||'';
+  document.getElementById('ei-date').value=p.eval_date||new Date().toISOString().slice(0,10);
+  eiBoutiqueSelected=p.boutique||'';
+  eiRappelSelected=p.rappel_months||0;
+  renderCarousel('ei-boutique-carousel',eiBoutiqueSelected);
+  document.querySelectorAll('.rappel-chip').forEach(c=>c.classList.toggle('selected',parseInt(c.dataset.val)===eiRappelSelected));
+  document.getElementById('modal-evalinfo').dataset.pid=pid;
   document.getElementById('modal-evalinfo').classList.add('open');
 }
 async function saveEvalInfo() {
-  const pid = document.getElementById('modal-evalinfo').dataset.profileId;
-  try { assertValidProfileId(pid); } catch(e) { showToast('Erreur de validation'); return; }
-  const p = getProfile(pid);
-  const body = {
-    eval_for:      document.getElementById('ei-for').value.trim() || p.name,
-    eval_by:       document.getElementById('ei-by').value.trim(),
-    boutique:      eiBoutiqueSelected,
-    eval_date:     document.getElementById('ei-date').value || null,
-    rappel_months: eiRappelSelected
+  const pid=document.getElementById('modal-evalinfo').dataset.pid;
+  try{assertPid(pid);}catch(e){showToast('Erreur');return;}
+  const p=getProfile(pid);
+  const body={
+    eval_for:document.getElementById('ei-for').value.trim()||p.name,
+    eval_by:document.getElementById('ei-by').value.trim(),
+    boutique:eiBoutiqueSelected,
+    eval_date:document.getElementById('ei-date').value||null,
+    rappel_months:eiRappelSelected
   };
-  const snapshot = { eval_for:p.eval_for, eval_by:p.eval_by, boutique:p.boutique, eval_date:p.eval_date, rappel_months:p.rappel_months };
-  Object.assign(p, body);
+  const snap={eval_for:p.eval_for,eval_by:p.eval_by,boutique:p.boutique,eval_date:p.eval_date,rappel_months:p.rappel_months};
+  Object.assign(p,body);
   closeModal('modal-evalinfo'); renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving', 'Sync…');
-    await sbPatch('eval_profiles', `?id=eq.${pid}`, body);
-    setSyncStatus('ok', '✓ Sync'); showToast('Informations enregistrées');
+    sync('saving','Sync…');
+    await api.patch('eval_profiles',`?id=eq.${pid}`,body);
+    sync('ok','✓ Sync'); showToast('Informations enregistrées');
   } catch(e) {
-    Object.assign(p, snapshot); renderSidebar(); renderCurrentView();
-    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
+    Object.assign(p,snap); renderSidebar(); renderCurrentView();
+    sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// THEMES & VIEW
-// ═══════════════════════════════════════════════════════════════
-function toggleTheme(id) { openThemes[id] = openThemes[id] === false; renderCurrentView(); }
-function toggleAllThemes(open) { THEMES.forEach(t => { openThemes[t.id] = open; }); renderCurrentView(); }
-function selectProfile(id) { currentProfileId = id; setView('eval'); renderSidebar(); renderCurrentView(); }
+// ═══════════════════════════════════════════════════════
+// VIEWS
+// ═══════════════════════════════════════════════════════
+function toggleTheme(id){openThemes[id]=openThemes[id]===false;renderCurrentView();}
+function toggleAllThemes(open){THEMES.forEach(t=>{openThemes[t.id]=open;});renderCurrentView();}
+function selectProfile(id){currentProfileId=id;setView('eval');renderSidebar();renderCurrentView();}
 function setView(view) {
-  if (view === 'stats' && !statsUnlocked) {
-    document.getElementById('stats-pw-input').value = '';
-    document.getElementById('modal-stats-pw').classList.add('open'); return;
-  }
-  currentView = view;
-  document.getElementById('nav-eval').classList.toggle('active', view==='eval');
-  document.getElementById('nav-stats').classList.toggle('active', view==='stats');
+  if(view==='stats'&&!statsUnlocked){document.getElementById('stats-pw-input').value='';document.getElementById('modal-stats-pw').classList.add('open');return;}
+  currentView=view;
+  document.getElementById('nav-eval').classList.toggle('active',view==='eval');
+  document.getElementById('nav-stats').classList.toggle('active',view==='stats');
   renderCurrentView();
 }
 function renderCurrentView() {
-  document.getElementById('welcome-panel').style.display = 'none';
-  document.getElementById('eval-panel').style.display = 'none';
-  document.getElementById('stats-panel').style.display = 'none';
-  if (currentView === 'stats') { document.getElementById('stats-panel').style.display='block'; renderStats(); }
-  else if (currentProfileId && getProfile(currentProfileId)) { document.getElementById('eval-panel').style.display='block'; renderEval(currentProfileId); }
-  else { document.getElementById('welcome-panel').style.display='flex'; }
+  ['welcome-panel','eval-panel','stats-panel'].forEach(id=>document.getElementById(id).style.display='none');
+  if(currentView==='stats'){document.getElementById('stats-panel').style.display='block';renderStats();}
+  else if(currentProfileId&&getProfile(currentProfileId)){document.getElementById('eval-panel').style.display='block';renderEval(currentProfileId);}
+  else{document.getElementById('welcome-panel').style.display='flex';}
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // EVENTS
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.modal-backdrop').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+// ═══════════════════════════════════════════════════════
+document.querySelectorAll('.modal-backdrop').forEach(el=>{
+  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});
 });
-document.getElementById('main-pw').addEventListener('keydown', e => { if(e.key==='Enter') unlockApp(); });
-document.getElementById('stats-pw-input').addEventListener('keydown', e => { if(e.key==='Enter') unlockStats(); });
+document.getElementById('main-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlockApp();});
+document.getElementById('stats-pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')unlockStats();});
 </script>
 </body>
 </html>
