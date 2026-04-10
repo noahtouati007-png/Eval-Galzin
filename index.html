@@ -2,221 +2,288 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Galzin — Évaluation Poste</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream:#FAF7F2;--warm-white:#FFFDF9;--gold:#C8963E;--gold-light:#E8B96B;
-    --gold-pale:#F5E8CC;--dark:#1C1810;--mid:#4A3F2F;--muted:#8C7B5E;
-    --border:#E2D5BC;--red-soft:#C94F4F;--green-soft:#4A8C5C;
-    --shadow:0 2px 16px rgba(28,24,16,0.08);--shadow-lg:0 8px 40px rgba(28,24,16,0.16);
+:root{
+  --cream:#FAF7F2;--warm-white:#FFFDF9;--gold:#C8963E;--gold-light:#E8B96B;
+  --gold-pale:#F5E8CC;--dark:#1C1810;--mid:#4A3F2F;--muted:#8C7B5E;
+  --border:#E2D5BC;--red-soft:#C94F4F;--green-soft:#4A8C5C;
+  --shadow:0 2px 16px rgba(28,24,16,.08);--shadow-lg:0 8px 40px rgba(28,24,16,.16);
+  --sidebar-w:280px;--topbar-h:52px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark)}
+
+/* ═══ LOCK ═══ */
+#lock-screen{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px}
+#lock-screen.hidden{display:none}
+.lock-logo{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--gold-light)}
+.lock-sub{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:-12px;text-align:center}
+.lock-box{background:rgba(255,255,255,.04);border:1px solid rgba(200,150,62,.2);border-radius:16px;padding:28px 24px;width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px}
+.lock-label{font-size:.73rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.lock-input{width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid rgba(200,150,62,.25);background:rgba(255,255,255,.06);color:white;font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;transition:border-color .2s}
+.lock-input:focus{border-color:var(--gold)}
+.lock-input.error{border-color:var(--red-soft)!important;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.lock-btn{padding:13px;border-radius:10px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:background .15s}
+.lock-btn:hover,.lock-btn:active{background:var(--gold-light)}
+.lock-hint{font-size:.7rem;color:#4a3c26;text-align:center}
+
+/* ═══ TOPBAR ═══ */
+.topbar{background:var(--dark);color:var(--gold-light);padding:0 16px;height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:100;gap:8px}
+.topbar-brand{font-family:'DM Serif Display',serif;font-size:1.2rem;letter-spacing:.02em;white-space:nowrap}
+.topbar-brand span{color:var(--cream);opacity:.4;margin:0 6px}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sync-badge{font-size:.68rem;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.sync-ok{background:rgba(74,140,92,.2);color:#86efac}
+.sync-saving{background:rgba(200,150,62,.2);color:var(--gold-light)}
+.sync-err{background:rgba(201,79,79,.2);color:#fca5a5}
+.spinner{display:inline-block;width:10px;height:10px;border:2px solid rgba(232,185,107,.3);border-top-color:var(--gold-light);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══ HAMBURGER ═══ */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:transparent;border:none}
+.hamburger span{display:block;width:20px;height:2px;background:var(--gold-light);border-radius:2px;transition:all .2s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ═══ NAV (desktop) ═══ */
+.topbar-nav{display:flex;gap:4px}
+.nav-btn{background:transparent;border:none;color:var(--muted);padding:7px 14px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;transition:all .15s;white-space:nowrap}
+.nav-btn:hover{background:rgba(200,150,62,.12);color:var(--gold-light)}
+.nav-btn.active{background:rgba(200,150,62,.2);color:var(--gold-light)}
+
+/* ═══ LAYOUT ═══ */
+.app{display:flex;height:100vh;padding-top:var(--topbar-h)}
+
+/* ═══ OVERLAY (mobile) ═══ */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;top:var(--topbar-h)}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--warm-white);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;
+  position:relative;z-index:50;
+}
+.sidebar-header{padding:16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-title{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
+.btn-new{width:100%;background:var(--gold);color:white;border:none;padding:10px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:8px;justify-content:center}
+.btn-new:hover,.btn-new:active{background:var(--gold-light)}
+.profiles-list{flex:1;overflow-y:auto;padding:10px}
+.profile-card{padding:12px 14px;border-radius:10px;cursor:pointer;margin-bottom:5px;border:1.5px solid transparent;transition:all .15s;position:relative;padding-right:36px}
+.profile-card:hover,.profile-card:active{background:var(--gold-pale);border-color:var(--border)}
+.profile-card.selected{background:var(--gold-pale);border-color:var(--gold)}
+.profile-name{font-weight:500;font-size:.92rem;color:var(--dark);margin-bottom:3px}
+.profile-meta{font-size:.72rem;color:var(--muted);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.profile-badge{font-size:.65rem;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.badge-formation{background:#FEE2E2;color:#991B1B}
+.badge-vendeur{background:#FEF3C7;color:#92400E}
+.badge-adjoint{background:#D1FAE5;color:#065F46}
+.profile-delete{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:opacity .15s;font-size:.9rem}
+.profile-card:hover .profile-delete{opacity:1}
+.profile-delete:hover{color:var(--red-soft)}
+
+/* ═══ MAIN ═══ */
+.main{flex:1;overflow-y:auto;background:var(--cream);min-width:0}
+
+/* ═══ WELCOME ═══ */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;text-align:center;padding:40px 24px}
+.welcome-icon{font-size:2.5rem;margin-bottom:16px;opacity:.4}
+.welcome h2{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--mid);margin-bottom:8px}
+.welcome p{color:var(--muted);max-width:320px;line-height:1.6;font-size:.9rem}
+
+/* ═══ EVAL HEADER ═══ */
+.eval-header{padding:20px 20px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.eval-name-block{min-width:0;flex:1}
+.eval-name-block h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--dark);margin-bottom:3px;word-break:break-word}
+.eval-name-block p{font-size:.82rem;color:var(--muted)}
+.score-display{background:var(--dark);color:var(--gold-light);padding:14px 22px;border-radius:12px;text-align:center;min-width:140px;flex-shrink:0}
+.score-val{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1}
+.score-max{font-size:.7rem;color:var(--muted);margin-top:2px}
+.score-level{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;padding:3px 10px;border-radius:20px}
+.level-formation{background:#7F1D1D;color:#FEE2E2}
+.level-vendeur{background:#78350F;color:#FEF3C7}
+.level-adjoint{background:#064E3B;color:#D1FAE5}
+
+/* ═══ EVAL INFO PILLS ═══ */
+.eval-info-block{padding:12px 20px 0;display:flex;gap:6px;flex-wrap:wrap}
+.eval-info-pill{display:flex;align-items:center;gap:4px;background:var(--warm-white);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.77rem;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
+.eval-info-pill:hover,.eval-info-pill:active{border-color:var(--gold);color:var(--dark);background:var(--gold-pale)}
+.eval-info-pill strong{color:var(--dark);font-weight:500}
+
+/* ═══ PROGRESS ═══ */
+.progress-section{padding:14px 20px 0}
+.progress-bar-wrap{background:var(--border);border-radius:100px;height:8px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:100px;transition:width .4s ease;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.progress-markers{position:relative;height:32px;margin-top:4px}
+.progress-marker-label{position:absolute;transform:translateX(-50%);font-size:.66rem;white-space:nowrap;text-align:center;line-height:1.3;transition:color .3s}
+.progress-ends{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:2px}
+
+/* ═══ ACTIONS ═══ */
+.eval-actions{padding:10px 20px 0;display:flex;gap:7px;flex-wrap:wrap}
+.btn-action{padding:7px 13px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--warm-white);color:var(--mid);transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-action:hover,.btn-action:active{background:var(--gold-pale);border-color:var(--gold);color:var(--dark)}
+
+/* ═══ THEMES ═══ */
+.themes-container{padding:14px 20px 60px}
+.theme-block{margin-bottom:12px;border:1px solid var(--border);border-radius:12px;background:var(--warm-white);overflow:hidden;box-shadow:var(--shadow)}
+.theme-header{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s;border-bottom:1px solid transparent;gap:8px;min-height:52px}
+.theme-header:hover,.theme-header:active{background:var(--gold-pale)}
+.theme-header.open{border-bottom-color:var(--border)}
+.theme-info{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.theme-name{font-weight:600;font-size:.88rem;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.theme-score-chip{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.theme-pts{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--gold);white-space:nowrap}
+.theme-pts span{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--muted)}
+.theme-validate-btn{font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1.5px solid var(--green-soft);background:transparent;color:var(--green-soft);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.theme-validate-btn:hover,.theme-validate-btn:active{background:var(--green-soft);color:white}
+.theme-validate-btn.all-done{background:var(--green-soft);color:white;opacity:.75;cursor:default}
+.theme-chevron{color:var(--muted);font-size:.75rem;transition:transform .2s;flex-shrink:0}
+.theme-chevron.open{transform:rotate(180deg)}
+.theme-progress-bar{height:3px;background:var(--border)}
+.theme-progress-fill{height:100%;background:var(--green-soft);transition:width .3s ease}
+
+/* ═══ CRITERIA ═══ */
+.criteria-list{padding:0}
+.criterion-row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:10px;transition:background .1s;min-height:48px}
+.criterion-row:last-child{border-bottom:none}
+.criterion-row:hover{background:rgba(200,150,62,.04)}
+.criterion-toggle{flex-shrink:0;width:32px;height:32px;border-radius:8px;border:2px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:.9rem;touch-action:manipulation}
+.criterion-toggle.on{background:var(--green-soft);border-color:var(--green-soft);color:white}
+.criterion-toggle.off{color:transparent}
+.criterion-text{flex:1;font-size:.83rem;color:var(--mid);line-height:1.4;min-width:0}
+.criterion-text.validated{color:var(--dark)}
+.criterion-pts{flex-shrink:0;font-size:.72rem;font-weight:600;color:var(--gold);background:var(--gold-pale);padding:2px 7px;border-radius:20px;white-space:nowrap}
+.criterion-formation{flex-shrink:0;font-size:.63rem;color:var(--muted);padding:2px 6px;border-radius:20px;background:var(--cream);border:1px solid var(--border);white-space:nowrap;display:none}
+.criterion-delete{flex-shrink:0;background:transparent;border:none;color:var(--border);cursor:pointer;font-size:.85rem;padding:6px;border-radius:4px;transition:color .15s;touch-action:manipulation}
+.criterion-row:hover .criterion-delete{color:var(--muted)}
+.criterion-delete:hover{color:var(--red-soft)!important}
+.criterion-row.deleted{opacity:.35;text-decoration:line-through}
+.criterion-row.deleted .criterion-toggle{pointer-events:none}
+
+/* ═══ MODALS ═══ */
+.modal-backdrop{position:fixed;inset:0;background:rgba(28,24,16,.65);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+@media(min-width:640px){.modal-backdrop{align-items:center}}
+.modal-backdrop.open{opacity:1;pointer-events:all}
+.modal{background:var(--warm-white);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-width:480px;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform .25s;max-height:92vh;overflow-y:auto}
+@media(min-width:640px){.modal{border-radius:18px;padding:32px}}
+.modal-backdrop.open .modal{transform:translateY(0)}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 20px;display:block}
+@media(min-width:640px){.modal-handle{display:none}}
+.modal h3{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:18px;color:var(--dark)}
+.form-group{margin-bottom:13px}
+.form-label{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--dark);background:var(--cream);transition:border-color .15s;outline:none;-webkit-appearance:none}
+.form-input:focus{border-color:var(--gold)}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.btn-cancel{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--muted);transition:all .15s}
+.btn-cancel:hover{background:var(--cream)}
+.btn-confirm{flex:2;padding:12px;border:none;border-radius:8px;background:var(--gold);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:background .15s}
+.btn-confirm:hover,.btn-confirm:active{background:var(--gold-light)}
+.modal-danger h3{color:var(--red-soft)}
+.btn-danger{flex:2;padding:12px;border:none;border-radius:8px;background:var(--red-soft);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:background .15s}
+.btn-danger:hover,.btn-danger:active{background:#A03A3A}
+
+/* ═══ BOUTIQUE CAROUSEL ═══ */
+.boutique-carousel{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;max-height:160px;overflow-y:auto;padding:2px}
+.boutique-chip{padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.79rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none;touch-action:manipulation}
+.boutique-chip:hover,.boutique-chip:active{background:var(--gold-pale);border-color:var(--gold-light)}
+.boutique-chip.selected{background:var(--gold);border-color:var(--gold);color:white;font-weight:500}
+
+/* ═══ RAPPEL CHIPS ═══ */
+.rappel-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.rappel-chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.79rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none}
+.rappel-chip:hover,.rappel-chip:active{background:var(--gold-pale);border-color:var(--gold-light)}
+.rappel-chip.selected{background:var(--dark);border-color:var(--dark);color:var(--gold-light);font-weight:500}
+
+/* ═══ STATS ═══ */
+.stats-view{padding:20px 20px 60px}
+.stats-title{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:20px;color:var(--dark)}
+.boutique-group{margin-bottom:28px}
+.boutique-group-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.boutique-group-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--dark)}
+.boutique-group-meta{font-size:.72rem;color:var(--muted);background:var(--warm-white);border:1px solid var(--border);padding:2px 10px;border-radius:20px;white-space:nowrap}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.stat-card{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .15s}
+.stat-card:hover,.stat-card:active{border-color:var(--gold);background:var(--gold-pale)}
+.stat-card-name{font-size:.95rem;font-weight:500;color:var(--dark);margin-bottom:4px}
+.stat-card-sub{font-size:.75rem;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.stat-bar-wrap{background:var(--border);border-radius:100px;height:5px;overflow:hidden;margin-bottom:7px}
+.stat-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.stat-numbers{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+.stat-score{font-weight:600;color:var(--gold)}
+.stats-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:14px;text-align:center;padding:40px 24px}
+.stats-locked-icon{font-size:2.5rem}
+.stats-locked h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--mid)}
+.stats-locked p{color:var(--muted);max-width:280px;line-height:1.6;font-size:.9rem}
+.stats-lock-form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;max-width:320px}
+.stats-lock-input{flex:1;min-width:150px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;background:var(--warm-white);transition:border-color .15s;color:var(--dark);-webkit-appearance:none}
+.stats-lock-input:focus{border-color:var(--gold)}
+.stats-lock-input.error{border-color:var(--red-soft);animation:shake .3s}
+.stats-lock-btn{padding:10px 18px;border-radius:8px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;white-space:nowrap}
+
+/* ═══ MISC ═══ */
+.empty-profiles{padding:28px 12px;text-align:center;color:var(--muted);font-size:.85rem}
+.empty-profiles p{margin-top:7px;line-height:1.5}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--dark);color:var(--gold-light);padding:9px 20px;border-radius:30px;font-size:.83rem;font-weight:500;z-index:999;transition:transform .3s;pointer-events:none;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{transform:translateX(-50%) translateY(0)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ═══ RESPONSIVE — Mobile ═══ */
+@media(max-width:768px){
+  :root{--sidebar-w:260px}
+  .hamburger{display:flex}
+  .topbar-nav{display:none}
+  .sidebar{
+    position:fixed;top:var(--topbar-h);left:0;bottom:0;
+    transform:translateX(-100%);transition:transform .25s;z-index:50;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}
+  .criterion-formation{display:none!important}
+  .profile-delete{opacity:1}
+  .criterion-pts{font-size:.7rem;padding:2px 6px}
+}
 
-  /* ── LOCK ── */
-  #lock-screen{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
-  #lock-screen.hidden{display:none}
-  .lock-logo{font-family:'DM Serif Display',serif;font-size:2.2rem;color:var(--gold-light)}
-  .lock-sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:-14px}
-  .lock-box{background:rgba(255,255,255,0.04);border:1px solid rgba(200,150,62,0.2);border-radius:16px;padding:32px;width:320px;display:flex;flex-direction:column;gap:14px}
-  .lock-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
-  .lock-input{width:100%;padding:11px 16px;border-radius:10px;border:1.5px solid rgba(200,150,62,0.25);background:rgba(255,255,255,0.06);color:white;font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;transition:border-color .2s}
-  .lock-input:focus{border-color:var(--gold)}
-  .lock-input.error{border-color:var(--red-soft)!important;animation:shake .3s}
-  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .lock-btn{padding:12px;border-radius:10px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:background .15s}
-  .lock-btn:hover{background:var(--gold-light)}
-  .lock-hint{font-size:.72rem;color:#4a3c26}
+/* ═══ TABLET (768-1024) ═══ */
+@media(min-width:768px) and (max-width:1024px){
+  :root{--sidebar-w:240px}
+  .criterion-formation{display:none}
+  .eval-header{padding:20px 24px 0}
+  .eval-info-block{padding:12px 24px 0}
+  .progress-section{padding:14px 24px 0}
+  .eval-actions{padding:10px 24px 0}
+  .themes-container{padding:14px 24px 60px}
+  .stats-view{padding:20px 24px 60px}
+}
 
-  /* ── TOPBAR ── */
-  .topbar{background:var(--dark);color:var(--gold-light);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-  .topbar-brand{font-family:'DM Serif Display',serif;font-size:1.4rem;letter-spacing:.02em}
-  .topbar-brand span{color:var(--cream);opacity:.4;margin:0 8px}
-  .topbar-right{display:flex;align-items:center;gap:12px}
-  .topbar-nav{display:flex;gap:4px}
-  .nav-btn{background:transparent;border:none;color:var(--muted);padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;transition:all .15s}
-  .nav-btn:hover{background:rgba(200,150,62,.12);color:var(--gold-light)}
-  .nav-btn.active{background:rgba(200,150,62,.2);color:var(--gold-light)}
-  .sync-status{font-size:.72rem;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
-  .sync-ok{background:rgba(74,140,92,.2);color:#86efac}
-  .sync-saving{background:rgba(200,150,62,.2);color:var(--gold-light)}
-  .sync-err{background:rgba(201,79,79,.2);color:#fca5a5}
-
-  /* ── LAYOUT ── */
-  .app{display:flex;height:calc(100vh - 56px)}
-
-  /* ── SIDEBAR ── */
-  .sidebar{width:300px;background:var(--warm-white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-  .sidebar-header{padding:20px 20px 16px;border-bottom:1px solid var(--border)}
-  .sidebar-title{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:12px}
-  .btn-new{width:100%;background:var(--gold);color:white;border:none;padding:10px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:8px;justify-content:center}
-  .btn-new:hover{background:var(--gold-light)}
-  .profiles-list{flex:1;overflow-y:auto;padding:12px}
-  .profile-card{padding:14px 16px;border-radius:10px;cursor:pointer;margin-bottom:6px;border:1.5px solid transparent;transition:all .15s;position:relative}
-  .profile-card:hover{background:var(--gold-pale);border-color:var(--border)}
-  .profile-card.selected{background:var(--gold-pale);border-color:var(--gold)}
-  .profile-name{font-weight:500;font-size:.95rem;color:var(--dark);margin-bottom:4px}
-  .profile-meta{font-size:.75rem;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .profile-badge{font-size:.67rem;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
-  .badge-formation{background:#FEE2E2;color:#991B1B}
-  .badge-vendeur{background:#FEF3C7;color:#92400E}
-  .badge-adjoint{background:#D1FAE5;color:#065F46}
-  .profile-delete{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px;border-radius:4px;opacity:0;transition:opacity .15s}
-  .profile-card:hover .profile-delete{opacity:1}
-  .profile-delete:hover{color:var(--red-soft)}
-
-  /* ── MAIN ── */
-  .main{flex:1;overflow-y:auto;background:var(--cream)}
-  .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:40px}
-  .welcome-icon{font-size:3rem;margin-bottom:20px;opacity:.4}
-  .welcome h2{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--mid);margin-bottom:10px}
-  .welcome p{color:var(--muted);max-width:360px;line-height:1.6}
-
-  /* ── EVAL HEADER ── */
-  .eval-header{padding:28px 36px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
-  .eval-name-block h2{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--dark);margin-bottom:4px}
-  .eval-name-block p{font-size:.85rem;color:var(--muted)}
-  .score-display{background:var(--dark);color:var(--gold-light);padding:16px 28px;border-radius:14px;text-align:center;min-width:170px;flex-shrink:0}
-  .score-val{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1}
-  .score-max{font-size:.72rem;color:var(--muted);margin-top:2px}
-  .score-level{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:8px;padding:4px 10px;border-radius:20px}
-  .level-formation{background:#7F1D1D;color:#FEE2E2}
-  .level-vendeur{background:#78350F;color:#FEF3C7}
-  .level-adjoint{background:#064E3B;color:#D1FAE5}
-
-  /* ── EVAL INFO PILLS ── */
-  .eval-info-block{padding:14px 36px 0;display:flex;gap:8px;flex-wrap:wrap}
-  .eval-info-pill{display:flex;align-items:center;gap:5px;background:var(--warm-white);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:.79rem;color:var(--muted);cursor:pointer;transition:all .15s}
-  .eval-info-pill:hover{border-color:var(--gold);color:var(--dark);background:var(--gold-pale)}
-  .eval-info-pill strong{color:var(--dark);font-weight:500}
-
-  /* ── PROGRESS ── */
-  .progress-section{padding:16px 36px 0}
-  .progress-bar-wrap{background:var(--border);border-radius:100px;height:8px;overflow:hidden}
-  .progress-bar-fill{height:100%;border-radius:100px;transition:width .4s ease;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-  .progress-markers{position:relative;height:34px;margin-top:4px}
-  .progress-marker-label{position:absolute;transform:translateX(-50%);font-size:.68rem;white-space:nowrap;text-align:center;line-height:1.3;transition:color .3s}
-  .progress-ends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:2px}
-
-  /* ── ACTIONS ── */
-  .eval-actions{padding:10px 36px 0;display:flex;gap:8px;flex-wrap:wrap}
-  .btn-action{padding:7px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--warm-white);color:var(--mid);transition:all .15s;display:flex;align-items:center;gap:6px}
-  .btn-action:hover{background:var(--gold-pale);border-color:var(--gold);color:var(--dark)}
-
-  /* ── THEMES ── */
-  .themes-container{padding:16px 36px 48px}
-  .theme-block{margin-bottom:14px;border:1px solid var(--border);border-radius:14px;background:var(--warm-white);overflow:hidden;box-shadow:var(--shadow)}
-  .theme-header{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s;border-bottom:1px solid transparent}
-  .theme-header:hover{background:var(--gold-pale)}
-  .theme-header.open{border-bottom-color:var(--border)}
-  .theme-info{display:flex;align-items:center;gap:12px}
-  .theme-name{font-weight:600;font-size:.92rem;color:var(--dark)}
-  .theme-score-chip{display:flex;align-items:center;gap:10px}
-  .theme-pts{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--gold)}
-  .theme-pts span{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--muted)}
-  .theme-chevron{color:var(--muted);font-size:.75rem;transition:transform .2s}
-  .theme-chevron.open{transform:rotate(180deg)}
-  .theme-validate-btn{
-    font-size:.72rem;font-weight:600;padding:4px 11px;border-radius:20px;border:1.5px solid var(--green-soft);
-    background:transparent;color:var(--green-soft);cursor:pointer;font-family:'DM Sans',sans-serif;
-    transition:all .15s;white-space:nowrap;flex-shrink:0;
-  }
-  .theme-validate-btn:hover{background:var(--green-soft);color:white}
-  .theme-validate-btn.all-done{background:var(--green-soft);color:white;border-color:var(--green-soft);opacity:.7;cursor:default}
-  .theme-progress-bar{height:3px;background:var(--border);border-radius:0}
-  .theme-progress-fill{height:100%;background:var(--green-soft);transition:width .3s ease;border-radius:0}
-  .criteria-list{padding:0}
-  .criterion-row{display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);gap:12px;transition:background .1s}
-  .criterion-row:last-child{border-bottom:none}
-  .criterion-row:hover{background:rgba(200,150,62,.04)}
-  .criterion-toggle{flex-shrink:0;width:30px;height:30px;border-radius:7px;border:2px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:.9rem}
-  .criterion-toggle.on{background:var(--green-soft);border-color:var(--green-soft);color:white}
-  .criterion-toggle.off{color:transparent}
-  .criterion-text{flex:1;font-size:.85rem;color:var(--mid);line-height:1.4}
-  .criterion-text.validated{color:var(--dark)}
-  .criterion-pts{flex-shrink:0;font-size:.75rem;font-weight:600;color:var(--gold);background:var(--gold-pale);padding:2px 8px;border-radius:20px;white-space:nowrap}
-  .criterion-formation{flex-shrink:0;font-size:.65rem;color:var(--muted);padding:2px 7px;border-radius:20px;background:var(--cream);border:1px solid var(--border);white-space:nowrap}
-  .criterion-delete{flex-shrink:0;background:transparent;border:none;color:var(--border);cursor:pointer;font-size:.85rem;padding:4px;border-radius:4px;transition:color .15s}
-  .criterion-row:hover .criterion-delete{color:var(--muted)}
-  .criterion-delete:hover{color:var(--red-soft)!important}
-  .criterion-row.deleted{opacity:.35;text-decoration:line-through}
-  .criterion-row.deleted .criterion-toggle{pointer-events:none}
-
-  /* ── MODALS ── */
-  .modal-backdrop{position:fixed;inset:0;background:rgba(28,24,16,.6);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
-  .modal-backdrop.open{opacity:1;pointer-events:all}
-  .modal{background:var(--warm-white);border-radius:18px;padding:32px;width:480px;max-width:96vw;box-shadow:var(--shadow-lg);transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
-  .modal-backdrop.open .modal{transform:translateY(0)}
-  .modal h3{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:20px;color:var(--dark)}
-  .form-group{margin-bottom:14px}
-  .form-label{font-size:.77rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px}
-  .form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--dark);background:var(--cream);transition:border-color .15s;outline:none}
-  .form-input:focus{border-color:var(--gold)}
-  .modal-actions{display:flex;gap:10px;margin-top:22px}
-  .btn-cancel{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--muted);transition:all .15s}
-  .btn-cancel:hover{background:var(--cream)}
-  .btn-confirm{flex:2;padding:10px;border:none;border-radius:8px;background:var(--gold);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:background .15s}
-  .btn-confirm:hover{background:var(--gold-light)}
-  .modal-danger h3{color:var(--red-soft)}
-  .btn-danger{flex:2;padding:10px;border:none;border-radius:8px;background:var(--red-soft);color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;transition:background .15s}
-  .btn-danger:hover{background:#A03A3A}
-
-  /* ── BOUTIQUE CAROUSEL ── */
-  .boutique-carousel{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
-  .boutique-chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none}
-  .boutique-chip:hover{background:var(--gold-pale);border-color:var(--gold-light)}
-  .boutique-chip.selected{background:var(--gold);border-color:var(--gold);color:white;font-weight:500}
-
-  /* ── RAPPEL CHIPS ── */
-  .rappel-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
-  .rappel-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);font-size:.8rem;cursor:pointer;transition:all .15s;color:var(--mid);font-family:'DM Sans',sans-serif;user-select:none}
-  .rappel-chip:hover{background:var(--gold-pale);border-color:var(--gold-light)}
-  .rappel-chip.selected{background:var(--dark);border-color:var(--dark);color:var(--gold-light);font-weight:500}
-
-  /* ── STATS ── */
-  .stats-view{padding:32px 36px}
-  .stats-title{font-family:'DM Serif Display',serif;font-size:1.6rem;margin-bottom:24px;color:var(--dark)}
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px}
-  .stat-card{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
-  .stat-card-name{font-size:1rem;font-weight:500;color:var(--dark);margin-bottom:4px}
-  .stat-card-sub{font-size:.78rem;color:var(--muted);margin-bottom:12px}
-  .stat-bar-wrap{background:var(--border);border-radius:100px;height:6px;overflow:hidden;margin-bottom:8px}
-  .stat-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-  .stat-numbers{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}
-  .stat-score{font-weight:600;color:var(--gold)}
-  .stats-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;text-align:center;padding:40px}
-  .stats-locked-icon{font-size:2.5rem}
-  .stats-locked h2{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--mid)}
-  .stats-locked p{color:var(--muted);max-width:300px;line-height:1.6}
-  .stats-lock-form{display:flex;gap:10px;margin-top:8px}
-  .stats-lock-input{padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.92rem;outline:none;background:var(--warm-white);transition:border-color .15s;color:var(--dark)}
-  .stats-lock-input:focus{border-color:var(--gold)}
-  .stats-lock-input.error{border-color:var(--red-soft);animation:shake .3s}
-  .stats-lock-btn{padding:9px 18px;border-radius:8px;border:none;background:var(--gold);color:white;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer}
-  .stats-lock-btn:hover{background:var(--gold-light)}
-
-  /* ── MISC ── */
-  .empty-profiles{padding:32px 12px;text-align:center;color:var(--muted);font-size:.85rem}
-  .empty-profiles p{margin-top:8px;line-height:1.5}
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--dark);color:var(--gold-light);padding:10px 22px;border-radius:30px;font-size:.85rem;font-weight:500;z-index:999;transition:transform .3s;pointer-events:none}
-  .toast.show{transform:translateX(-50%) translateY(0)}
-  ::-webkit-scrollbar{width:6px}
-  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-  .spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(232,185,107,.3);border-top-color:var(--gold-light);border-radius:50%;animation:spin .6s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
+/* ═══ DESKTOP ═══ */
+@media(min-width:1025px){
+  .topbar{padding:0 28px}
+  .criterion-formation{display:inline}
+  .eval-header{padding:24px 32px 0}
+  .eval-info-block{padding:12px 32px 0}
+  .progress-section{padding:16px 32px 0}
+  .eval-actions{padding:10px 32px 0}
+  .themes-container{padding:16px 32px 60px}
+  .stats-view{padding:28px 32px 60px}
+  .stats-title{font-size:1.5rem}
+}
 </style>
 </head>
 <body>
 
-<!-- LOCK SCREEN -->
+<!-- LOCK -->
 <div id="lock-screen">
   <div class="lock-logo">Galzin</div>
   <div class="lock-sub">Évaluation Poste · Accès Manager</div>
   <div class="lock-box">
     <div class="lock-label">Mot de passe</div>
-    <input class="lock-input" id="main-pw" type="password" placeholder="••••••••" />
+    <input class="lock-input" id="main-pw" type="password" placeholder="••••••••" autocomplete="current-password" />
     <button class="lock-btn" onclick="unlockApp()">Accéder →</button>
   </div>
   <div class="lock-hint">Accès réservé aux managers Galzin</div>
@@ -225,30 +292,44 @@
 <!-- APP -->
 <div id="app-wrapper" style="display:none">
   <div class="topbar">
-    <div class="topbar-brand">Galzin <span>|</span> Évaluation Poste</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-brand">Galzin <span>|</span> Éval. Poste</div>
+    </div>
     <div class="topbar-right">
-      <div class="sync-status sync-ok" id="sync-badge">✓ Synchronisé</div>
+      <div class="sync-badge sync-ok" id="sync-badge">✓ Sync</div>
       <nav class="topbar-nav">
         <button class="nav-btn active" onclick="setView('eval')" id="nav-eval">Évaluations</button>
         <button class="nav-btn" onclick="setView('stats')" id="nav-stats">🔒 Tableau de bord</button>
       </nav>
     </div>
   </div>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
   <div class="app">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-title">Collaborateurs</div>
         <button class="btn-new" onclick="openNewProfileModal()">＋ Nouveau profil</button>
+        <!-- Nav mobile dans la sidebar -->
+        <div style="display:flex;gap:6px;margin-top:10px" id="sidebar-nav-mobile">
+          <button class="btn-action" style="flex:1;justify-content:center;font-size:.78rem" onclick="setView('eval');closeSidebar()" id="snav-eval">📋 Évals</button>
+          <button class="btn-action" style="flex:1;justify-content:center;font-size:.78rem" onclick="setView('stats');closeSidebar()" id="snav-stats">🔒 Dashboard</button>
+        </div>
       </div>
       <div class="profiles-list" id="profiles-list">
         <div class="empty-profiles"><div style="font-size:1.4rem">⏳</div><p>Chargement…</p></div>
       </div>
     </aside>
+
     <main class="main">
       <div class="welcome" id="welcome-panel">
         <div class="welcome-icon">🥖</div>
-        <h2>Bienvenue dans l'outil d'évaluation</h2>
-        <p>Créez un profil collaborateur dans la barre latérale pour démarrer une évaluation des 105 points.</p>
+        <h2>Outil d'évaluation</h2>
+        <p>Créez un profil collaborateur pour démarrer une évaluation des 105 points.</p>
       </div>
       <div id="eval-panel" style="display:none"></div>
       <div id="stats-panel" style="display:none"></div>
@@ -259,14 +340,15 @@
 <!-- MODAL : Nouveau profil -->
 <div class="modal-backdrop" id="modal-new">
   <div class="modal">
+    <div class="modal-handle"></div>
     <h3>Nouveau profil</h3>
     <div class="form-group">
       <label class="form-label">Prénom & Nom</label>
-      <input class="form-input" id="input-name" placeholder="ex. Marie Dupont" />
+      <input class="form-input" id="input-name" placeholder="ex. Marie Dupont" autocomplete="off" />
     </div>
     <div class="form-group">
       <label class="form-label">Poste</label>
-      <input class="form-input" id="input-poste" placeholder="ex. Vendeuse" />
+      <input class="form-input" id="input-poste" placeholder="ex. Vendeuse" autocomplete="off" />
     </div>
     <div class="form-group">
       <label class="form-label">Boutique</label>
@@ -278,7 +360,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-new')">Annuler</button>
-      <button class="btn-confirm" onclick="createProfile()">Créer le profil</button>
+      <button class="btn-confirm" id="btn-create-profile" onclick="createProfile()">Créer le profil</button>
     </div>
   </div>
 </div>
@@ -286,11 +368,12 @@
 <!-- MODAL : Supprimer profil -->
 <div class="modal-backdrop" id="modal-delete">
   <div class="modal modal-danger">
+    <div class="modal-handle"></div>
     <h3>Supprimer ce profil ?</h3>
-    <p style="color:var(--muted);font-size:.9rem;line-height:1.6">Toutes les données de <strong id="delete-name"></strong> seront supprimées définitivement de la base de données.</p>
+    <p style="color:var(--muted);font-size:.88rem;line-height:1.6">Toutes les données de <strong id="delete-name"></strong> seront supprimées définitivement de la base de données. Cette action est irréversible.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-delete')">Annuler</button>
-      <button class="btn-danger" onclick="confirmDeleteProfile()">Supprimer définitivement</button>
+      <button class="btn-danger" id="btn-confirm-delete" onclick="confirmDeleteProfile()">Supprimer définitivement</button>
     </div>
   </div>
 </div>
@@ -298,8 +381,9 @@
 <!-- MODAL : Désactiver critère -->
 <div class="modal-backdrop" id="modal-delete-criterion">
   <div class="modal modal-danger">
+    <div class="modal-handle"></div>
     <h3>Désactiver ce critère ?</h3>
-    <p style="color:var(--muted);font-size:.9rem;line-height:1.6">Ce critère sera masqué uniquement pour ce profil et ne comptera plus dans le score. Réactivable à tout moment.</p>
+    <p style="color:var(--muted);font-size:.88rem;line-height:1.6">Ce critère sera masqué uniquement pour ce profil et ne comptera plus dans son score. Réactivable à tout moment.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-delete-criterion')">Annuler</button>
       <button class="btn-danger" onclick="confirmDeleteCriterion()">Désactiver</button>
@@ -310,17 +394,18 @@
 <!-- MODAL : Infos évaluation -->
 <div class="modal-backdrop" id="modal-evalinfo">
   <div class="modal">
-    <h3>Informations de l'évaluation</h3>
+    <div class="modal-handle"></div>
+    <h3>Infos de l'évaluation</h3>
     <div class="form-group">
       <label class="form-label">Collaborateur(trice) évalué(e)</label>
-      <input class="form-input" id="ei-for" placeholder="Nom du collaborateur" />
+      <input class="form-input" id="ei-for" autocomplete="off" />
     </div>
     <div class="form-group">
-      <label class="form-label">Évaluation réalisée par (manager)</label>
-      <input class="form-input" id="ei-by" placeholder="ex. Sophie Martin" />
+      <label class="form-label">Évaluée par (manager)</label>
+      <input class="form-input" id="ei-by" placeholder="ex. Sophie Martin" autocomplete="off" />
     </div>
     <div class="form-group">
-      <label class="form-label">Boutique évaluée</label>
+      <label class="form-label">Boutique</label>
       <div class="boutique-carousel" id="ei-boutique-carousel"></div>
     </div>
     <div class="form-group">
@@ -345,14 +430,15 @@
   </div>
 </div>
 
-<!-- MODAL : Tableau de bord mot de passe -->
+<!-- MODAL : MDP tableau de bord -->
 <div class="modal-backdrop" id="modal-stats-pw">
   <div class="modal">
+    <div class="modal-handle"></div>
     <h3>🔒 Tableau de bord</h3>
-    <p style="color:var(--muted);font-size:.88rem;margin-bottom:16px">Accès protégé managers uniquement.</p>
+    <p style="color:var(--muted);font-size:.87rem;margin-bottom:14px">Accès protégé — managers uniquement.</p>
     <div class="form-group">
       <label class="form-label">Mot de passe</label>
-      <input class="form-input" id="stats-pw-input" type="password" placeholder="••••••••" />
+      <input class="form-input" id="stats-pw-input" type="password" placeholder="••••••••" autocomplete="current-password" />
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-stats-pw')">Annuler</button>
@@ -364,60 +450,49 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
-// CONFIG SUPABASE
-// ════════════════════════════════════════════════════════════════
-const SB_URL  = 'https://fgvvfycyxulnwzttczyq.supabase.co';
-const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZndnZmeWN5eHVsbnd6dHRjenlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDI2MzAsImV4cCI6MjA4OTkxODYzMH0.0-NzalmqzSpOSUofuBg-q-cBfql7xKvU101is7s4uWQ';
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════════════════════════════
+const SB_URL = 'https://fgvvfycyxulnwzttczyq.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZndnZmeWN5eHVsbnd6dHRjenlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDI2MzAsImV4cCI6MjA4OTkxODYzMH0.0-NzalmqzSpOSUofuBg-q-cBfql7xKvU101is7s4uWQ';
+const SB_HDR = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'return=representation' };
 
-const sbHeaders = {
-  'Content-Type': 'application/json',
-  'apikey': SB_KEY,
-  'Authorization': 'Bearer ' + SB_KEY,
-  'Prefer': 'return=representation'
-};
-
-async function sbGet(table, query='') {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}${query}`, { headers: sbHeaders });
-  if (!r.ok) throw new Error(await r.text());
+async function sbGet(table, qs='') {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { headers:SB_HDR });
+  if (!r.ok) throw new Error(`GET ${table}: ${r.status}`);
   return r.json();
 }
 async function sbPost(table, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
-    method:'POST', headers: sbHeaders, body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, { method:'POST', headers:SB_HDR, body:JSON.stringify(body) });
+  if (!r.ok) throw new Error(`POST ${table}: ${await r.text()}`);
   return r.json();
 }
-async function sbPatch(table, query, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}${query}`, {
-    method:'PATCH', headers: sbHeaders, body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
+async function sbPatch(table, qs, body) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'PATCH', headers:SB_HDR, body:JSON.stringify(body) });
+  if (!r.ok) throw new Error(`PATCH ${table}: ${await r.text()}`);
   return r.json();
 }
-async function sbDelete(table, query) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}${query}`, {
-    method:'DELETE', headers: { ...sbHeaders, Prefer:'return=minimal' }
-  });
-  if (!r.ok) throw new Error(await r.text());
+async function sbDelete(table, qs) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'DELETE', headers:{...SB_HDR, Prefer:'return=minimal'} });
+  if (!r.ok) throw new Error(`DELETE ${table}: ${await r.text()}`);
 }
-// Upsert critère (insert ou update selon unicité profile_id+criterion_id)
-async function sbUpsertCheck(profileId, criterionId, checked, disabled) {
+// Upsert check — résolution par contrainte unique (profile_id, criterion_id)
+async function sbUpsert(profileId, criterionId, checked, disabled) {
   const r = await fetch(`${SB_URL}/rest/v1/eval_checks`, {
     method:'POST',
-    headers: { ...sbHeaders, Prefer:'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify({ profile_id: profileId, criterion_id: criterionId, checked, disabled })
+    headers:{...SB_HDR, Prefer:'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify({ profile_id:profileId, criterion_id:criterionId, checked, disabled })
   });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) throw new Error(`UPSERT check: ${await r.text()}`);
 }
 
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // CONSTANTES MÉTIER
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 const MAIN_PW  = 'noix';
 const STATS_PW = 'noix';
 
+// Vraies boutiques depuis shop_meta.__list__
 const BOUTIQUES = [
   'Millau Moulin','Millau PLR','Millau Tine','Millau Bonald','Millau Peugeot',
   'Semailles','Balaruc','St Jean',
@@ -429,282 +504,324 @@ const BOUTIQUES = [
   'Rodez','Baraqueville','Primaube',
   'St Affrique Verdun','St Affrique Borel',
   'Plateforme'
-];
+].sort((a,b) => a.localeCompare(b,'fr'));
+
+// IDs valides — utilisés pour validation côté front avant envoi BDD
+const VALID_CRITERION_IDS = new Set();
 
 const THEMES = [
   { id:'encaissement', name:'Encaissement', emoji:'💳', criteria:[
-    {id:'enc_01',text:'Taper sur la caisse avec le rendu monnaie, tiroir fermé',pts:1,formation:'Formation J1'},
-    {id:'enc_02',text:'Encaissement Tickets Restaurant, avoir, double paiement',pts:1,formation:'Formation J1'},
-    {id:'enc_03',text:'Usage du stylo faux billet ou du détecteur systématiquement',pts:1,formation:'Formation J1'},
-    {id:'enc_04',text:'Sait passer une commande Client sur la caisse',pts:1,formation:'Formation J1'},
-    {id:'enc_05',text:'Sait annuler une commande Client',pts:1,formation:'Formation J1'},
-    {id:'enc_06',text:'Sait déclarer les invendus du soir (périmé, cassé, dégustation, transformable)',pts:1,formation:'Formation J1'},
-    {id:'enc_07',text:'Connaissance des moyens d\'encaissements interdits',pts:1,formation:'Formation J1'},
-    {id:'enc_08',text:'Effectuer une fermeture caisse / ouverture caisse / prélèvements du Midi',pts:1,formation:'Formation J1'},
-    {id:'enc_09',text:'Effectuer un transfert de produits vers un autre magasin',pts:1,formation:'Formation R'},
-    {id:'enc_10',text:'Sait remettre en banque les poches prélèvements',pts:1,formation:'Formation R'},
-    {id:'enc_11',text:'Connaît la procédure en cas de ticket à annuler',pts:1,formation:'Formation R'},
-    {id:'enc_12',text:'Maîtrise sa caisse, pas d\'erreur et papiers de caisse toujours impeccables',pts:1,formation:'Formation R'},
+    {id:'enc_01',text:'Taper sur la caisse avec le rendu monnaie, tiroir fermé',pts:1,formation:'J1'},
+    {id:'enc_02',text:'Encaissement Tickets Restaurant, avoir, double paiement',pts:1,formation:'J1'},
+    {id:'enc_03',text:'Usage du stylo faux billet ou du détecteur systématiquement',pts:1,formation:'J1'},
+    {id:'enc_04',text:'Sait passer une commande Client sur la caisse',pts:1,formation:'J1'},
+    {id:'enc_05',text:'Sait annuler une commande Client',pts:1,formation:'J1'},
+    {id:'enc_06',text:'Sait déclarer les invendus du soir (périmé, cassé, dégustation, transformable)',pts:1,formation:'J1'},
+    {id:'enc_07',text:'Connaissance des moyens d\'encaissements interdits',pts:1,formation:'J1'},
+    {id:'enc_08',text:'Effectuer une fermeture caisse / ouverture caisse / prélèvements du Midi',pts:1,formation:'J1'},
+    {id:'enc_09',text:'Effectuer un transfert de produits vers un autre magasin',pts:1,formation:'R'},
+    {id:'enc_10',text:'Sait remettre en banque les poches prélèvements',pts:1,formation:'R'},
+    {id:'enc_11',text:'Connaît la procédure en cas de ticket à annuler',pts:1,formation:'R'},
+    {id:'enc_12',text:'Maîtrise sa caisse, pas d\'erreur et papiers de caisse toujours impeccables',pts:1,formation:'R'},
   ]},
   { id:'accueil', name:'Accueil & Vente', emoji:'😊', criteria:[
-    {id:'acc_01',text:'Connaît nos SPÉCIALITÉS (Flaunes, Fouace, Rissole, Farçou, Tielle, Pain au levain…)',pts:1,formation:'Formation J1'},
-    {id:'acc_02',text:'Connaît les phrases d\'accroche « Bonjour, Bienvenue… »',pts:1,formation:'Formation J1'},
-    {id:'acc_03',text:'Accueil téléphonique (Maison + prénom à votre service)',pts:1,formation:'Formation J1'},
-    {id:'acc_04',text:'Propose une formule ou un achat supplémentaire systématiquement (jamais « avec ça ? »)',pts:1,formation:'Formation J1'},
-    {id:'acc_05',text:'Propose la carte fidélité GRATUITÉ tout le temps',pts:1,formation:'Formation J1'},
-    {id:'acc_06',text:'Sait pratiquer le chemin client',pts:1,formation:'Formation J1'},
-    {id:'acc_07',text:'Sourire en toute circonstance, accueil chaleureux',pts:1,formation:'Formation J1'},
-    {id:'acc_08',text:'Toujours sa tenue de travail, polo ou tablier',pts:1,formation:'Formation J1'},
-    {id:'acc_09',text:'Connaît les offres supplémentaires',pts:1,formation:'Formation J1'},
-    {id:'acc_10',text:'Taux de carte fidélité ok',pts:1,formation:'Formation J1'},
-    {id:'acc_11',text:'CONNAÎT nos OFFRES ? 6 sur 8 = OUI dans la colonne',pts:1,formation:'Formation J1'},
-    {id:'acc_12',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,formation:'Formation J1'},
-    {id:'acc_13',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,formation:'Formation J1'},
-    {id:'acc_14',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,formation:'Formation J1'},
-    {id:'acc_15',text:'CHEMIN CLIENT maîtrisé à chaque passage manager — 5 pts',pts:5,formation:'Formation R'},
+    {id:'acc_01',text:'Connaît nos SPÉCIALITÉS (Flaunes, Fouace, Rissole, Farçou, Tielle, Pain au levain…)',pts:1,formation:'J1'},
+    {id:'acc_02',text:'Connaît les phrases d\'accroche « Bonjour, Bienvenue… »',pts:1,formation:'J1'},
+    {id:'acc_03',text:'Accueil téléphonique (Maison + prénom à votre service)',pts:1,formation:'J1'},
+    {id:'acc_04',text:'Propose une formule ou un achat supplémentaire systématiquement (jamais « avec ça ? »)',pts:1,formation:'J1'},
+    {id:'acc_05',text:'Propose la carte fidélité GRATUITÉ tout le temps',pts:1,formation:'J1'},
+    {id:'acc_06',text:'Sait pratiquer le chemin client',pts:1,formation:'J1'},
+    {id:'acc_07',text:'Sourire en toute circonstance, accueil chaleureux',pts:1,formation:'J1'},
+    {id:'acc_08',text:'Toujours sa tenue de travail, polo ou tablier',pts:1,formation:'J1'},
+    {id:'acc_09',text:'Connaît les offres supplémentaires',pts:1,formation:'J1'},
+    {id:'acc_10',text:'Taux de carte fidélité ok',pts:1,formation:'J1'},
+    {id:'acc_11',text:'CONNAÎT nos OFFRES ? 6 sur 8 = OUI dans la colonne',pts:1,formation:'J1'},
+    {id:'acc_12',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,formation:'J1'},
+    {id:'acc_13',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,formation:'J1'},
+    {id:'acc_14',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,formation:'J1'},
+    {id:'acc_15',text:'CHEMIN CLIENT maîtrisé à chaque passage manager — 5 pts',pts:5,formation:'R'},
   ]},
   { id:'production', name:'Production', emoji:'🥪', criteria:[
-    {id:'pro_01',text:'Sait taper les « FABRIQUÉS » sur la caisse',pts:1,formation:'Formation J2'},
-    {id:'pro_02',text:'Sandwich',pts:1,formation:'Formation J2'},
-    {id:'pro_03',text:'Wrap',pts:1,formation:'Formation J2'},
-    {id:'pro_04',text:'Tacos',pts:1,formation:'Formation J2'},
-    {id:'pro_05',text:'Salades',pts:1,formation:'Formation J2'},
-    {id:'pro_06',text:'Panini',pts:1,formation:'Formation J2'},
-    {id:'pro_07',text:'Viennois crudités',pts:1,formation:'Formation J2'},
-    {id:'pro_08',text:'Bagnat thon et bagnat tenders',pts:1,formation:'Formation J2'},
-    {id:'pro_09',text:'Hot-dog',pts:1,formation:'Formation J2'},
-    {id:'pro_10',text:'Pizza',pts:1,formation:'Formation J2'},
-    {id:'pro_11',text:'Les produits fabriqués sont souvent beaux et appétitifs, respectueux des fiches recette',pts:1,formation:'Formation J2'},
-    {id:'pro_12',text:'Réflexe de reproduire si besoin en rayon',pts:1,formation:'Formation R'},
-    {id:'pro_13',text:'Maîtrise des quantités à effectuer pour éviter la sous et sur production',pts:1,formation:'Formation R'},
+    {id:'pro_01',text:'Sait taper les « FABRIQUÉS » sur la caisse',pts:1,formation:'J2'},
+    {id:'pro_02',text:'Sandwich',pts:1,formation:'J2'},
+    {id:'pro_03',text:'Wrap',pts:1,formation:'J2'},
+    {id:'pro_04',text:'Tacos',pts:1,formation:'J2'},
+    {id:'pro_05',text:'Salades',pts:1,formation:'J2'},
+    {id:'pro_06',text:'Panini',pts:1,formation:'J2'},
+    {id:'pro_07',text:'Viennois crudités',pts:1,formation:'J2'},
+    {id:'pro_08',text:'Bagnat thon et bagnat tenders',pts:1,formation:'J2'},
+    {id:'pro_09',text:'Hot-dog',pts:1,formation:'J2'},
+    {id:'pro_10',text:'Pizza',pts:1,formation:'J2'},
+    {id:'pro_11',text:'Les produits fabriqués sont beaux et appétitifs, respectueux des fiches recette',pts:1,formation:'J2'},
+    {id:'pro_12',text:'Réflexe de reproduire si besoin en rayon',pts:1,formation:'R'},
+    {id:'pro_13',text:'Maîtrise des quantités à effectuer pour éviter la sous et sur production',pts:1,formation:'R'},
   ]},
   { id:'rayon', name:'Mise en rayon', emoji:'🧁', criteria:[
-    {id:'ray_01',text:'Rayon pains : approvisionner et mise en valeur des produits',pts:1,formation:'Formation J3'},
-    {id:'ray_02',text:'Rayon pâtisserie : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'Formation J3'},
-    {id:'ray_03',text:'Rayon viennoiserie : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'Formation J3'},
-    {id:'ray_04',text:'Rayon snaking : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'Formation J3'},
-    {id:'ray_05',text:'Dégustation en fonction de l\'heure respectée',pts:1,formation:'Formation J3'},
-    {id:'ray_06',text:'À 13h30 on met les pizzas au frais (pas à l\'air libre)',pts:1,formation:'Formation J3'},
-    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres et appétissantes) — 5 pts',pts:5,formation:'Formation R'},
-    {id:'ray_08',text:'Théâtralise tout : le pain, pizza, viennoiserie, sandwichs pour visuel formule',pts:1,formation:'Formation R'},
+    {id:'ray_01',text:'Rayon pains : approvisionner et mise en valeur des produits',pts:1,formation:'J3'},
+    {id:'ray_02',text:'Rayon pâtisserie : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'J3'},
+    {id:'ray_03',text:'Rayon viennoiserie : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'J3'},
+    {id:'ray_04',text:'Rayon snaking : plan vitrine respecté, homogénéité et rigueur',pts:1,formation:'J3'},
+    {id:'ray_05',text:'Dégustation en fonction de l\'heure respectée',pts:1,formation:'J3'},
+    {id:'ray_06',text:'À 13h30 on met les pizzas au frais (pas à l\'air libre)',pts:1,formation:'J3'},
+    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres et appétissantes) — 5 pts',pts:5,formation:'R'},
+    {id:'ray_08',text:'Théâtralise tout : pain, pizza, viennoiserie, sandwichs pour visuel formule',pts:1,formation:'R'},
   ]},
   { id:'cuisson', name:'Cuisson', emoji:'🔥', criteria:[
-    {id:'cui_01',text:'Connaît PLAN PLACAGE + CUISSON affichés (viennoiserie, baguette…)',pts:1,formation:'Formation J2'},
-    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise / Victoire / Pain frais',pts:1,formation:'Formation J2'},
-    {id:'cui_03',text:'Maîtrise cuisson viennoiserie',pts:1,formation:'Formation J2'},
-    {id:'cui_04',text:'Maîtrise cuisson des pizzas',pts:1,formation:'Formation J2'},
-    {id:'cui_05',text:'Maîtrise cuisson pains spéciaux',pts:1,formation:'Formation J2'},
-    {id:'cui_06',text:'Programmation four pour le lendemain',pts:1,formation:'Formation J2'},
-    {id:'cui_07',text:'Anticipe les cuissons pour réappro boutique et évite les ruptures',pts:1,formation:'Formation J2'},
+    {id:'cui_01',text:'Connaît PLAN PLACAGE + CUISSON affichés (viennoiserie, baguette…)',pts:1,formation:'J2'},
+    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise / Victoire / Pain frais',pts:1,formation:'J2'},
+    {id:'cui_03',text:'Maîtrise cuisson viennoiserie',pts:1,formation:'J2'},
+    {id:'cui_04',text:'Maîtrise cuisson des pizzas',pts:1,formation:'J2'},
+    {id:'cui_05',text:'Maîtrise cuisson pains spéciaux',pts:1,formation:'J2'},
+    {id:'cui_06',text:'Programmation four pour le lendemain',pts:1,formation:'J2'},
+    {id:'cui_07',text:'Anticipe les cuissons pour réappro boutique et évite les ruptures',pts:1,formation:'J2'},
   ]},
   { id:'energie', name:'Réflexe Énergie', emoji:'⚡', criteria:[
-    {id:'ene_01',text:'Éteint les lumières inutiles',pts:1,formation:'Formation J3'},
-    {id:'ene_02',text:'Éteint le four entre les cuissons',pts:1,formation:'Formation J3'},
-    {id:'ene_03',text:'Gestion CLIM correcte, chambre de pousse',pts:1,formation:'Formation R'},
-    {id:'ene_04',text:'Pas de four pizza ou pain allumé inutilement, gestion énergie globale',pts:1,formation:'Formation R'},
+    {id:'ene_01',text:'Éteint les lumières inutiles',pts:1,formation:'J3'},
+    {id:'ene_02',text:'Éteint le four entre les cuissons',pts:1,formation:'J3'},
+    {id:'ene_03',text:'Gestion CLIM correcte, chambre de pousse',pts:1,formation:'R'},
+    {id:'ene_04',text:'Pas de four pizza ou pain allumé inutilement, gestion énergie globale',pts:1,formation:'R'},
   ]},
   { id:'hygiene', name:'Entretien / Hygiène & DLC', emoji:'🧼', criteria:[
-    {id:'hyg_01',text:'Sait nettoyer les rayons et mettre en place les vitrines selon TABLETTE NETTOYAGE',pts:1,formation:'Formation J2'},
-    {id:'hyg_02',text:'Planning de nettoyage suivi et respecté sur tablette',pts:1,formation:'Formation J2'},
-    {id:'hyg_03',text:'Connaît et applique les DLC sur les articles en rayon et dans les frigos avec rigueur',pts:1,formation:'Formation J2'},
-    {id:'hyg_04',text:'Connaît le relevé de T°C sur la tablette (2 x par jour)',pts:1,formation:'Formation J2'},
-    {id:'hyg_05',text:'Connaît la traçabilité sur la tablette (photo DLC) des ingrédients utilisés',pts:1,formation:'Formation J2'},
-    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable — 3 pts',pts:3,formation:'Formation J3'},
-    {id:'hyg_07',text:'A l\'œil sur le nettoyage d\'objets ou de zones non identifiés sur la tablette (prises, recoins…)',pts:1,formation:'Formation R'},
+    {id:'hyg_01',text:'Sait nettoyer les rayons et mettre en place les vitrines selon TABLETTE NETTOYAGE',pts:1,formation:'J2'},
+    {id:'hyg_02',text:'Planning de nettoyage suivi et respecté sur tablette',pts:1,formation:'J2'},
+    {id:'hyg_03',text:'Connaît et applique les DLC sur les articles en rayon et dans les frigos avec rigueur',pts:1,formation:'J2'},
+    {id:'hyg_04',text:'Connaît le relevé de T°C sur la tablette (2 x par jour)',pts:1,formation:'J2'},
+    {id:'hyg_05',text:'Connaît la traçabilité sur la tablette (photo DLC) des ingrédients utilisés',pts:1,formation:'J2'},
+    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable — 3 pts',pts:3,formation:'J3'},
+    {id:'hyg_07',text:'A l\'œil sur le nettoyage de zones non identifiées sur la tablette (prises, recoins…)',pts:1,formation:'R'},
   ]},
   { id:'fermeture', name:'Fermeture', emoji:'🔒', criteria:[
-    {id:'fer_01',text:'Procédures mise en sachet le soir et saisie invendus PAIN',pts:1,formation:'Formation J1'},
-    {id:'fer_02',text:'Connaît les emplacements des interrupteurs',pts:1,formation:'Formation J1'},
-    {id:'fer_03',text:'Mise en route des alarmes',pts:1,formation:'Formation J5'},
-    {id:'fer_04',text:'Connaît le code de la boîte à clefs',pts:1,formation:'Formation J5'},
-    {id:'fer_05',text:'Effectue un chemin de départ : T° frigo/congélateur/vitrines — four éteint — lumières',pts:1,formation:'Formation J5'},
-    {id:'fer_06',text:'Sait fermer seule la boutique',pts:1,formation:'Formation J5'},
+    {id:'fer_01',text:'Procédures mise en sachet le soir et saisie invendus PAIN',pts:1,formation:'J1'},
+    {id:'fer_02',text:'Connaît les emplacements des interrupteurs',pts:1,formation:'J1'},
+    {id:'fer_03',text:'Mise en route des alarmes',pts:1,formation:'J5'},
+    {id:'fer_04',text:'Connaît le code de la boîte à clefs',pts:1,formation:'J5'},
+    {id:'fer_05',text:'Effectue un chemin de départ : T° frigo/congélateur/vitrines — four éteint — lumières',pts:1,formation:'J5'},
+    {id:'fer_06',text:'Sait fermer seule la boutique',pts:1,formation:'J5'},
   ]},
   { id:'ouverture', name:'Ouverture', emoji:'🌅', criteria:[
-    {id:'ouv_01',text:'Maîtrise pointage BL ou sur tablette (CONSERVE ou MANQUANT)',pts:1,formation:'Formation J8'},
-    {id:'ouv_02',text:'Maîtrise LA RECETTE DORURE',pts:1,formation:'Formation J8'},
-    {id:'ouv_03',text:'Maîtrise timing cuisson avant ouverture de la boutique (pains et viennoiserie)',pts:1,formation:'Formation J8'},
-    {id:'ouv_04',text:'Maîtrise la « 13h » sur la tablette (inventaire)',pts:1,formation:'Formation J8'},
-    {id:'ouv_05',text:'Maîtrise la feuille de commande Surgelés',pts:1,formation:'Formation J8'},
-    {id:'ouv_06',text:'Maîtrise la mise en rayon d\'ouverture (plus tôt en rayon, plus tôt vendu)',pts:1,formation:'Formation J8'},
-    {id:'ouv_07',text:'Alerte le manager en cas de soucis livraisons ou dysfonctionnement',pts:1,formation:'Formation R'},
+    {id:'ouv_01',text:'Maîtrise pointage BL ou sur tablette (CONSERVE ou MANQUANT)',pts:1,formation:'J8'},
+    {id:'ouv_02',text:'Maîtrise LA RECETTE DORURE',pts:1,formation:'J8'},
+    {id:'ouv_03',text:'Maîtrise timing cuisson avant ouverture de la boutique (pains et viennoiserie)',pts:1,formation:'J8'},
+    {id:'ouv_04',text:'Maîtrise la « 13h » sur la tablette (inventaire)',pts:1,formation:'J8'},
+    {id:'ouv_05',text:'Maîtrise la feuille de commande Surgelés',pts:1,formation:'J8'},
+    {id:'ouv_06',text:'Maîtrise la mise en rayon d\'ouverture (plus tôt en rayon, plus tôt vendu)',pts:1,formation:'J8'},
+    {id:'ouv_07',text:'Alerte le manager en cas de soucis livraisons ou dysfonctionnement',pts:1,formation:'R'},
   ]},
   { id:'posture', name:'Posture & Professionnalisme', emoji:'⭐', criteria:[
-    {id:'pos_01',text:'Toujours ponctuel(le) et présent(e) à son poste (sauf cas exceptionnel)',pts:1,formation:'Formation R'},
-    {id:'pos_02',text:'Capacité à donner des directives précises',pts:1,formation:'Formation R'},
-    {id:'pos_03',text:'Écoute et réactions des collègues aux directives données',pts:1,formation:'Formation R'},
-    {id:'pos_04',text:'Maintient une énergie professionnelle, dynamique, sereine et chaleureuse',pts:1,formation:'Formation R'},
-    {id:'pos_05',text:'Capacité à trouver des solutions en cas de dysfonctionnement',pts:1,formation:'Formation R'},
-    {id:'pos_06',text:'S\'intéresse au chiffre d\'affaire et fait en sorte que celui-ci progresse',pts:1,formation:'Formation R'},
-    {id:'pos_07',text:'A pour réflexe d\'approvisionner les vitrines en viennoiserie, pain, snaking…',pts:1,formation:'Formation R'},
-    {id:'pos_08',text:'Passe le relais + consignes',pts:1,formation:'Formation R'},
-    {id:'pos_09',text:'Sait transmettre son savoir avec une bonne pédagogie',pts:1,formation:'Formation R'},
-    {id:'pos_10',text:'Repère les futurs bons éléments en formation',pts:1,formation:'Formation R'},
-    {id:'pos_11',text:'Montre l\'exemple',pts:1,formation:'Formation R'},
-    {id:'pos_12',text:'Augmente nettement le chiffre d\'affaire sur ses heures en poste',pts:1,formation:'Formation R'},
+    {id:'pos_01',text:'Toujours ponctuel(le) et présent(e) à son poste (sauf cas exceptionnel)',pts:1,formation:'R'},
+    {id:'pos_02',text:'Capacité à donner des directives précises',pts:1,formation:'R'},
+    {id:'pos_03',text:'Écoute et réactions des collègues aux directives données',pts:1,formation:'R'},
+    {id:'pos_04',text:'Maintient une énergie professionnelle, dynamique, sereine et chaleureuse',pts:1,formation:'R'},
+    {id:'pos_05',text:'Capacité à trouver des solutions en cas de dysfonctionnement',pts:1,formation:'R'},
+    {id:'pos_06',text:'S\'intéresse au chiffre d\'affaire et fait en sorte que celui-ci progresse',pts:1,formation:'R'},
+    {id:'pos_07',text:'A pour réflexe d\'approvisionner les vitrines en viennoiserie, pain, snaking…',pts:1,formation:'R'},
+    {id:'pos_08',text:'Passe le relais + consignes',pts:1,formation:'R'},
+    {id:'pos_09',text:'Sait transmettre son savoir avec une bonne pédagogie',pts:1,formation:'R'},
+    {id:'pos_10',text:'Repère les futurs bons éléments en formation',pts:1,formation:'R'},
+    {id:'pos_11',text:'Montre l\'exemple',pts:1,formation:'R'},
+    {id:'pos_12',text:'Augmente nettement le chiffre d\'affaire sur ses heures en poste',pts:1,formation:'R'},
   ]},
 ];
 
-const MAX_SCORE = THEMES.reduce((s,t)=>s+t.criteria.reduce((a,c)=>a+c.pts,0),0); // 105
+// Construire le Set des IDs valides
+THEMES.forEach(t => t.criteria.forEach(c => VALID_CRITERION_IDS.add(c.id)));
+const MAX_SCORE = THEMES.reduce((s,t) => s + t.criteria.reduce((a,c) => a+c.pts, 0), 0); // 105
 
-// ════════════════════════════════════════════════════════════════
-// STATE (en mémoire — source de vérité = Supabase)
-// ════════════════════════════════════════════════════════════════
-// profiles : [{id, name, poste, boutique, date_entree, eval_for, eval_by, eval_date, rappel_months,
-//              _checks: {criterionId: {checked, disabled}} }]
-let profiles = [];
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let profiles = []; // [{ id, name, poste, boutique, date_entree, eval_for, eval_by, eval_date, rappel_months, _checks:{cid:{checked,disabled}} }]
 let currentProfileId = null;
 let currentView = 'eval';
 let statsUnlocked = false;
 let pendingDeleteProfileId = null;
 let pendingDeleteCriterion = null;
 let openThemes = {};
+let newBoutiqueSelected = '';
 let eiBoutiqueSelected = '';
 let eiRappelSelected = 0;
-let newBoutiqueSelected = '';
-let syncDebounce = null;
 
-// ════════════════════════════════════════════════════════════════
-// SYNC HELPERS
-// ════════════════════════════════════════════════════════════════
-function setSyncStatus(state, msg) {
-  const el = document.getElementById('sync-badge');
-  el.className = 'sync-status ' + (state==='ok'?'sync-ok':state==='saving'?'sync-saving':'sync-err');
-  el.innerHTML = state==='saving'?`<span class="spinner"></span> ${msg}`:msg;
+// ═══════════════════════════════════════════════════════════════
+// SÉCURITÉ — validation côté client avant tout envoi BDD
+// ═══════════════════════════════════════════════════════════════
+function assertValidCriterionId(cid) {
+  if (!VALID_CRITERION_IDS.has(cid)) throw new Error(`criterion_id invalide: ${cid}`);
+}
+function assertValidProfileId(pid) {
+  if (!pid || typeof pid !== 'string' || !/^[0-9a-f-]{36}$/.test(pid))
+    throw new Error(`profile_id invalide: ${pid}`);
+  if (!profiles.find(p => p.id === pid))
+    throw new Error(`profile_id inconnu: ${pid}`);
 }
 
-// Charger tous les profils + leurs checks depuis Supabase
+// ═══════════════════════════════════════════════════════════════
+// SYNC STATUS
+// ═══════════════════════════════════════════════════════════════
+function setSyncStatus(state, msg) {
+  const el = document.getElementById('sync-badge');
+  el.className = 'sync-badge ' + (state==='ok'?'sync-ok':state==='saving'?'sync-saving':'sync-err');
+  el.innerHTML = state==='saving' ? `<span class="spinner"></span> ${msg}` : msg;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LOAD
+// ═══════════════════════════════════════════════════════════════
 async function loadAllProfiles() {
   try {
-    setSyncStatus('saving','Chargement…');
+    setSyncStatus('saving', 'Chargement…');
     const [profs, checks] = await Promise.all([
-      sbGet('eval_profiles','?order=created_at.asc'),
-      sbGet('eval_checks','?select=profile_id,criterion_id,checked,disabled')
+      sbGet('eval_profiles', '?order=created_at.asc'),
+      sbGet('eval_checks', '?select=profile_id,criterion_id,checked,disabled')
     ]);
-    // Indexer les checks par profil
-    const checksByProfile = {};
+    // Indexer les checks par profil — on ne garde que les criterion_id valides
+    const byProfile = {};
     for (const c of checks) {
-      if (!checksByProfile[c.profile_id]) checksByProfile[c.profile_id] = {};
-      checksByProfile[c.profile_id][c.criterion_id] = { checked: c.checked, disabled: c.disabled };
+      if (!VALID_CRITERION_IDS.has(c.criterion_id)) continue; // ignore les orphelins
+      if (!byProfile[c.profile_id]) byProfile[c.profile_id] = {};
+      byProfile[c.profile_id][c.criterion_id] = { checked: !!c.checked, disabled: !!c.disabled };
     }
     profiles = profs.map(p => ({
       id: p.id, name: p.name, poste: p.poste||'', boutique: p.boutique||'',
       date_entree: p.date_entree||'', eval_for: p.eval_for||p.name,
-      eval_by: p.eval_by||'', eval_date: p.eval_date||'',
-      rappel_months: p.rappel_months||0,
-      _checks: checksByProfile[p.id] || {}
+      eval_by: p.eval_by||'', eval_date: p.eval_date||'', rappel_months: p.rappel_months||0,
+      _checks: byProfile[p.id] || {}
     }));
-    setSyncStatus('ok','✓ Synchronisé');
-    renderSidebar();
-    renderCurrentView();
+    setSyncStatus('ok', '✓ Sync');
+    renderSidebar(); renderCurrentView();
   } catch(e) {
-    setSyncStatus('err','⚠ Erreur réseau');
-    showToast('Erreur de chargement — vérifiez la connexion');
+    setSyncStatus('err', '⚠ Hors ligne');
+    showToast('Erreur réseau — réessayez');
+    console.error(e);
   }
 }
 
-function getProfile(id) { return profiles.find(p=>p.id===id); }
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function getProfile(id) { return profiles.find(p => p.id === id); }
 function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
 function getLevel(score) {
-  if (score<70) return {label:'Formation',cls:'level-formation',badgeCls:'badge-formation'};
-  if (score<85) return {label:'Vendeur',cls:'level-vendeur',badgeCls:'badge-vendeur'};
-  return {label:'Adjoint / Responsable',cls:'level-adjoint',badgeCls:'badge-adjoint'};
+  if (score < 70) return { label:'Formation', cls:'level-formation', badgeCls:'badge-formation' };
+  if (score < 85) return { label:'Vendeur', cls:'level-vendeur', badgeCls:'badge-vendeur' };
+  return { label:'Adjoint / Responsable', cls:'level-adjoint', badgeCls:'badge-adjoint' };
 }
 function computeScore(p) {
-  let s=0;
-  THEMES.forEach(t=>t.criteria.forEach(c=>{
-    const ch=p._checks[c.id];
-    if (!ch || ch.disabled) return;
-    if (ch.checked) s+=c.pts;
+  let s = 0;
+  THEMES.forEach(t => t.criteria.forEach(c => {
+    const ch = p._checks[c.id];
+    if (ch && ch.checked && !ch.disabled) s += c.pts;
   }));
   return s;
 }
 function computeMax(p) {
-  let m=0;
-  THEMES.forEach(t=>t.criteria.forEach(c=>{
-    const ch=p._checks[c.id];
-    if (!ch || !ch.disabled) m+=c.pts;
+  let m = 0;
+  THEMES.forEach(t => t.criteria.forEach(c => {
+    const ch = p._checks[c.id];
+    if (!ch || !ch.disabled) m += c.pts;
   }));
   return m;
 }
 
-// ════════════════════════════════════════════════════════════════
-// SÉCURITÉ
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// SIDEBAR MOBILE
+// ═══════════════════════════════════════════════════════════════
+function toggleSidebar() {
+  const s = document.getElementById('sidebar');
+  const o = document.getElementById('sidebar-overlay');
+  const h = document.getElementById('hamburger');
+  const isOpen = s.classList.contains('open');
+  s.classList.toggle('open', !isOpen);
+  o.classList.toggle('open', !isOpen);
+  h.classList.toggle('open', !isOpen);
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SECURITY
+// ═══════════════════════════════════════════════════════════════
 function unlockApp() {
-  if (document.getElementById('main-pw').value===MAIN_PW) {
+  const pw = document.getElementById('main-pw').value;
+  if (pw === MAIN_PW) {
     document.getElementById('lock-screen').classList.add('hidden');
-    document.getElementById('app-wrapper').style.display='block';
+    document.getElementById('app-wrapper').style.display = 'block';
     loadAllProfiles();
   } else {
-    const el=document.getElementById('main-pw');
-    el.classList.add('error'); el.value='';
-    setTimeout(()=>el.classList.remove('error'),600);
+    const el = document.getElementById('main-pw');
+    el.classList.add('error'); el.value = '';
+    setTimeout(() => el.classList.remove('error'), 600);
+    showToast('Mot de passe incorrect');
   }
 }
 function unlockStats() {
-  if (document.getElementById('stats-pw-input').value===STATS_PW) {
-    statsUnlocked=true; closeModal('modal-stats-pw');
-    currentView='stats';
+  const pw = document.getElementById('stats-pw-input').value;
+  if (pw === STATS_PW) {
+    statsUnlocked = true; closeModal('modal-stats-pw');
+    currentView = 'stats';
     document.getElementById('nav-eval').classList.remove('active');
     document.getElementById('nav-stats').classList.add('active');
     renderCurrentView();
   } else {
-    const el=document.getElementById('stats-pw-input');
-    el.classList.add('error'); el.value='';
-    setTimeout(()=>el.classList.remove('error'),600);
+    const el = document.getElementById('stats-pw-input');
+    el.classList.add('error'); el.value = '';
+    setTimeout(() => el.classList.remove('error'), 600);
   }
 }
 function unlockStatsInline() {
-  if (document.getElementById('stats-pw-inline').value===STATS_PW) {
-    statsUnlocked=true; renderStats();
-  } else {
-    const el=document.getElementById('stats-pw-inline');
-    el.classList.add('error'); el.value='';
-    setTimeout(()=>el.classList.remove('error'),600);
+  const pw = document.getElementById('stats-pw-inline').value;
+  if (pw === STATS_PW) { statsUnlocked = true; renderStats(); }
+  else {
+    const el = document.getElementById('stats-pw-inline');
+    el.classList.add('error'); el.value = '';
+    setTimeout(() => el.classList.remove('error'), 600);
   }
 }
 
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // RENDER SIDEBAR
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function renderSidebar() {
-  const list=document.getElementById('profiles-list');
+  const list = document.getElementById('profiles-list');
   if (!profiles.length) {
-    list.innerHTML=`<div class="empty-profiles"><div style="font-size:1.6rem">👤</div><p>Créez un profil pour commencer une évaluation.</p></div>`;
+    list.innerHTML = `<div class="empty-profiles"><div style="font-size:1.5rem">👤</div><p>Créez un profil pour commencer une évaluation.</p></div>`;
     return;
   }
-  list.innerHTML=profiles.map(p=>{
-    const score=computeScore(p), max=computeMax(p), lv=getLevel(score);
-    return `<div class="profile-card ${p.id===currentProfileId?'selected':''}" onclick="selectProfile('${p.id}')">
+  list.innerHTML = profiles.map(p => {
+    const score = computeScore(p), max = computeMax(p), lv = getLevel(score);
+    return `<div class="profile-card${p.id===currentProfileId?' selected':''}" onclick="selectProfile('${p.id}');closeSidebar()">
       <div class="profile-name">${escHtml(p.name)}</div>
       <div class="profile-meta">
         <span class="profile-badge ${lv.badgeCls}">${lv.label}</span>
         <span>${score}/${max} pts</span>
-        ${p.boutique?`<span>· ${escHtml(p.boutique)}</span>`:''}
+        ${p.boutique ? `<span>· ${escHtml(p.boutique)}</span>` : ''}
       </div>
-      <button class="profile-delete" onclick="event.stopPropagation();openDeleteProfileModal('${p.id}')">🗑</button>
+      <button class="profile-delete" onclick="event.stopPropagation();openDeleteProfileModal('${p.id}')" title="Supprimer">🗑</button>
     </div>`;
   }).join('');
 }
 
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // RENDER EVAL
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function renderEval(profileId) {
-  const p=getProfile(profileId); if(!p) return;
-  const score=computeScore(p), maxP=computeMax(p), lv=getLevel(score);
-  const pct=maxP>0?(score/maxP*100):0;
-  const pct70=(70/MAX_SCORE*100).toFixed(1);
-  const pct85=(85/MAX_SCORE*100).toFixed(1);
-  const evalDate=p.eval_date?new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR'):'—';
-  const evalBy=p.eval_by||'—';
-  const evalFor=p.eval_for||p.name;
-  const boutique=p.boutique||'—';
-  const rappelTxt=p.rappel_months?`Rappel dans ${p.rappel_months} mois`:'Pas de rappel';
+  const p = getProfile(profileId); if (!p) return;
+  const score = computeScore(p), maxP = computeMax(p), lv = getLevel(score);
+  const pct = maxP > 0 ? (score / maxP * 100) : 0;
+  const pct70 = (70 / MAX_SCORE * 100).toFixed(1);
+  const pct85 = (85 / MAX_SCORE * 100).toFixed(1);
+  const evalDate = p.eval_date ? new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR') : '—';
 
-  let html=`
+  let html = `
   <div class="eval-header">
     <div class="eval-name-block">
       <h2>${escHtml(p.name)}</h2>
@@ -718,30 +835,20 @@ function renderEval(profileId) {
   </div>
 
   <div class="eval-info-block">
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">✍️&nbsp;Évalué(e) : <strong>${escHtml(evalFor)}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">👤&nbsp;Par : <strong>${escHtml(evalBy)}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">🏪&nbsp;Boutique : <strong>${escHtml(boutique)}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">📅&nbsp;Le : <strong>${evalDate}</strong></div>
-    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">🗓&nbsp;<strong>${escHtml(rappelTxt)}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">✍️ <strong>${escHtml(p.eval_for||p.name)}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">👤 Par : <strong>${escHtml(p.eval_by||'—')}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">🏪 <strong>${escHtml(p.boutique||'—')}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">📅 <strong>${evalDate}</strong></div>
+    <div class="eval-info-pill" onclick="openEvalInfoModal('${profileId}')">🗓 <strong>${p.rappel_months?`Dans ${p.rappel_months} mois`:'Pas de rappel'}</strong></div>
   </div>
 
   <div class="progress-section">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" style="width:${pct.toFixed(1)}%"></div>
-    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
     <div class="progress-markers">
-      <span class="progress-marker-label" style="left:${pct70}%;color:${score>=70?'var(--gold)':'var(--muted)'}">
-        70<br><span style="font-size:.6rem;opacity:.8">Formation</span>
-      </span>
-      <span class="progress-marker-label" style="left:${pct85}%;color:${score>=85?'var(--gold)':'var(--muted)'}">
-        85<br><span style="font-size:.6rem;opacity:.8">Vendeur</span>
-      </span>
+      <span class="progress-marker-label" style="left:${pct70}%;color:${score>=70?'var(--gold)':'var(--muted)'}">70<br><span style="font-size:.58rem">Formation</span></span>
+      <span class="progress-marker-label" style="left:${pct85}%;color:${score>=85?'var(--gold)':'var(--muted)'}">85<br><span style="font-size:.58rem">Vendeur</span></span>
     </div>
-    <div class="progress-ends">
-      <span>0</span>
-      <span style="font-weight:500;color:${score>0?'var(--gold)':'var(--muted)'}">${score} / ${MAX_SCORE} pts</span>
-      <span>${MAX_SCORE}</span>
-    </div>
+    <div class="progress-ends"><span>0</span><span style="font-weight:500;color:${score>0?'var(--gold)':'var(--muted)'}">${score} / ${MAX_SCORE} pts</span><span>${MAX_SCORE}</span></div>
   </div>
 
   <div class="eval-actions">
@@ -751,141 +858,144 @@ function renderEval(profileId) {
   </div>
   <div class="themes-container">`;
 
-  THEMES.forEach(theme=>{
-    const isOpen=openThemes[theme.id]!==false;
-    let themeScore=0, themeMax=0, themeCheckedCount=0, themeActiveCount=0;
-    theme.criteria.forEach(c=>{
-      const ch=p._checks[c.id];
-      if (!ch||!ch.disabled) { themeMax+=c.pts; themeActiveCount++; }
-      if (ch&&ch.checked&&!ch.disabled) { themeScore+=c.pts; themeCheckedCount++; }
+  THEMES.forEach(theme => {
+    const isOpen = openThemes[theme.id] !== false;
+    let themeScore=0, themeMax=0, themeChecked=0, themeActive=0;
+    theme.criteria.forEach(c => {
+      const ch = p._checks[c.id];
+      if (!ch || !ch.disabled) { themeMax += c.pts; themeActive++; }
+      if (ch && ch.checked && !ch.disabled) { themeScore += c.pts; themeChecked++; }
     });
-    const allDone = themeActiveCount > 0 && themeCheckedCount === themeActiveCount;
-    const themePct = themeActiveCount > 0 ? (themeCheckedCount / themeActiveCount * 100) : 0;
-    html+=`<div class="theme-block">
-      <div class="theme-header ${isOpen?'open':''}" onclick="toggleTheme('${theme.id}')">
-        <div class="theme-info"><span style="font-size:1.1rem">${theme.emoji}</span><span class="theme-name">${theme.name}</span></div>
+    const allDone = themeActive > 0 && themeChecked === themeActive;
+    const themePct = themeActive > 0 ? (themeChecked / themeActive * 100) : 0;
+
+    html += `<div class="theme-block">
+      <div class="theme-header${isOpen?' open':''}" onclick="toggleTheme('${theme.id}')">
+        <div class="theme-info">
+          <span style="font-size:1rem;flex-shrink:0">${theme.emoji}</span>
+          <span class="theme-name">${theme.name}</span>
+        </div>
         <div class="theme-score-chip">
-          <span class="theme-pts">${themeScore}<span> / ${themeMax} pts</span></span>
-          <button class="theme-validate-btn ${allDone?'all-done':''}"
+          <span class="theme-pts">${themeScore}<span>/${themeMax}</span></span>
+          <button class="theme-validate-btn${allDone?' all-done':''}"
             onclick="event.stopPropagation();validateAllTheme('${profileId}','${theme.id}')"
-            title="Tout valider pour cette section">${allDone?'✓ Validé':'✓ Tout valider'}</button>
-          <span class="theme-chevron ${isOpen?'open':''}">▾</span>
+          >${allDone?'✓ Fait':'✓ Tout'}</button>
+          <span class="theme-chevron${isOpen?' open':''}">▾</span>
         </div>
       </div>
       <div class="theme-progress-bar"><div class="theme-progress-fill" style="width:${themePct.toFixed(0)}%"></div></div>
       <div class="criteria-list" style="${isOpen?'':'display:none'}">`;
 
-    theme.criteria.forEach(c=>{
-      const ch=p._checks[c.id]||{};
-      const isDis=!!ch.disabled;
-      const isCh=!!ch.checked&&!isDis;
-      html+=`<div class="criterion-row${isDis?' deleted':''}">
+    theme.criteria.forEach(c => {
+      const ch = p._checks[c.id] || {};
+      const isDis = !!ch.disabled, isCh = !!ch.checked && !isDis;
+      html += `<div class="criterion-row${isDis?' deleted':''}">
         <button class="criterion-toggle ${isCh?'on':'off'}" onclick="${isDis?'':` toggleCriterion('${profileId}','${c.id}')`}">${isCh?'✓':''}</button>
-        <span class="criterion-text ${isCh?'validated':''}">${escHtml(c.text)}</span>
-        <span class="criterion-formation">${c.formation}</span>
-        <span class="criterion-pts">+${c.pts} pt${c.pts>1?'s':''}</span>
+        <span class="criterion-text${isCh?' validated':''}">${escHtml(c.text)}</span>
+        <span class="criterion-formation">Form. ${c.formation}</span>
+        <span class="criterion-pts">+${c.pts}pt${c.pts>1?'s':''}</span>
         <button class="criterion-delete"
           onclick="${isDis?`reactivateCriterion('${profileId}','${c.id}')`:` openDeleteCriterionModal('${profileId}','${c.id}')`}"
           title="${isDis?'Réactiver':'Désactiver'}">${isDis?'↩':'✕'}</button>
       </div>`;
     });
-    html+=`</div></div>`;
+    html += `</div></div>`;
   });
-  html+=`</div>`;
-  document.getElementById('eval-panel').innerHTML=html;
+  html += `</div>`;
+  document.getElementById('eval-panel').innerHTML = html;
 }
 
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // RENDER STATS
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function renderStats() {
-  const panel=document.getElementById('stats-panel');
+  const panel = document.getElementById('stats-panel');
   if (!statsUnlocked) {
-    panel.innerHTML=`<div class="stats-locked">
-      <div class="stats-locked-icon">🔒</div><h2>Tableau de bord protégé</h2>
+    panel.innerHTML = `<div class="stats-locked">
+      <div class="stats-locked-icon">🔒</div>
+      <h2>Tableau de bord protégé</h2>
       <p>Accès réservé aux managers.</p>
       <div class="stats-lock-form">
         <input class="stats-lock-input" id="stats-pw-inline" type="password" placeholder="Mot de passe"
-          onkeydown="if(event.key==='Enter')unlockStatsInline()"/>
+          onkeydown="if(event.key==='Enter')unlockStatsInline()" />
         <button class="stats-lock-btn" onclick="unlockStatsInline()">Accéder →</button>
-      </div></div>`; return;
+      </div>
+    </div>`; return;
   }
   if (!profiles.length) {
-    panel.innerHTML=`<div class="stats-view"><div class="welcome" style="height:auto;padding:60px 0">
+    panel.innerHTML = `<div class="stats-view"><div class="welcome" style="min-height:60vh">
       <div class="welcome-icon">📊</div><h2>Aucun profil</h2><p>Créez des profils pour voir le tableau de bord.</p>
     </div></div>`; return;
   }
-  let html=`<div class="stats-view"><div class="stats-title">Tableau de bord — ${profiles.length} collaborateur${profiles.length>1?'s':''}</div>`;
 
-  // Grouper par boutique
+  // Grouper par boutique, triées alphabétiquement
   const byBoutique = {};
   profiles.forEach(p => {
     const key = p.boutique || '— Boutique non définie';
     if (!byBoutique[key]) byBoutique[key] = [];
     byBoutique[key].push(p);
   });
-  const sortedBoutiques = Object.keys(byBoutique).sort((a,b) => a.localeCompare(b, 'fr'));
+  const sortedBoutiques = Object.keys(byBoutique).sort((a,b) => a.localeCompare(b,'fr'));
+
+  let html = `<div class="stats-view"><div class="stats-title">Tableau de bord</div>`;
 
   sortedBoutiques.forEach(boutique => {
-    const bProfiles = byBoutique[boutique];
-    const avgBoutique = bProfiles.reduce((acc,p) => acc + computeScore(p), 0) / bProfiles.length;
-    const maxBoutique = bProfiles.reduce((acc,p) => acc + computeMax(p), 0) / bProfiles.length;
-    html += `<div style="margin-bottom:32px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <h3 style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--dark)">🏪 ${escHtml(boutique)}</h3>
-        <span style="font-size:.75rem;color:var(--muted);background:var(--warm-white);border:1px solid var(--border);padding:2px 10px;border-radius:20px">
-          ${bProfiles.length} personne${bProfiles.length>1?'s':''} · moy. ${avgBoutique.toFixed(1)} / ${maxBoutique.toFixed(0)} pts
-        </span>
+    const bps = byBoutique[boutique];
+    const avgScore = bps.reduce((acc,p) => acc + computeScore(p), 0) / bps.length;
+    const avgMax   = bps.reduce((acc,p) => acc + computeMax(p), 0)   / bps.length;
+    html += `<div class="boutique-group">
+      <div class="boutique-group-header">
+        <div class="boutique-group-title">🏪 ${escHtml(boutique)}</div>
+        <div class="boutique-group-meta">${bps.length} personne${bps.length>1?'s':''} · moy. ${avgScore.toFixed(1)}/${avgMax.toFixed(0)} pts</div>
       </div>
       <div class="stats-grid">`;
-    bProfiles.forEach(p => {
-      const score=computeScore(p),max=computeMax(p),lv=getLevel(score),pct=max>0?(score/max*100):0;
-      html+=`<div class="stat-card" onclick="selectProfile('${p.id}');setView('eval')" style="cursor:pointer">
+    bps.forEach(p => {
+      const score = computeScore(p), max = computeMax(p), lv = getLevel(score), pct = max>0?(score/max*100):0;
+      html += `<div class="stat-card" onclick="selectProfile('${p.id}');setView('eval')">
         <div class="stat-card-name">${escHtml(p.name)}</div>
         <div class="stat-card-sub">
-          <span class="profile-badge ${lv.badgeCls}" style="font-size:.67rem;padding:2px 8px;border-radius:20px">${lv.label}</span>
-          ${p.eval_by?` · Par ${escHtml(p.eval_by)}`:''}
-          ${p.eval_date?` · ${new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR')}`:''}
+          <span class="profile-badge ${lv.badgeCls}" style="font-size:.65rem;padding:2px 7px;border-radius:20px">${lv.label}</span>
+          ${p.eval_by ? `<span>· ${escHtml(p.eval_by)}</span>` : ''}
+          ${p.eval_date ? `<span>· ${new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR')}</span>` : ''}
         </div>
         <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
-        <div class="stat-numbers"><span>Score : <strong class="stat-score">${score} pts</strong> / ${max}</span><span>${pct.toFixed(0)} %</span></div>
+        <div class="stat-numbers"><span>Score : <strong class="stat-score">${score}</strong>/${max} pts</span><span>${pct.toFixed(0)}%</span></div>
       </div>`;
     });
     html += `</div></div>`;
   });
 
-  html+=`<div class="stats-title" style="font-size:1.1rem;margin-bottom:16px;margin-top:8px">Moyennes par thème</div><div class="stats-grid">`;
-  THEMES.forEach(theme=>{
-    const totalMax=theme.criteria.reduce((a,c)=>a+c.pts,0);
-    const avg=profiles.reduce((acc,p)=>acc+theme.criteria.reduce((a,c)=>{
-      const ch=p._checks[c.id]; if(ch&&ch.disabled)return a; if(ch&&ch.checked)return a+c.pts; return a;
-    },0),0)/profiles.length;
-    const pct=(avg/totalMax*100);
-    html+=`<div class="stat-card">
+  html += `<div class="stats-title" style="font-size:1.1rem;margin-top:8px;margin-bottom:14px">Moyennes par thème</div><div class="stats-grid">`;
+  THEMES.forEach(theme => {
+    const totalMax = theme.criteria.reduce((a,c) => a+c.pts, 0);
+    const avg = profiles.reduce((acc,p) => acc + theme.criteria.reduce((a,c) => {
+      const ch = p._checks[c.id]; if(ch&&ch.disabled)return a; if(ch&&ch.checked)return a+c.pts; return a;
+    }, 0), 0) / profiles.length;
+    const pct = (avg/totalMax*100);
+    html += `<div class="stat-card" style="cursor:default">
       <div class="stat-card-name">${theme.emoji} ${theme.name}</div>
       <div class="stat-card-sub">Moyenne équipe</div>
       <div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
-      <div class="stat-numbers"><span>Moy : <strong class="stat-score">${avg.toFixed(1)}</strong> / ${totalMax}</span><span>${pct.toFixed(0)} %</span></div>
+      <div class="stat-numbers"><span>Moy : <strong class="stat-score">${avg.toFixed(1)}</strong>/${totalMax}</span><span>${pct.toFixed(0)}%</span></div>
     </div>`;
   });
-  html+=`</div></div>`;
-  panel.innerHTML=html;
+  html += `</div></div>`;
+  panel.innerHTML = html;
 }
 
-// ════════════════════════════════════════════════════════════════
-// BOUTIQUE CAROUSEL — délégation propre, pas d'inline onclick
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// BOUTIQUE CAROUSEL — propre, sans inline onclick
+// ═══════════════════════════════════════════════════════════════
 function renderBoutiqueCarousel(containerId, selected) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = BOUTIQUES.map(b =>
-    `<div class="boutique-chip${selected === b ? ' selected' : ''}" data-boutique="${b.replace(/"/g,'&quot;')}">${b}</div>`
+  const old = document.getElementById(containerId);
+  old.innerHTML = BOUTIQUES.map(b =>
+    `<div class="boutique-chip${b===selected?' selected':''}" data-boutique="${escHtml(b)}">${escHtml(b)}</div>`
   ).join('');
-  // Supprimer ancien listener pour éviter les doublons
-  const newEl = el.cloneNode(true);
-  el.parentNode.replaceChild(newEl, el);
+  // Cloner pour purger les anciens listeners
+  const fresh = old.cloneNode(true);
+  old.parentNode.replaceChild(fresh, old);
   document.getElementById(containerId).addEventListener('click', function(e) {
-    const chip = e.target.closest('.boutique-chip');
-    if (!chip) return;
+    const chip = e.target.closest('.boutique-chip'); if (!chip) return;
     const val = chip.getAttribute('data-boutique');
     this.querySelectorAll('.boutique-chip').forEach(c => c.classList.remove('selected'));
     chip.classList.add('selected');
@@ -895,235 +1005,257 @@ function renderBoutiqueCarousel(containerId, selected) {
 }
 
 function selectRappel(el) {
-  eiRappelSelected=parseInt(el.dataset.val)||0;
-  document.querySelectorAll('.rappel-chip').forEach(c=>c.classList.remove('selected'));
+  eiRappelSelected = parseInt(el.dataset.val) || 0;
+  document.querySelectorAll('.rappel-chip').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
 }
 
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // ACTIONS PROFIL
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function openNewProfileModal() {
-  document.getElementById('input-name').value='';
-  document.getElementById('input-poste').value='';
-  document.getElementById('input-date').value='';
-  newBoutiqueSelected='';
-  renderBoutiqueCarousel('new-boutique-carousel','');
+  document.getElementById('input-name').value = '';
+  document.getElementById('input-poste').value = '';
+  document.getElementById('input-date').value = '';
+  newBoutiqueSelected = '';
+  renderBoutiqueCarousel('new-boutique-carousel', '');
   document.getElementById('modal-new').classList.add('open');
-  setTimeout(()=>document.getElementById('input-name').focus(),100);
+  setTimeout(() => document.getElementById('input-name').focus(), 300);
 }
 
 async function createProfile() {
-  const name=document.getElementById('input-name').value.trim();
-  if(!name){showToast('Saisissez un nom');return;}
-  const body={
-    name, poste:document.getElementById('input-poste').value.trim(),
-    boutique:newBoutiqueSelected,
-    date_entree:document.getElementById('input-date').value||null,
-    eval_for:name, eval_by:'', eval_date:new Date().toISOString().slice(0,10), rappel_months:0
+  const name = document.getElementById('input-name').value.trim();
+  if (!name) { showToast('Saisissez un nom'); return; }
+  const btn = document.getElementById('btn-create-profile');
+  btn.disabled = true; btn.textContent = 'Enregistrement…';
+  const body = {
+    name, poste: document.getElementById('input-poste').value.trim(),
+    boutique: newBoutiqueSelected,
+    date_entree: document.getElementById('input-date').value || null,
+    eval_for: name, eval_by: '', eval_date: new Date().toISOString().slice(0,10), rappel_months: 0
   };
   try {
-    setSyncStatus('saving','Enregistrement…');
-    const [created]=await sbPost('eval_profiles',body);
-    profiles.push({...created, _checks:{}});
-    setSyncStatus('ok','✓ Synchronisé');
-    closeModal('modal-new'); selectProfile(created.id); renderSidebar();
+    setSyncStatus('saving', 'Enregistrement…');
+    const [created] = await sbPost('eval_profiles', body);
+    profiles.push({ ...created, _checks: {} });
+    setSyncStatus('ok', '✓ Sync');
+    closeModal('modal-new');
+    selectProfile(created.id); renderSidebar();
     showToast(`Profil « ${name} » créé`);
-  } catch(e) { setSyncStatus('err','⚠ Erreur'); showToast('Erreur lors de la création'); }
+  } catch(e) {
+    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur lors de la création');
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Créer le profil';
+  }
 }
 
 function openDeleteProfileModal(id) {
-  pendingDeleteProfileId=id;
-  document.getElementById('delete-name').textContent=getProfile(id)?.name||'';
+  pendingDeleteProfileId = id;
+  document.getElementById('delete-name').textContent = getProfile(id)?.name || '';
   document.getElementById('modal-delete').classList.add('open');
 }
 async function confirmDeleteProfile() {
-  if(!pendingDeleteProfileId) return;
+  if (!pendingDeleteProfileId) return;
+  const btn = document.getElementById('btn-confirm-delete');
+  btn.disabled = true; btn.textContent = 'Suppression…';
   try {
-    setSyncStatus('saving','Suppression…');
-    // Les checks sont supprimés en cascade (ON DELETE CASCADE)
-    await sbDelete('eval_profiles',`?id=eq.${pendingDeleteProfileId}`);
-    profiles=profiles.filter(p=>p.id!==pendingDeleteProfileId);
-    if(currentProfileId===pendingDeleteProfileId) currentProfileId=null;
-    setSyncStatus('ok','✓ Synchronisé');
+    setSyncStatus('saving', 'Suppression…');
+    await sbDelete('eval_profiles', `?id=eq.${pendingDeleteProfileId}`);
+    profiles = profiles.filter(p => p.id !== pendingDeleteProfileId);
+    if (currentProfileId === pendingDeleteProfileId) currentProfileId = null;
+    setSyncStatus('ok', '✓ Sync');
     closeModal('modal-delete'); renderSidebar(); renderCurrentView(); showToast('Profil supprimé');
-  } catch(e) { setSyncStatus('err','⚠ Erreur'); showToast('Erreur lors de la suppression'); }
+  } catch(e) { setSyncStatus('err', '⚠ Erreur'); showToast('Erreur lors de la suppression'); console.error(e); }
+  finally { btn.disabled = false; btn.textContent = 'Supprimer définitivement'; }
 }
 
-// ════════════════════════════════════════════════════════════════
-// ACTIONS CRITÈRES
-// ════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// ACTIONS CRITÈRES — avec validation stricte des IDs
+// ═══════════════════════════════════════════════════════════════
 async function toggleCriterion(profileId, criterionId) {
-  const p=getProfile(profileId); if(!p) return;
-  const ch=p._checks[criterionId]||{checked:false,disabled:false};
-  const newVal=!ch.checked;
+  try {
+    assertValidProfileId(profileId);
+    assertValidCriterionId(criterionId);
+  } catch(e) { showToast('Erreur de validation'); console.error(e); return; }
+
+  const p = getProfile(profileId);
+  const ch = p._checks[criterionId] || { checked:false, disabled:false };
+  const newVal = !ch.checked;
   // Optimistic update
-  p._checks[criterionId]={checked:newVal,disabled:false};
+  p._checks[criterionId] = { checked:newVal, disabled:false };
   renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving','Sync…');
-    await sbUpsertCheck(profileId,criterionId,newVal,false);
-    setSyncStatus('ok','✓ Synchronisé');
+    setSyncStatus('saving', 'Sync…');
+    await sbUpsert(profileId, criterionId, newVal, false);
+    setSyncStatus('ok', '✓ Sync');
   } catch(e) {
-    // Rollback
-    p._checks[criterionId]=ch;
+    p._checks[criterionId] = ch; // rollback
     renderSidebar(); renderCurrentView();
-    setSyncStatus('err','⚠ Erreur'); showToast('Erreur de synchronisation');
+    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
   }
 }
 
 function openDeleteCriterionModal(profileId, criterionId) {
-  pendingDeleteCriterion={profileId,criterionId};
+  try { assertValidProfileId(profileId); assertValidCriterionId(criterionId); }
+  catch(e) { showToast('Erreur de validation'); return; }
+  pendingDeleteCriterion = { profileId, criterionId };
   document.getElementById('modal-delete-criterion').classList.add('open');
 }
 async function confirmDeleteCriterion() {
-  if(!pendingDeleteCriterion) return;
-  const {profileId,criterionId}=pendingDeleteCriterion;
-  const p=getProfile(profileId);
-  const old=p._checks[criterionId]||{};
-  p._checks[criterionId]={checked:false,disabled:true};
+  if (!pendingDeleteCriterion) return;
+  const { profileId, criterionId } = pendingDeleteCriterion;
+  try { assertValidProfileId(profileId); assertValidCriterionId(criterionId); }
+  catch(e) { showToast('Erreur de validation'); return; }
+  const p = getProfile(profileId);
+  const old = { ...p._checks[criterionId] };
+  p._checks[criterionId] = { checked:false, disabled:true };
   closeModal('modal-delete-criterion'); renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving','Sync…');
-    await sbUpsertCheck(profileId,criterionId,false,true);
-    setSyncStatus('ok','✓ Synchronisé'); showToast('Critère désactivé');
+    setSyncStatus('saving', 'Sync…');
+    await sbUpsert(profileId, criterionId, false, true);
+    setSyncStatus('ok', '✓ Sync'); showToast('Critère désactivé');
   } catch(e) {
-    p._checks[criterionId]=old; renderSidebar(); renderCurrentView();
-    setSyncStatus('err','⚠ Erreur'); showToast('Erreur de synchronisation');
+    p._checks[criterionId] = old; renderSidebar(); renderCurrentView();
+    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
   }
 }
 async function reactivateCriterion(profileId, criterionId) {
-  const p=getProfile(profileId);
-  const old=p._checks[criterionId]||{};
-  p._checks[criterionId]={checked:false,disabled:false};
+  try { assertValidProfileId(profileId); assertValidCriterionId(criterionId); }
+  catch(e) { showToast('Erreur de validation'); return; }
+  const p = getProfile(profileId);
+  const old = { ...p._checks[criterionId] };
+  p._checks[criterionId] = { checked:false, disabled:false };
   renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving','Sync…');
-    await sbUpsertCheck(profileId,criterionId,false,false);
-    setSyncStatus('ok','✓ Synchronisé'); showToast('Critère réactivé');
+    setSyncStatus('saving', 'Sync…');
+    await sbUpsert(profileId, criterionId, false, false);
+    setSyncStatus('ok', '✓ Sync'); showToast('Critère réactivé');
   } catch(e) {
-    p._checks[criterionId]=old; renderSidebar(); renderCurrentView();
-    setSyncStatus('err','⚠ Erreur');
-  }
-}
-async function resetEval(profileId) {
-  if(!confirm('Réinitialiser toutes les cases cochées pour ce profil ?')) return;
-  const p=getProfile(profileId);
-  const old=JSON.parse(JSON.stringify(p._checks));
-  // Reset local
-  Object.keys(p._checks).forEach(k=>{ if(p._checks[k].checked) p._checks[k].checked=false; });
-  renderSidebar(); renderCurrentView();
-  try {
-    setSyncStatus('saving','Sync…');
-    // Upsert toutes les cases cochées à false
-    const checkedIds=Object.entries(old).filter(([,v])=>v.checked).map(([k])=>k);
-    await Promise.all(checkedIds.map(cid=>sbUpsertCheck(profileId,cid,false,old[cid].disabled)));
-    setSyncStatus('ok','✓ Synchronisé'); showToast('Évaluation réinitialisée');
-  } catch(e) {
-    p._checks=old; renderSidebar(); renderCurrentView();
-    setSyncStatus('err','⚠ Erreur');
+    p._checks[criterionId] = old; renderSidebar(); renderCurrentView();
+    setSyncStatus('err', '⚠ Erreur'); console.error(e);
   }
 }
 
-// ════════════════════════════════════════════════════════════════
-// EVAL INFO MODAL
-// ════════════════════════════════════════════════════════════════
-function openEvalInfoModal(profileId) {
-  const p=getProfile(profileId);
-  document.getElementById('ei-for').value=p.eval_for||p.name;
-  document.getElementById('ei-by').value=p.eval_by||'';
-  document.getElementById('ei-date').value=p.eval_date||new Date().toISOString().slice(0,10);
-  eiBoutiqueSelected=p.boutique||'';
-  eiRappelSelected=p.rappel_months||0;
-  renderBoutiqueCarousel('ei-boutique-carousel',eiBoutiqueSelected);
-  document.querySelectorAll('.rappel-chip').forEach(c=>
-    c.classList.toggle('selected',parseInt(c.dataset.val)===eiRappelSelected)
-  );
-  document.getElementById('modal-evalinfo').dataset.profileId=profileId;
-  document.getElementById('modal-evalinfo').classList.add('open');
-}
-async function saveEvalInfo() {
-  const pid=document.getElementById('modal-evalinfo').dataset.profileId;
-  const p=getProfile(pid);
-  const body={
-    eval_for:document.getElementById('ei-for').value.trim()||p.name,
-    eval_by:document.getElementById('ei-by').value.trim(),
-    boutique:eiBoutiqueSelected,
-    eval_date:document.getElementById('ei-date').value||null,
-    rappel_months:eiRappelSelected
-  };
-  // Optimistic update
-  Object.assign(p,body);
-  closeModal('modal-evalinfo'); renderSidebar(); renderCurrentView();
-  try {
-    setSyncStatus('saving','Sync…');
-    await sbPatch('eval_profiles',`?id=eq.${pid}`,body);
-    setSyncStatus('ok','✓ Synchronisé'); showToast('Informations enregistrées');
-  } catch(e) { setSyncStatus('err','⚠ Erreur'); showToast('Erreur de synchronisation'); }
-}
-
-// Valider tous les critères actifs d'un thème
 async function validateAllTheme(profileId, themeId) {
-  const p = getProfile(profileId); if (!p) return;
+  try { assertValidProfileId(profileId); }
+  catch(e) { showToast('Erreur de validation'); return; }
   const theme = THEMES.find(t => t.id === themeId); if (!theme) return;
+  const p = getProfile(profileId);
   const toCheck = theme.criteria.filter(c => {
     const ch = p._checks[c.id];
     return (!ch || !ch.disabled) && (!ch || !ch.checked);
   });
   if (!toCheck.length) return;
-  // Optimistic
-  toCheck.forEach(c => { p._checks[c.id] = { checked: true, disabled: false }; });
+  const snapshots = {};
+  toCheck.forEach(c => { snapshots[c.id] = { ...p._checks[c.id] }; p._checks[c.id] = { checked:true, disabled:false }; });
   renderSidebar(); renderCurrentView();
   try {
-    setSyncStatus('saving','Sync…');
-    await Promise.all(toCheck.map(c => sbUpsertCheck(profileId, c.id, true, false)));
-    setSyncStatus('ok','✓ Synchronisé'); showToast(`${toCheck.length} critère${toCheck.length>1?'s':''} validé${toCheck.length>1?'s':''}`);
+    setSyncStatus('saving', 'Sync…');
+    await Promise.all(toCheck.map(c => sbUpsert(profileId, c.id, true, false)));
+    setSyncStatus('ok', '✓ Sync');
+    showToast(`${toCheck.length} critère${toCheck.length>1?'s':''} validé${toCheck.length>1?'s':''}`);
   } catch(e) {
-    toCheck.forEach(c => { delete p._checks[c.id]; });
+    toCheck.forEach(c => { p._checks[c.id] = snapshots[c.id]; });
     renderSidebar(); renderCurrentView();
-    setSyncStatus('err','⚠ Erreur'); showToast('Erreur de synchronisation');
+    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
   }
 }
-function toggleAllThemes(open) { THEMES.forEach(t=>{openThemes[t.id]=open;}); renderCurrentView(); }
 
-// ════════════════════════════════════════════════════════════════
-// VIEW MANAGEMENT
-// ════════════════════════════════════════════════════════════════
-function selectProfile(id) { currentProfileId=id; setView('eval'); renderSidebar(); renderCurrentView(); }
+async function resetEval(profileId) {
+  try { assertValidProfileId(profileId); }
+  catch(e) { showToast('Erreur de validation'); return; }
+  if (!confirm('Réinitialiser toutes les cases cochées pour ce profil ?')) return;
+  const p = getProfile(profileId);
+  const snapshots = JSON.parse(JSON.stringify(p._checks));
+  const checkedIds = Object.entries(snapshots).filter(([,v]) => v.checked).map(([k]) => k);
+  checkedIds.forEach(cid => { if (p._checks[cid]) p._checks[cid].checked = false; });
+  renderSidebar(); renderCurrentView();
+  try {
+    setSyncStatus('saving', 'Sync…');
+    await Promise.all(checkedIds.map(cid => sbUpsert(profileId, cid, false, snapshots[cid].disabled)));
+    setSyncStatus('ok', '✓ Sync'); showToast('Évaluation réinitialisée');
+  } catch(e) {
+    p._checks = snapshots; renderSidebar(); renderCurrentView();
+    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EVAL INFO MODAL
+// ═══════════════════════════════════════════════════════════════
+function openEvalInfoModal(profileId) {
+  try { assertValidProfileId(profileId); } catch(e) { return; }
+  const p = getProfile(profileId);
+  document.getElementById('ei-for').value  = p.eval_for  || p.name;
+  document.getElementById('ei-by').value   = p.eval_by   || '';
+  document.getElementById('ei-date').value = p.eval_date || new Date().toISOString().slice(0,10);
+  eiBoutiqueSelected = p.boutique || '';
+  eiRappelSelected   = p.rappel_months || 0;
+  renderBoutiqueCarousel('ei-boutique-carousel', eiBoutiqueSelected);
+  document.querySelectorAll('.rappel-chip').forEach(c =>
+    c.classList.toggle('selected', parseInt(c.dataset.val) === eiRappelSelected)
+  );
+  document.getElementById('modal-evalinfo').dataset.profileId = profileId;
+  document.getElementById('modal-evalinfo').classList.add('open');
+}
+async function saveEvalInfo() {
+  const pid = document.getElementById('modal-evalinfo').dataset.profileId;
+  try { assertValidProfileId(pid); } catch(e) { showToast('Erreur de validation'); return; }
+  const p = getProfile(pid);
+  const body = {
+    eval_for:      document.getElementById('ei-for').value.trim() || p.name,
+    eval_by:       document.getElementById('ei-by').value.trim(),
+    boutique:      eiBoutiqueSelected,
+    eval_date:     document.getElementById('ei-date').value || null,
+    rappel_months: eiRappelSelected
+  };
+  const snapshot = { eval_for:p.eval_for, eval_by:p.eval_by, boutique:p.boutique, eval_date:p.eval_date, rappel_months:p.rappel_months };
+  Object.assign(p, body);
+  closeModal('modal-evalinfo'); renderSidebar(); renderCurrentView();
+  try {
+    setSyncStatus('saving', 'Sync…');
+    await sbPatch('eval_profiles', `?id=eq.${pid}`, body);
+    setSyncStatus('ok', '✓ Sync'); showToast('Informations enregistrées');
+  } catch(e) {
+    Object.assign(p, snapshot); renderSidebar(); renderCurrentView();
+    setSyncStatus('err', '⚠ Erreur'); showToast('Erreur de synchronisation'); console.error(e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// THEMES & VIEW
+// ═══════════════════════════════════════════════════════════════
+function toggleTheme(id) { openThemes[id] = openThemes[id] === false; renderCurrentView(); }
+function toggleAllThemes(open) { THEMES.forEach(t => { openThemes[t.id] = open; }); renderCurrentView(); }
+function selectProfile(id) { currentProfileId = id; setView('eval'); renderSidebar(); renderCurrentView(); }
 function setView(view) {
-  if(view==='stats'&&!statsUnlocked) {
-    document.getElementById('stats-pw-input').value='';
+  if (view === 'stats' && !statsUnlocked) {
+    document.getElementById('stats-pw-input').value = '';
     document.getElementById('modal-stats-pw').classList.add('open'); return;
   }
-  currentView=view;
-  document.getElementById('nav-eval').classList.toggle('active',view==='eval');
-  document.getElementById('nav-stats').classList.toggle('active',view==='stats');
+  currentView = view;
+  document.getElementById('nav-eval').classList.toggle('active', view==='eval');
+  document.getElementById('nav-stats').classList.toggle('active', view==='stats');
   renderCurrentView();
 }
 function renderCurrentView() {
-  document.getElementById('welcome-panel').style.display='none';
-  document.getElementById('eval-panel').style.display='none';
-  document.getElementById('stats-panel').style.display='none';
-  if(currentView==='stats') { document.getElementById('stats-panel').style.display='block'; renderStats(); }
-  else if(currentProfileId&&getProfile(currentProfileId)) { document.getElementById('eval-panel').style.display='block'; renderEval(currentProfileId); }
+  document.getElementById('welcome-panel').style.display = 'none';
+  document.getElementById('eval-panel').style.display = 'none';
+  document.getElementById('stats-panel').style.display = 'none';
+  if (currentView === 'stats') { document.getElementById('stats-panel').style.display='block'; renderStats(); }
+  else if (currentProfileId && getProfile(currentProfileId)) { document.getElementById('eval-panel').style.display='block'; renderEval(currentProfileId); }
   else { document.getElementById('welcome-panel').style.display='flex'; }
 }
 
-// ════════════════════════════════════════════════════════════════
-// UTILS
-// ════════════════════════════════════════════════════════════════
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function showToast(msg) {
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// Modal backdrop close
-document.querySelectorAll('.modal-backdrop').forEach(el=>{
-  el.addEventListener('click',e=>{if(e.target===el) el.classList.remove('open');});
+// ═══════════════════════════════════════════════════════════════
+// EVENTS
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.modal-backdrop').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
-document.getElementById('main-pw').addEventListener('keydown',e=>{if(e.key==='Enter') unlockApp();});
-document.getElementById('stats-pw-input').addEventListener('keydown',e=>{if(e.key==='Enter') unlockStats();});
+document.getElementById('main-pw').addEventListener('keydown', e => { if(e.key==='Enter') unlockApp(); });
+document.getElementById('stats-pw-input').addEventListener('keydown', e => { if(e.key==='Enter') unlockStats(); });
 </script>
 </body>
 </html>
