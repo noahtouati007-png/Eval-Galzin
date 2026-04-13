@@ -423,49 +423,95 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 
 <script>
 // ═══════════════════════════════════════════════════════
-// SUPABASE
+// SUPABASE — API REST
+// Stratégie : POST pour créer, PATCH pour modifier.
+// Pas de header "Prefer" combiné (cause d'erreurs PostgREST).
 // ═══════════════════════════════════════════════════════
 const SB_URL = 'https://fgvvfycyxulnwzttczyq.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZndnZmeWN5eHVsbnd6dHRjenlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDI2MzAsImV4cCI6MjA4OTkxODYzMH0.0-NzalmqzSpOSUofuBg-q-cBfql7xKvU101is7s4uWQ';
 const H = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'return=representation' };
 
+// Headers de base (sans Prefer — on le met au cas par cas)
+const H_BASE = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY };
+const H_READ = { ...H_BASE, 'Prefer':'return=representation' };
+const H_WRITE = { ...H_BASE, 'Prefer':'return=minimal' };
+
 const api = {
   async get(table, qs='') {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { headers:H });
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { headers:H_READ });
     if (!r.ok) throw new Error(`GET ${table} ${r.status}: ${await r.text()}`);
     return r.json();
   },
   async post(table, body) {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}`, { method:'POST', headers:H, body:JSON.stringify(body) });
+    const r = await fetch(`${SB_URL}/rest/v1/${table}`, { method:'POST', headers:H_READ, body:JSON.stringify(body) });
     if (!r.ok) throw new Error(`POST ${table} ${r.status}: ${await r.text()}`);
     return r.json();
   },
   async patch(table, qs, body) {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'PATCH', headers:H, body:JSON.stringify(body) });
+    // PATCH sans return=representation pour éviter l'erreur "multiple rows"
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'PATCH', headers:H_WRITE, body:JSON.stringify(body) });
     if (!r.ok) throw new Error(`PATCH ${table} ${r.status}: ${await r.text()}`);
-    return r.json();
   },
   async del(table, qs) {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'DELETE', headers:{...H, Prefer:'return=minimal'} });
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'DELETE', headers:H_WRITE });
     if (!r.ok) throw new Error(`DELETE ${table} ${r.status}: ${await r.text()}`);
   },
-  // Upsert avec la contrainte nommée exacte
-  async upsertCheck(profileId, criterionId, checked, disabled) {
-    const r = await fetch(`${SB_URL}/rest/v1/eval_checks`, {
-      method:'POST',
-      headers:{...H, Prefer:'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify({ profile_id:profileId, criterion_id:criterionId, checked, disabled })
-    });
-    if (!r.ok) throw new Error(`UPSERT check ${r.status}: ${await r.text()}`);
+
+  // ─── UPSERT CHECK ───────────────────────────────────────────
+  // Stratégie : PATCH si la ligne existe en mémoire, POST sinon.
+  // Évite le header Prefer combiné qui cause des erreurs PostgREST.
+  // checkExists = true si on sait que la ligne est déjà en base.
+  async saveCheck(profileId, criterionId, checked, disabled, checkExists) {
+    if (checkExists) {
+      // Mise à jour de la ligne existante
+      const r = await fetch(
+        `${SB_URL}/rest/v1/eval_checks?profile_id=eq.${profileId}&criterion_id=eq.${criterionId}`,
+        { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ checked, disabled }) }
+      );
+      if (!r.ok) throw new Error(`PATCH check ${r.status}: ${await r.text()}`);
+    } else {
+      // Insertion nouvelle ligne
+      // Si conflit (race condition entre appareils), on retente avec PATCH
+      const r = await fetch(`${SB_URL}/rest/v1/eval_checks`, {
+        method:'POST', headers:H_WRITE,
+        body:JSON.stringify({ profile_id:profileId, criterion_id:criterionId, checked, disabled })
+      });
+      if (r.status === 409) {
+        // Conflit = la ligne existe déjà (créée depuis un autre appareil) → PATCH
+        const r2 = await fetch(
+          `${SB_URL}/rest/v1/eval_checks?profile_id=eq.${profileId}&criterion_id=eq.${criterionId}`,
+          { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ checked, disabled }) }
+        );
+        if (!r2.ok) throw new Error(`PATCH check (retry) ${r2.status}: ${await r2.text()}`);
+      } else if (!r.ok) {
+        throw new Error(`POST check ${r.status}: ${await r.text()}`);
+      }
+    }
   },
-  // Upsert note (contrainte profile_unique)
-  async upsertNote(profileId, content) {
-    const r = await fetch(`${SB_URL}/rest/v1/eval_notes`, {
-      method:'POST',
-      headers:{...H, Prefer:'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify({ profile_id:profileId, content })
-    });
-    if (!r.ok) throw new Error(`UPSERT note ${r.status}: ${await r.text()}`);
+
+  // ─── UPSERT NOTE ────────────────────────────────────────────
+  async saveNote(profileId, content, noteExists) {
+    if (noteExists) {
+      const r = await fetch(
+        `${SB_URL}/rest/v1/eval_notes?profile_id=eq.${profileId}`,
+        { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ content }) }
+      );
+      if (!r.ok) throw new Error(`PATCH note ${r.status}: ${await r.text()}`);
+    } else {
+      const r = await fetch(`${SB_URL}/rest/v1/eval_notes`, {
+        method:'POST', headers:H_WRITE,
+        body:JSON.stringify({ profile_id:profileId, content })
+      });
+      if (r.status === 409) {
+        const r2 = await fetch(
+          `${SB_URL}/rest/v1/eval_notes?profile_id=eq.${profileId}`,
+          { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ content }) }
+        );
+        if (!r2.ok) throw new Error(`PATCH note (retry) ${r2.status}: ${await r2.text()}`);
+      } else if (!r.ok) {
+        throw new Error(`POST note ${r.status}: ${await r.text()}`);
+      }
+    }
   }
 };
 
@@ -887,15 +933,15 @@ async function saveNote(pid) {
   const content = ta.value;
   const p = getProfile(pid);
   if (!p) return;
+  const noteExists = !!p._note_updated; // a déjà été sauvegardée en base
   if (btn) { btn.classList.add('saving'); btn.textContent = 'Sauvegarde…'; btn.disabled = true; }
   try {
     sync('saving', 'Sync note…');
-    await api.upsertNote(pid, content);
+    await api.saveNote(pid, content, noteExists);
     p._note = content;
     p._note_updated = new Date().toISOString();
     sync('ok', '✓ Sync');
     if (btn) { btn.classList.remove('dirty','saving'); btn.textContent = 'Enregistrer'; btn.disabled = false; }
-    // Mettre à jour la date dans la meta sans re-render complet
     const meta = document.querySelector('.notes-meta');
     if (meta) meta.textContent = 'Dernière sauvegarde : ' + new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
   } catch(e) {
@@ -1060,11 +1106,15 @@ async function toggleCheck(pid, cid) {
   try { assertPid(pid); assertCid(cid); } catch(e) { showToast('Erreur validation'); return; }
   const p=getProfile(pid), ch=p._checks[cid]||{checked:false,disabled:false};
   const nv=!ch.checked;
+  // On sait si la ligne existe déjà : elle a été chargée depuis la BDD si _checks[cid] existe
+  const existed = !!p._checks[cid];
   p._checks[cid]={checked:nv,disabled:false};
   renderSidebar(); renderCurrentView();
   try {
     sync('saving','Sync…');
-    await api.upsertCheck(pid,cid,nv,false);
+    await api.saveCheck(pid,cid,nv,false,existed);
+    // Après le save, marquer comme existant pour les prochains appels
+    p._checks[cid]._inDb = true;
     sync('ok','✓ Sync');
   } catch(e) {
     p._checks[cid]=ch; renderSidebar(); renderCurrentView();
@@ -1081,11 +1131,12 @@ async function confirmDeleteCriterion() {
   const{pid,cid}=pendingDeleteCriterion;
   try{assertPid(pid);assertCid(cid);}catch(e){showToast('Erreur');return;}
   const p=getProfile(pid), old={...p._checks[cid]};
+  const existed = !!p._checks[cid];
   p._checks[cid]={checked:false,disabled:true};
   closeModal('modal-delete-criterion'); renderSidebar(); renderCurrentView();
   try {
     sync('saving','Sync…');
-    await api.upsertCheck(pid,cid,false,true);
+    await api.saveCheck(pid,cid,false,true,existed);
     sync('ok','✓ Sync'); showToast('Critère désactivé');
   } catch(e) {
     p._checks[cid]=old; renderSidebar(); renderCurrentView();
@@ -1095,11 +1146,12 @@ async function confirmDeleteCriterion() {
 async function reactivate(pid,cid) {
   try{assertPid(pid);assertCid(cid);}catch(e){showToast('Erreur');return;}
   const p=getProfile(pid), old={...p._checks[cid]};
+  const existed = !!p._checks[cid];
   p._checks[cid]={checked:false,disabled:false};
   renderSidebar(); renderCurrentView();
   try {
     sync('saving','Sync…');
-    await api.upsertCheck(pid,cid,false,false);
+    await api.saveCheck(pid,cid,false,false,existed);
     sync('ok','✓ Sync'); showToast('Critère réactivé');
   } catch(e) {
     p._checks[cid]=old; renderSidebar(); renderCurrentView();
@@ -1113,14 +1165,14 @@ async function validateAllTheme(pid,tid) {
   const todo=theme.criteria.filter(c=>{const ch=p._checks[c.id];return(!ch||!ch.disabled)&&(!ch||!ch.checked);});
   if(!todo.length)return;
   const snap={};
-  todo.forEach(c=>{snap[c.id]={...p._checks[c.id]};p._checks[c.id]={checked:true,disabled:false};});
+  todo.forEach(c=>{snap[c.id]={existed:!!p._checks[c.id],old:{...p._checks[c.id]}};p._checks[c.id]={checked:true,disabled:false};});
   renderSidebar(); renderCurrentView();
   try {
     sync('saving','Sync…');
-    await Promise.all(todo.map(c=>api.upsertCheck(pid,c.id,true,false)));
+    await Promise.all(todo.map(c=>api.saveCheck(pid,c.id,true,false,snap[c.id].existed)));
     sync('ok','✓ Sync'); showToast(`${todo.length} critère${todo.length>1?'s':''} validé${todo.length>1?'s':''}`);
   } catch(e) {
-    todo.forEach(c=>{p._checks[c.id]=snap[c.id];}); renderSidebar(); renderCurrentView();
+    todo.forEach(c=>{p._checks[c.id]=snap[c.id].old;}); renderSidebar(); renderCurrentView();
     sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
   }
 }
@@ -1133,7 +1185,8 @@ async function resetEval(pid) {
   renderSidebar(); renderCurrentView();
   try {
     sync('saving','Sync…');
-    await Promise.all(toReset.map(cid=>api.upsertCheck(pid,cid,false,snap[cid].disabled)));
+    // Ces lignes existent déjà en base (elles étaient cochées = chargées au démarrage)
+    await Promise.all(toReset.map(cid=>api.saveCheck(pid,cid,false,snap[cid].disabled,true)));
     sync('ok','✓ Sync'); showToast('Évaluation réinitialisée');
   } catch(e) {
     p._checks=snap; renderSidebar(); renderCurrentView();
