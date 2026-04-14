@@ -105,9 +105,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 .progress-section{padding:13px 18px 0}
 .progress-bar-wrap{background:var(--border);border-radius:100px;height:8px;overflow:hidden}
 .progress-bar-fill{height:100%;border-radius:100px;transition:width .4s ease;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
-.progress-markers{position:relative;height:32px;margin-top:4px}
-.progress-marker-label{position:absolute;transform:translateX(-50%);font-size:.65rem;white-space:nowrap;text-align:center;line-height:1.3;transition:color .3s}
-.progress-ends{display:flex;justify-content:space-between;font-size:.69rem;color:var(--muted);margin-top:2px}
+.progress-markers{position:relative;height:36px;margin-top:6px}
+.progress-marker-label{position:absolute;transform:translateX(-50%);font-size:.66rem;white-space:nowrap;text-align:center;line-height:1.3;transition:color .3s;top:0}
+.progress-marker-tick{position:absolute;top:-14px;transform:translateX(-50%);width:1px;height:8px;background:currentColor;opacity:.5}
+.progress-ends{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted)}
 
 /* ── ACTIONS ── */
 .eval-actions{padding:9px 18px 0;display:flex;gap:7px;flex-wrap:wrap}
@@ -301,7 +302,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
       <div class="welcome" id="welcome-panel">
         <div class="welcome-icon">🥖</div>
         <h2>Outil d'évaluation</h2>
-        <p>Créez un profil collaborateur pour démarrer une évaluation des 105 points.</p>
+        <p>Créez un profil collaborateur pour démarrer une évaluation des 103 points.</p>
       </div>
       <div id="eval-panel" style="display:none"></div>
       <div id="stats-panel" style="display:none"></div>
@@ -320,7 +321,15 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
     </div>
     <div class="form-group">
       <label class="form-label">Poste</label>
-      <input class="form-input" id="input-poste" placeholder="ex. Vendeuse" autocomplete="off" />
+      <select class="form-input" id="input-poste">
+        <option value="">— Sélectionner —</option>
+        <option value="Vendeur / Vendeuse">Vendeur / Vendeuse</option>
+        <option value="Adjoint(e) Responsable">Adjoint(e) Responsable</option>
+        <option value="Responsable">Responsable</option>
+        <option value="Manager">Manager</option>
+        <option value="Apprenti(e)">Apprenti(e)</option>
+        <option value="Autre">Autre</option>
+      </select>
     </div>
     <div class="form-group">
       <label class="form-label">Boutique</label>
@@ -329,6 +338,25 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
     <div class="form-group">
       <label class="form-label">Date d'entrée</label>
       <input class="form-input" id="input-date" type="date" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Évaluation réalisée par (manager)</label>
+      <input class="form-input" id="input-evalby" placeholder="ex. Sophie Martin" autocomplete="off" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Date de l'évaluation</label>
+      <input class="form-input" id="input-evaldate" type="date" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Prochaine évaluation dans</label>
+      <div class="rappel-chips" id="new-rappel-chips">
+        <div class="rappel-chip" data-val="1" onclick="selectNewRappel(this)">1 mois</div>
+        <div class="rappel-chip" data-val="2" onclick="selectNewRappel(this)">2 mois</div>
+        <div class="rappel-chip" data-val="3" onclick="selectNewRappel(this)">3 mois</div>
+        <div class="rappel-chip" data-val="6" onclick="selectNewRappel(this)">6 mois</div>
+        <div class="rappel-chip" data-val="12" onclick="selectNewRappel(this)">12 mois</div>
+        <div class="rappel-chip selected" data-val="0" onclick="selectNewRappel(this)">Aucun</div>
+      </div>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-new')">Annuler</button>
@@ -373,6 +401,18 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
       <input class="form-input" id="ei-for" autocomplete="off" />
     </div>
     <div class="form-group">
+      <label class="form-label">Poste</label>
+      <select class="form-input" id="ei-poste">
+        <option value="">— Sélectionner —</option>
+        <option value="Vendeur / Vendeuse">Vendeur / Vendeuse</option>
+        <option value="Adjoint(e) Responsable">Adjoint(e) Responsable</option>
+        <option value="Responsable">Responsable</option>
+        <option value="Manager">Manager</option>
+        <option value="Apprenti(e)">Apprenti(e)</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label class="form-label">Évaluée par (manager)</label>
       <input class="form-input" id="ei-by" placeholder="ex. Sophie Martin" autocomplete="off" />
     </div>
@@ -386,7 +426,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
     </div>
     <div class="form-group">
       <label class="form-label">Prochaine évaluation dans</label>
-      <div class="rappel-chips">
+      <div class="rappel-chips" id="ei-rappel-chips">
         <div class="rappel-chip" data-val="1" onclick="selectRappel(this)">1 mois</div>
         <div class="rappel-chip" data-val="2" onclick="selectRappel(this)">2 mois</div>
         <div class="rappel-chip" data-val="3" onclick="selectRappel(this)">3 mois</div>
@@ -521,13 +561,32 @@ const api = {
 const MAIN_PW = 'noix', STATS_PW = 'noix';
 
 const BOUTIQUES = [
-  'Baillargues','Balaruc','Baraqueville','Candillargues','Carnon',
-  'Castelnau-le-Lez','Eugène et Marie','Gare St Roch','Lattes',
-  'Maurin','Millau Bonald','Millau Moulin','Millau Peugeot',
-  'Millau PLR','Millau Tine','Palavas','Palavas Quai','Pérols',
-  'Pignan','Pompignane','Port Marianne','Poussan','Primaube',
-  'Rodez','Sabines','Semailles','Soriech','St Affrique Borel',
-  'St Affrique Verdun','St Éloi','St Jean','Plateforme'
+  { code:'M001', label:'Millau Moulin' },
+  { code:'M002', label:'Millau PLR' },
+  { code:'M004', label:'Millau Tine' },
+  { code:'M006', label:'Semailles' },
+  { code:'M007', label:'Balaruc' },
+  { code:'M008', label:'Pompignane' },
+  { code:'M009', label:'Palavas' },
+  { code:'M011', label:'Baillargues' },
+  { code:'M012', label:'Pérols' },
+  { code:'M013', label:'Lattes' },
+  { code:'M014', label:'Carnon' },
+  { code:'M016', label:'St Jean' },
+  { code:'M017', label:'Rodez' },
+  { code:'M018', label:'Millau Peugeot' },
+  { code:'M020', label:'St Éloi' },
+  { code:'M025', label:'Baraqueville' },
+  { code:'M026', label:'Pignan' },
+  { code:'M028', label:'Maurin' },
+  { code:'M030', label:'St Affrique Verdun' },
+  { code:'M032', label:'Port Marianne' },
+  { code:'M033', label:'Sabines' },
+  { code:'M034', label:'Poussan' },
+  { code:'M035', label:'Primaube' },
+  { code:'M036', label:'Eugène et Marie' },
+  { code:'M037', label:'Palavas Quai' },
+  { code:'M038', label:'St Affrique Borel' },
 ];
 
 const THEMES = [
@@ -544,23 +603,23 @@ const THEMES = [
     {id:'enc_10',text:'Sait remettre en banque les poches prélèvements',pts:1,f:'R'},
     {id:'enc_11',text:'Connaît la procédure en cas de ticket à annuler',pts:1,f:'R'},
     {id:'enc_12',text:'Maîtrise sa caisse, pas d\'erreur et papiers de caisse toujours impeccables',pts:1,f:'R'},
+    {id:'enc_13',text:'Connaît nos SPÉCIALITÉS (Flaunes, Fouace, Rissole, Farçou, Tielle, Pain au levain…)',pts:1,f:'J1'},
   ]},
   { id:'accueil', name:'Accueil & Vente', emoji:'😊', criteria:[
-    {id:'acc_01',text:'Connaît nos SPÉCIALITÉS (Flaunes, Fouace, Rissole, Farçou, Tielle, Pain au levain…)',pts:1,f:'J1'},
-    {id:'acc_02',text:'Connaît les phrases d\'accroche « Bonjour, Bienvenue… »',pts:1,f:'J1'},
-    {id:'acc_03',text:'Accueil téléphonique (Maison + prénom à votre service)',pts:1,f:'J1'},
-    {id:'acc_04',text:'Propose une formule ou un achat supplémentaire systématiquement (jamais « avec ça ? »)',pts:1,f:'J1'},
-    {id:'acc_05',text:'Propose la carte fidélité GRATUITÉ tout le temps',pts:1,f:'J1'},
-    {id:'acc_06',text:'Sait pratiquer le chemin client',pts:1,f:'J1'},
-    {id:'acc_07',text:'Sourire en toute circonstance, accueil chaleureux',pts:1,f:'J1'},
-    {id:'acc_08',text:'Toujours sa tenue de travail, polo ou tablier',pts:1,f:'J1'},
-    {id:'acc_09',text:'Connaît les offres supplémentaires',pts:1,f:'J1'},
-    {id:'acc_10',text:'Taux de carte fidélité ok',pts:1,f:'J1'},
-    {id:'acc_11',text:'CONNAÎT nos OFFRES ? 6 sur 8 = OUI dans la colonne',pts:1,f:'J1'},
-    {id:'acc_12',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,f:'J1'},
-    {id:'acc_13',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,f:'J1'},
-    {id:'acc_14',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,f:'J1'},
-    {id:'acc_15',text:'CHEMIN CLIENT maîtrisé à chaque passage manager',pts:5,f:'R'},
+    {id:'acc_01',text:'Connaît les phrases d\'accroche « Bonjour, Bienvenue… »',pts:1,f:'J1'},
+    {id:'acc_02',text:'Accueil téléphonique (Maison + prénom à votre service)',pts:1,f:'J1'},
+    {id:'acc_03',text:'Propose une formule ou un achat supplémentaire systématiquement (jamais « avec ça ? »)',pts:1,f:'J1'},
+    {id:'acc_04',text:'Propose la carte fidélité GRATUITÉ tout le temps',pts:1,f:'J1'},
+    {id:'acc_05',text:'Sait pratiquer le chemin client',pts:1,f:'J1'},
+    {id:'acc_06',text:'Sourire en toute circonstance, accueil chaleureux',pts:1,f:'J1'},
+    {id:'acc_07',text:'Toujours sa tenue de travail, polo ou tablier',pts:1,f:'J1'},
+    {id:'acc_08',text:'Connaît les offres supplémentaires',pts:1,f:'J1'},
+    {id:'acc_09',text:'Taux de carte fidélité ok',pts:1,f:'J1'},
+    {id:'acc_10',text:'CONNAÎT nos OFFRES ? 6 sur 8 = OUI dans la colonne',pts:1,f:'J1'},
+    {id:'acc_11',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,f:'J1'},
+    {id:'acc_11b',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,f:'J1'},
+    {id:'acc_12',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,f:'J1'},
+    {id:'acc_14',text:'CHEMIN CLIENT maîtrisé à chaque passage manager — 5 pts',pts:5,f:'R'},
   ]},
   { id:'production', name:'Production', emoji:'🥪', criteria:[
     {id:'pro_01',text:'Sait taper les « FABRIQUÉS » sur la caisse',pts:1,f:'J2'},
@@ -580,12 +639,14 @@ const THEMES = [
     {id:'ray_04',text:'Rayon snaking : plan vitrine respecté, homogénéité et rigueur',pts:1,f:'J3'},
     {id:'ray_05',text:'Dégustation en fonction de l\'heure respectée',pts:1,f:'J3'},
     {id:'ray_06',text:'À 13h30 on met les pizzas au frais (pas à l\'air libre)',pts:1,f:'J3'},
-    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres)',pts:5,f:'R'},
+    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres) — 5 pts',pts:5,f:'R'},
     {id:'ray_08',text:'Théâtralise tout : pain, pizza, viennoiserie, sandwichs pour visuel formule',pts:1,f:'R'},
   ]},
   { id:'cuisson', name:'Cuisson', emoji:'🔥', criteria:[
     {id:'cui_01',text:'Connaît PLAN PLACAGE + CUISSON affichés',pts:1,f:'J2'},
-    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise / Victoire / Pain frais',pts:1,f:'J2'},
+    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise — 1pt',pts:1,f:'J2'},
+    {id:'cui_02b',text:'Maîtrise cuisson PAIN : Victoire — 1pt',pts:1,f:'J2'},
+    {id:'cui_02c',text:'Maîtrise cuisson PAIN : Pain frais — 1pt',pts:1,f:'J2'},
     {id:'cui_03',text:'Maîtrise cuisson viennoiserie',pts:1,f:'J2'},
     {id:'cui_04',text:'Maîtrise cuisson des pizzas',pts:1,f:'J2'},
     {id:'cui_05',text:'Maîtrise cuisson pains spéciaux',pts:1,f:'J2'},
@@ -604,7 +665,7 @@ const THEMES = [
     {id:'hyg_03',text:'Connaît et applique les DLC sur les articles en rayon et dans les frigos avec rigueur',pts:1,f:'J2'},
     {id:'hyg_04',text:'Connaît le relevé de T°C sur la tablette (2 x par jour)',pts:1,f:'J2'},
     {id:'hyg_05',text:'Connaît la traçabilité sur la tablette (photo DLC) des ingrédients utilisés',pts:1,f:'J2'},
-    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable',pts:3,f:'J3'},
+    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable — 3 pts',pts:3,f:'J3'},
     {id:'hyg_07',text:'A l\'œil sur le nettoyage de zones non identifiées sur la tablette',pts:1,f:'R'},
   ]},
   { id:'fermeture', name:'Fermeture', emoji:'🔒', criteria:[
@@ -845,10 +906,14 @@ function renderEval(pid) {
   <div class="progress-section">
     <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
     <div class="progress-markers">
-      <span class="progress-marker-label" style="left:${pct70}%;color:${s>=70?'var(--gold)':'var(--muted)'}">70<br><span style="font-size:.58rem">Form.</span></span>
-      <span class="progress-marker-label" style="left:${pct85}%;color:${s>=85?'var(--gold)':'var(--muted)'}">85<br><span style="font-size:.58rem">Vend.</span></span>
+      <span class="progress-marker-label" style="left:${pct70}%;color:${s>=70?'var(--gold)':'var(--muted)'}">
+        <span class="progress-marker-tick"></span>70<br><span style="font-size:.58rem">Form.</span>
+      </span>
+      <span class="progress-marker-label" style="left:${pct85}%;color:${s>=85?'var(--gold)':'var(--muted)'}">
+        <span class="progress-marker-tick"></span>85<br><span style="font-size:.58rem">Vend.</span>
+      </span>
     </div>
-    <div class="progress-ends"><span>0</span><span style="font-weight:500;color:${s>0?'var(--gold)':'var(--muted)'}">${s} / ${MAX_SCORE} pts</span><span>${MAX_SCORE}</span></div>
+    <div class="progress-ends"><span>0 pt</span><span style="font-weight:600;color:${s>0?'var(--gold)':'var(--muted)'}">${s} / ${MAX_SCORE} pts</span><span>${MAX_SCORE} pts</span></div>
   </div>
 
   <div class="eval-actions">
@@ -1029,7 +1094,7 @@ function renderStats() {
 function renderCarousel(cid, selected) {
   const old = document.getElementById(cid);
   old.innerHTML = BOUTIQUES.map(b =>
-    `<div class="boutique-chip${b===selected?' selected':''}" data-b="${esc(b)}">${esc(b)}</div>`
+    `<div class="boutique-chip${b.label===selected?' selected':''}" data-b="${esc(b.label)}"><span style="font-size:.62rem;opacity:.55;margin-right:3px">${b.code}</span>${esc(b.label)}</div>`
   ).join('');
   const fresh = old.cloneNode(true);
   old.parentNode.replaceChild(fresh, old);
@@ -1043,7 +1108,13 @@ function renderCarousel(cid, selected) {
 }
 function selectRappel(el) {
   eiRappelSelected = parseInt(el.dataset.val)||0;
-  document.querySelectorAll('.rappel-chip').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('#modal-evalinfo .rappel-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+let newRappelSelected = 0;
+function selectNewRappel(el) {
+  newRappelSelected = parseInt(el.dataset.val)||0;
+  document.querySelectorAll('#new-rappel-chips .rappel-chip').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
 }
 
@@ -1054,7 +1125,12 @@ function openNewProfileModal() {
   document.getElementById('input-name').value='';
   document.getElementById('input-poste').value='';
   document.getElementById('input-date').value='';
+  document.getElementById('input-evalby').value='';
+  document.getElementById('input-evaldate').value=new Date().toISOString().slice(0,10);
   newBoutiqueSelected='';
+  newRappelSelected=0;
+  document.querySelectorAll('#new-rappel-chips .rappel-chip').forEach(c=>c.classList.remove('selected'));
+  document.querySelector('#new-rappel-chips [data-val="0"]')?.classList.add('selected');
   renderCarousel('new-boutique-carousel','');
   document.getElementById('modal-new').classList.add('open');
   setTimeout(()=>document.getElementById('input-name').focus(),300);
@@ -1062,15 +1138,22 @@ function openNewProfileModal() {
 async function createProfile() {
   const name=document.getElementById('input-name').value.trim();
   if(!name){showToast('Saisissez un nom');return;}
+  if(!newBoutiqueSelected){showToast('Sélectionnez une boutique');return;}
   const btn=document.getElementById('btn-create');
   btn.disabled=true; btn.textContent='Création…';
   try {
     sync('saving','Enregistrement…');
+    const evalBy = document.getElementById('input-evalby').value.trim();
+    const evalDate = document.getElementById('input-evaldate').value || new Date().toISOString().slice(0,10);
     const [created]=await api.post('eval_profiles',{
-      name, poste:document.getElementById('input-poste').value.trim(),
-      boutique:newBoutiqueSelected,
-      date_entree:document.getElementById('input-date').value||null,
-      eval_for:name, eval_by:'', eval_date:new Date().toISOString().slice(0,10), rappel_months:0
+      name,
+      poste: document.getElementById('input-poste').value,
+      boutique: newBoutiqueSelected,
+      date_entree: document.getElementById('input-date').value||null,
+      eval_for: name,
+      eval_by: evalBy,
+      eval_date: evalDate,
+      rappel_months: newRappelSelected
     });
     profiles.push({...created,_checks:{},_note:'',_note_updated:null});
     sync('ok','✓ Sync');
@@ -1201,12 +1284,15 @@ function openEvalInfoModal(pid) {
   try{assertPid(pid);}catch(e){return;}
   const p=getProfile(pid);
   document.getElementById('ei-for').value=p.eval_for||p.name;
+  document.getElementById('ei-poste').value=p.poste||'';
   document.getElementById('ei-by').value=p.eval_by||'';
   document.getElementById('ei-date').value=p.eval_date||new Date().toISOString().slice(0,10);
   eiBoutiqueSelected=p.boutique||'';
   eiRappelSelected=p.rappel_months||0;
   renderCarousel('ei-boutique-carousel',eiBoutiqueSelected);
-  document.querySelectorAll('.rappel-chip').forEach(c=>c.classList.toggle('selected',parseInt(c.dataset.val)===eiRappelSelected));
+  document.querySelectorAll('#ei-rappel-chips .rappel-chip').forEach(c=>
+    c.classList.toggle('selected',parseInt(c.dataset.val)===eiRappelSelected)
+  );
   document.getElementById('modal-evalinfo').dataset.pid=pid;
   document.getElementById('modal-evalinfo').classList.add('open');
 }
@@ -1215,13 +1301,14 @@ async function saveEvalInfo() {
   try{assertPid(pid);}catch(e){showToast('Erreur');return;}
   const p=getProfile(pid);
   const body={
-    eval_for:document.getElementById('ei-for').value.trim()||p.name,
-    eval_by:document.getElementById('ei-by').value.trim(),
-    boutique:eiBoutiqueSelected,
+    eval_for: document.getElementById('ei-for').value.trim()||p.name,
+    poste:    document.getElementById('ei-poste').value,
+    eval_by:  document.getElementById('ei-by').value.trim(),
+    boutique: eiBoutiqueSelected,
     eval_date:document.getElementById('ei-date').value||null,
     rappel_months:eiRappelSelected
   };
-  const snap={eval_for:p.eval_for,eval_by:p.eval_by,boutique:p.boutique,eval_date:p.eval_date,rappel_months:p.rappel_months};
+  const snap={eval_for:p.eval_for,poste:p.poste,eval_by:p.eval_by,boutique:p.boutique,eval_date:p.eval_date,rappel_months:p.rappel_months};
   Object.assign(p,body);
   closeModal('modal-evalinfo'); renderSidebar(); renderCurrentView();
   try {
