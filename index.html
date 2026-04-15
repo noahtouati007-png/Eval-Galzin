@@ -228,6 +228,33 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
+  /* ── RADAR SVG ── */
+  .radar-wrap{display:flex;justify-content:center;padding:4px 0 12px}
+
+  /* ── HISTORIQUE ── */
+  .history-section{margin:0 18px 40px}
+  .history-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--dark);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+  .history-empty{text-align:center;color:var(--muted);font-size:.84rem;padding:24px;background:var(--warm-white);border-radius:12px;border:1px solid var(--border)}
+  .history-card{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;box-shadow:var(--shadow)}
+  .history-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+  .history-card-date{font-weight:600;font-size:.88rem;color:var(--dark)}
+  .history-card-meta{font-size:.73rem;color:var(--muted)}
+  .history-card-score{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--gold)}
+  .history-bars{display:flex;flex-direction:column;gap:4px}
+  .history-bar-row{display:flex;align-items:center;gap:7px;font-size:.68rem;color:var(--muted)}
+  .history-bar-label{width:68px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .history-bar-track{flex:1;background:var(--border);border-radius:100px;height:4px;overflow:hidden}
+  .history-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+  .history-bar-val{width:26px;flex-shrink:0;text-align:right;font-weight:500;color:var(--gold)}
+  .history-delete{background:transparent;border:none;color:var(--border);cursor:pointer;font-size:.8rem;padding:3px 6px;border-radius:4px;transition:color .15s;flex-shrink:0}
+  .history-delete:hover{color:var(--red-soft)!important}
+  .btn-pdf{background:var(--dark)!important;color:var(--gold-light)!important;border-color:var(--dark)!important}
+  .btn-snap{background:var(--green-soft)!important;color:white!important;border-color:var(--green-soft)!important}
+  .radars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:28px}
+  .radar-card{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:14px;box-shadow:var(--shadow);text-align:center}
+  .radar-card-name{font-size:.82rem;font-weight:600;color:var(--dark);margin-bottom:6px}
+  @media(min-width:1025px){.history-section{margin-left:28px;margin-right:28px}}
+
 /* ── RESPONSIVE MOBILE ── */
 @media(max-width:768px){
   .hamburger{display:flex}
@@ -619,7 +646,7 @@ const THEMES = [
     {id:'acc_11',text:'Connaît les prix : Baguette, 3 pâtisseries, Viennoiserie',pts:1,f:'J1'},
     {id:'acc_11b',text:'Connaît les prix : Formule sandwich, Formule salade, Pains spéciaux',pts:1,f:'J1'},
     {id:'acc_12',text:'Connaît les prix : 3 traiteurs, Petit déj, Formule 5.50€',pts:1,f:'J1'},
-    {id:'acc_14',text:'CHEMIN CLIENT maîtrisé à chaque passage manager',pts:5,f:'R'},
+    {id:'acc_14',text:'CHEMIN CLIENT maîtrisé à chaque passage manager — 5 pts',pts:5,f:'R'},
   ]},
   { id:'production', name:'Production', emoji:'🥪', criteria:[
     {id:'pro_01',text:'Sait taper les « FABRIQUÉS » sur la caisse',pts:1,f:'J2'},
@@ -639,14 +666,14 @@ const THEMES = [
     {id:'ray_04',text:'Rayon snaking : plan vitrine respecté, homogénéité et rigueur',pts:1,f:'J3'},
     {id:'ray_05',text:'Dégustation en fonction de l\'heure respectée',pts:1,f:'J3'},
     {id:'ray_06',text:'À 13h30 on met les pizzas au frais (pas à l\'air libre)',pts:1,f:'J3'},
-    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres)',pts:5,f:'R'},
+    {id:'ray_07',text:'Vitrine impeccable (tartes nappées, étiquetées, toujours propres) — 5 pts',pts:5,f:'R'},
     {id:'ray_08',text:'Théâtralise tout : pain, pizza, viennoiserie, sandwichs pour visuel formule',pts:1,f:'R'},
   ]},
   { id:'cuisson', name:'Cuisson', emoji:'🔥', criteria:[
     {id:'cui_01',text:'Connaît PLAN PLACAGE + CUISSON affichés',pts:1,f:'J2'},
-    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise',pts:1,f:'J2'},
-    {id:'cui_02b',text:'Maîtrise cuisson PAIN : Victoire',pts:1,f:'J2'},
-    {id:'cui_02c',text:'Maîtrise cuisson PAIN : Pain frais',pts:1,f:'J2'},
+    {id:'cui_02',text:'Maîtrise cuisson PAIN : Millavoise — 1pt',pts:1,f:'J2'},
+    {id:'cui_02b',text:'Maîtrise cuisson PAIN : Victoire — 1pt',pts:1,f:'J2'},
+    {id:'cui_02c',text:'Maîtrise cuisson PAIN : Pain frais — 1pt',pts:1,f:'J2'},
     {id:'cui_03',text:'Maîtrise cuisson viennoiserie',pts:1,f:'J2'},
     {id:'cui_04',text:'Maîtrise cuisson des pizzas',pts:1,f:'J2'},
     {id:'cui_05',text:'Maîtrise cuisson pains spéciaux',pts:1,f:'J2'},
@@ -665,7 +692,7 @@ const THEMES = [
     {id:'hyg_03',text:'Connaît et applique les DLC sur les articles en rayon et dans les frigos avec rigueur',pts:1,f:'J2'},
     {id:'hyg_04',text:'Connaît le relevé de T°C sur la tablette (2 x par jour)',pts:1,f:'J2'},
     {id:'hyg_05',text:'Connaît la traçabilité sur la tablette (photo DLC) des ingrédients utilisés',pts:1,f:'J2'},
-    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable',pts:3,f:'J3'},
+    {id:'hyg_06',text:'Garde une hygiène boutique irréprochable — 3 pts',pts:3,f:'J3'},
     {id:'hyg_07',text:'A l\'œil sur le nettoyage de zones non identifiées sur la tablette',pts:1,f:'R'},
   ]},
   { id:'fermeture', name:'Fermeture', emoji:'🔒', criteria:[
@@ -764,10 +791,11 @@ function assertCid(cid) {
 async function loadAll() {
   try {
     sync('saving', 'Chargement…');
-    const [profs, checks, notes] = await Promise.all([
+    const [profs, checks, notes, history] = await Promise.all([
       api.get('eval_profiles', '?order=created_at.asc'),
       api.get('eval_checks', '?select=profile_id,criterion_id,checked,disabled'),
-      api.get('eval_notes', '?select=profile_id,content,updated_at')
+      api.get('eval_notes', '?select=profile_id,content,updated_at'),
+      api.get('eval_history', '?select=id,profile_id,eval_date,eval_by,boutique,score,max_score,checks,note&order=eval_date.desc')
     ]);
     // Index checks par profil (ignorer les criterion_id orphelins)
     const chByProf = {};
@@ -780,13 +808,21 @@ async function loadAll() {
     const noteByProf = {};
     for (const n of notes) noteByProf[n.profile_id] = { content:n.content||'', updated_at:n.updated_at };
 
+    // Index historique par profil
+    const histByProf = {};
+    for (const h of history) {
+      if (!histByProf[h.profile_id]) histByProf[h.profile_id] = [];
+      histByProf[h.profile_id].push(h);
+    }
+
     profiles = profs.map(p => ({
       id:p.id, name:p.name, poste:p.poste||'', boutique:p.boutique||'',
       date_entree:p.date_entree||'', eval_for:p.eval_for||p.name,
       eval_by:p.eval_by||'', eval_date:p.eval_date||'', rappel_months:p.rappel_months||0,
       _checks: chByProf[p.id] || {},
       _note: noteByProf[p.id]?.content || '',
-      _note_updated: noteByProf[p.id]?.updated_at || null
+      _note_updated: noteByProf[p.id]?.updated_at || null,
+      _history: histByProf[p.id] || []
     }));
     sync('ok', '✓ Sync');
     renderSidebar(); renderCurrentView();
@@ -920,6 +956,8 @@ function renderEval(pid) {
     <button class="btn-action" onclick="toggleAllThemes(true)">▼ Tout ouvrir</button>
     <button class="btn-action" onclick="toggleAllThemes(false)">▲ Tout fermer</button>
     <button class="btn-action" onclick="resetEval('${pid}')">↺ Réinit.</button>
+    <button class="btn-action btn-snap" onclick="saveSnapshot('${pid}')">📸 Sauvegarder snapshot</button>
+    <button class="btn-action btn-pdf" onclick="exportPDF('${pid}')">⬇ Export PDF</button>
   </div>
   <div class="themes-container">`;
 
@@ -976,6 +1014,9 @@ function renderEval(pid) {
     >${esc(p._note)}</textarea>
     <div class="notes-meta">${noteUpdated ? `Dernière sauvegarde : ${noteUpdated}` : 'Aucune note enregistrée'}</div>
   </div>`;
+
+  // Section historique
+  html += renderHistorySection(p);
 
   document.getElementById('eval-panel').innerHTML = html;
 }
@@ -1044,6 +1085,26 @@ function renderStats() {
   });
   const sorted = Object.keys(byBoutique).sort((a,b)=>a.localeCompare(b,'fr'));
   let html = `<div class="stats-view"><div class="stats-title">Tableau de bord</div>`;
+
+  // ── Radars réseau par boutique ──
+  html += `<div class="stats-title" style="font-size:1rem;margin-bottom:12px">🕸 Radar par boutique</div><div class="radars-grid">`;
+  const boutiques_list = [...new Set(profiles.map(p => p.boutique || '— Non définie'))].sort((a,b)=>a.localeCompare(b,'fr'));
+  boutiques_list.forEach(b => {
+    const bps = profiles.filter(p => (p.boutique||'— Non définie') === b);
+    const themeData = THEMES.map(t => {
+      const avgS = bps.reduce((acc,p) => acc + t.criteria.reduce((a,c) => {
+        const ch=p._checks[c.id]; if(ch&&ch.disabled)return a; if(ch&&ch.checked)return a+c.pts; return a;
+      },0), 0) / bps.length;
+      const m = t.criteria.reduce((a,c)=>a+c.pts,0);
+      return { name:t.name, emoji:t.emoji, s:avgS, m };
+    });
+    const radarSVG = buildRadarSVG(themeData, 160);
+    html += `<div class="radar-card">
+      <div class="radar-card-name">🏪 ${esc(b)}<br><span style="font-weight:400;font-size:.72rem;color:var(--muted)">${bps.length} pers.</span></div>
+      <div class="radar-wrap">${radarSVG}</div>
+    </div>`;
+  });
+  html += `</div>`;
   sorted.forEach(b => {
     const bps = byBoutique[b];
     const avg = bps.reduce((a,p)=>a+score(p),0)/bps.length;
@@ -1319,6 +1380,269 @@ async function saveEvalInfo() {
     Object.assign(p,snap); renderSidebar(); renderCurrentView();
     sync('err','⚠ Erreur'); showToast('Erreur synchronisation'); console.error(e);
   }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// HISTORIQUE — renderHistorySection
+// ═══════════════════════════════════════════════════════
+function renderHistorySection(p) {
+  const hist = p._history || [];
+  let html = `<div class="history-section">
+    <div class="history-title">
+      <span>📅 Historique des évaluations (${hist.length})</span>
+    </div>`;
+
+  if (!hist.length) {
+    html += `<div class="history-empty">Aucun snapshot enregistré.<br>Cliquez sur <strong>📸 Sauvegarder snapshot</strong> pour archiver l'état actuel.</div>`;
+  } else {
+    hist.forEach(h => {
+      const lv = getLevel(h.score);
+      const pct = h.max_score > 0 ? (h.score / h.max_score * 100) : 0;
+      const date = h.eval_date ? new Date(h.eval_date + 'T00:00:00').toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'}) : '—';
+      const checksObj = h.checks || {};
+
+      // Scores par thème depuis le snapshot
+      const themeScores = THEMES.map(t => {
+        const s = t.criteria.reduce((acc,c) => acc + (checksObj[c.id] ? c.pts : 0), 0);
+        const m = t.criteria.reduce((acc,c) => acc + c.pts, 0);
+        return { name: t.name, emoji: t.emoji, s, m };
+      });
+
+      html += `<div class="history-card">
+        <div class="history-card-header">
+          <div>
+            <div class="history-card-date">${date}</div>
+            <div class="history-card-meta">
+              ${h.eval_by ? `Par ${esc(h.eval_by)}` : ''}
+              ${h.boutique ? ` · ${esc(h.boutique)}` : ''}
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div>
+              <div class="history-card-score">${h.score}<span style="font-size:.75rem;font-family:'DM Sans',sans-serif;color:var(--muted)">/${h.max_score}</span></div>
+              <div style="font-size:.68rem;text-align:center"><span class="profile-badge ${lv.badgeCls}" style="font-size:.65rem">${lv.label}</span></div>
+            </div>
+            <button class="history-delete" onclick="deleteSnapshot('${p.id}','${h.id}')" title="Supprimer ce snapshot">🗑</button>
+          </div>
+        </div>
+        <div class="history-bars">
+          ${themeScores.map(t => `
+          <div class="history-bar-row">
+            <span class="history-bar-label">${t.emoji} ${t.name}</span>
+            <div class="history-bar-track"><div class="history-bar-fill" style="width:${t.m>0?(t.s/t.m*100).toFixed(0):0}%"></div></div>
+            <span class="history-bar-val">${t.s}</span>
+          </div>`).join('')}
+        </div>
+        ${h.note ? `<div style="margin-top:8px;font-size:.78rem;color:var(--muted);font-style:italic;border-top:1px solid var(--border);padding-top:7px">${esc(h.note)}</div>` : ''}
+      </div>`;
+    });
+  }
+  html += `</div>`;
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// SNAPSHOT — sauvegarder l'état actuel
+// ═══════════════════════════════════════════════════════
+async function saveSnapshot(pid) {
+  try { assertPid(pid); } catch(e) { return; }
+  const p = getProfile(pid);
+  const s = score(p);
+  const m = maxPts(p);
+  // Construire le checks dict {criterionId: boolean}
+  const checksDict = {};
+  THEMES.forEach(t => t.criteria.forEach(c => {
+    const ch = p._checks[c.id];
+    checksDict[c.id] = !!(ch && ch.checked && !ch.disabled);
+  }));
+  const body = {
+    profile_id: pid,
+    eval_date: p.eval_date || new Date().toISOString().slice(0,10),
+    eval_by: p.eval_by || '',
+    boutique: p.boutique || '',
+    score: s,
+    max_score: m,
+    checks: checksDict,
+    note: p._note || ''
+  };
+  try {
+    sync('saving', 'Snapshot…');
+    const [created] = await api.post('eval_history', body);
+    p._history = [created, ...(p._history || [])];
+    sync('ok', '✓ Sync');
+    showToast('Snapshot enregistré ✓');
+    renderCurrentView();
+  } catch(e) {
+    sync('err', '⚠ Erreur'); showToast('Erreur sauvegarde snapshot'); console.error(e);
+  }
+}
+
+async function deleteSnapshot(pid, snapshotId) {
+  if (!confirm('Supprimer ce snapshot ?')) return;
+  const p = getProfile(pid); if(!p) return;
+  const old = [...p._history];
+  p._history = p._history.filter(h => h.id !== snapshotId);
+  renderCurrentView();
+  try {
+    sync('saving', 'Suppression…');
+    await api.del('eval_history', `?id=eq.${snapshotId}`);
+    sync('ok', '✓ Sync'); showToast('Snapshot supprimé');
+  } catch(e) {
+    p._history = old; renderCurrentView();
+    sync('err', '⚠ Erreur'); showToast('Erreur suppression'); console.error(e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// EXPORT PDF — génération côté client via window.print
+// ═══════════════════════════════════════════════════════
+function exportPDF(pid) {
+  try { assertPid(pid); } catch(e) { return; }
+  const p = getProfile(pid);
+  const s = score(p), m = maxPts(p), lv = getLevel(s);
+  const evalDate = p.eval_date ? new Date(p.eval_date+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+
+  const themeRows = THEMES.map(t => {
+    let ts=0, tm=0, tc=0, ta=0;
+    t.criteria.forEach(c => {
+      const ch = p._checks[c.id];
+      if(!ch||!ch.disabled){tm+=c.pts;ta++;}
+      if(ch&&ch.checked&&!ch.disabled){ts+=c.pts;tc++;}
+    });
+    const pct = tm>0?(ts/tm*100):0;
+    const bar = `<div style="width:100%;background:#E2D5BC;border-radius:4px;height:6px;margin-top:3px"><div style="width:${pct.toFixed(0)}%;background:linear-gradient(90deg,#C8963E,#E8B96B);height:6px;border-radius:4px"></div></div>`;
+    return `<tr>
+      <td style="padding:7px 10px;font-size:12px;color:#4A3F2F">${t.emoji} ${t.name}</td>
+      <td style="padding:7px 10px;text-align:center;font-weight:600;color:#C8963E;font-size:13px">${ts}/${tm}</td>
+      <td style="padding:7px 10px;width:40%">${bar}</td>
+    </tr>`;
+  }).join('');
+
+  const checkedCriteria = THEMES.flatMap(t => t.criteria.filter(c => {
+    const ch = p._checks[c.id];
+    return ch && ch.checked && !ch.disabled;
+  }).map(c => `<li style="font-size:11px;color:#4A3F2F;margin-bottom:2px">${c.text}</li>`)).join('');
+
+  const missedCriteria = THEMES.flatMap(t => t.criteria.filter(c => {
+    const ch = p._checks[c.id];
+    return (!ch || !ch.checked) && (!ch || !ch.disabled);
+  }).map(c => `<li style="font-size:11px;color:#8C7B5E;margin-bottom:2px">${c.text}</li>`)).join('');
+
+  const html = `<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8">
+<title>Évaluation — ${p.name}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:white; color:#1C1810; padding:20px; }
+  @media print { body { padding:0; } @page { margin:15mm; } }
+  .header { background:#1C1810; color:#E8B96B; padding:20px 24px; border-radius:8px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; }
+  .brand { font-family:'DM Serif Display',serif; font-size:22px; }
+  .sub { font-size:11px; color:#8C7B5E; margin-top:2px; }
+  .score-box { background:#C8963E; color:white; padding:10px 20px; border-radius:8px; text-align:center; }
+  .score-num { font-family:'DM Serif Display',serif; font-size:28px; line-height:1; }
+  .score-sub { font-size:10px; opacity:.8; }
+  .level-badge { display:inline-block; margin-top:6px; font-size:9px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:${lv.cls==='level-formation'?'#7F1D1D':lv.cls==='level-vendeur'?'#78350F':'#064E3B'}; color:${lv.cls==='level-formation'?'#FEE2E2':lv.cls==='level-vendeur'?'#FEF3C7':'#D1FAE5'}; }
+  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+  .info-box { background:#FAF7F2; border:1px solid #E2D5BC; border-radius:8px; padding:10px 14px; }
+  .info-label { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:#8C7B5E; margin-bottom:2px; }
+  .info-val { font-size:13px; color:#1C1810; font-weight:500; }
+  h2 { font-family:'DM Serif Display',serif; font-size:14px; color:#1C1810; margin:16px 0 8px; padding-bottom:4px; border-bottom:1px solid #E2D5BC; }
+  table { width:100%; border-collapse:collapse; }
+  tr:nth-child(even) { background:#FAF7F2; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px; }
+  ul { list-style:none; padding:0; }
+  .note-box { background:#FAF7F2; border-left:3px solid #C8963E; padding:10px 14px; border-radius:4px; font-size:12px; color:#4A3F2F; line-height:1.6; white-space:pre-wrap; }
+  .footer { margin-top:24px; padding-top:12px; border-top:1px solid #E2D5BC; font-size:10px; color:#8C7B5E; display:flex; justify-content:space-between; }
+</style>
+</head><body>
+<div class="header">
+  <div>
+    <div class="brand">Galzin</div>
+    <div class="sub">Évaluation Poste — Document interne</div>
+  </div>
+  <div class="score-box">
+    <div class="score-num">${s}</div>
+    <div class="score-sub">/ ${m} pts</div>
+    <div class="level-badge">${lv.label}</div>
+  </div>
+</div>
+
+<div class="info-grid">
+  <div class="info-box"><div class="info-label">Collaborateur(trice)</div><div class="info-val">${esc(p.name)}</div></div>
+  <div class="info-box"><div class="info-label">Poste</div><div class="info-val">${esc(p.poste||'—')}</div></div>
+  <div class="info-box"><div class="info-label">Boutique</div><div class="info-val">${esc(p.boutique||'—')}</div></div>
+  <div class="info-box"><div class="info-label">Date d'évaluation</div><div class="info-val">${evalDate}</div></div>
+  <div class="info-box"><div class="info-label">Évalué(e) par</div><div class="info-val">${esc(p.eval_by||'—')}</div></div>
+  <div class="info-box"><div class="info-label">Prochaine éval.</div><div class="info-val">${p.rappel_months ? 'Dans ' + p.rappel_months + ' mois' : '—'}</div></div>
+</div>
+
+<h2>Résultats par thème</h2>
+<table>${themeRows}</table>
+
+<div class="two-col">
+  <div>
+    <h2>✓ Points validés</h2>
+    <ul>${checkedCriteria || '<li style="font-size:11px;color:#8C7B5E">Aucun critère validé</li>'}</ul>
+  </div>
+  <div>
+    <h2>✗ Points à travailler</h2>
+    <ul>${missedCriteria || '<li style="font-size:11px;color:#4A8C5C">Tous les critères sont validés !</li>'}</ul>
+  </div>
+</div>
+
+${p._note ? `<h2>Notes du manager</h2><div class="note-box">${esc(p._note)}</div>` : ''}
+
+<div class="footer">
+  <span>Galzin — Outil d'Évaluation Poste</span>
+  <span>Généré le ${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}</span>
+</div>
+</body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 800);
+}
+
+// ═══════════════════════════════════════════════════════
+// RADAR SVG — génère un radar pour un profil
+// ═══════════════════════════════════════════════════════
+function buildRadarSVG(themeData, size=180) {
+  const cx = size/2, cy = size/2, r = size*0.36;
+  const n = themeData.length;
+  const pts = themeData.map((t,i) => {
+    const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+    const pct = t.m > 0 ? t.s/t.m : 0;
+    return { x: cx + r * pct * Math.cos(angle), y: cy + r * pct * Math.sin(angle), angle, pct, ...t };
+  });
+  const gridPts = [0.25,0.5,0.75,1].map(scale => 
+    themeData.map((_,i) => {
+      const a = (i/n)*Math.PI*2 - Math.PI/2;
+      return `${cx+r*scale*Math.cos(a)},${cy+r*scale*Math.sin(a)}`;
+    }).join(' ')
+  );
+  const axisPts = themeData.map((_,i) => {
+    const a = (i/n)*Math.PI*2 - Math.PI/2;
+    return `<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#E2D5BC" stroke-width="0.8"/>`;
+  }).join('');
+  const dataPath = pts.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')+'Z';
+  const labels = pts.map(p => {
+    const lx = cx + (r+14)*Math.cos(p.angle);
+    const ly = cy + (r+14)*Math.sin(p.angle);
+    const anchor = p.angle > -Math.PI/2 - 0.3 && p.angle < Math.PI/2 + 0.3 ? 
+      (p.angle < -Math.PI/2+0.3 ? 'middle' : p.x > cx ? 'start' : 'end') : 
+      (p.x > cx ? 'start' : p.x < cx ? 'end' : 'middle');
+    return `<text x="${lx.toFixed(1)}" y="${(ly+3).toFixed(1)}" text-anchor="${anchor}" font-size="7" font-family="DM Sans,sans-serif" fill="#8C7B5E">${p.emoji}</text>`;
+  }).join('');
+  const grids = gridPts.map(g => `<polygon points="${g}" fill="none" stroke="#E2D5BC" stroke-width="0.5"/>`).join('');
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    ${grids}${axisPts}
+    <polygon points="${pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}" fill="#C8963E" fill-opacity="0.18" stroke="#C8963E" stroke-width="1.5"/>
+    ${labels}
+  </svg>`;
 }
 
 // ═══════════════════════════════════════════════════════
