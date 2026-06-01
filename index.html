@@ -488,65 +488,132 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--cream);c
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script type="module">
 // ═══════════════════════════════════════════════════════
-// SUPABASE — nouveau projet gratuit
-// URL : https://osorbzvwlxgqgktdoipj.supabase.co
-// Stratégie : POST pour créer, PATCH pour modifier.
+// FIREBASE FIRESTORE — gratuit à vie, sync temps réel
+// Plan Spark : 50k lectures/jour, 20k écritures/jour
 // ═══════════════════════════════════════════════════════
-const SB_URL = 'https://osorbzvwlxgqgktdoipj.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zb3JienZ3bHhncWdrdGRvaXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMDgwMDEsImV4cCI6MjA5NTg4NDAwMX0.fU1VwCcnE-EuqyoRC8kaK5tZp-MKg3ACENOIXeR76WI';
-const H_READ  = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'return=representation' };
-const H_WRITE = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'return=minimal' };
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import {
+  getFirestore, collection, doc,
+  getDocs, getDoc, addDoc, setDoc, updateDoc, deleteDoc,
+  query, orderBy, where, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDKcbJdRdnuvmXi_579HXtp1BxCoI87Isc",
+  authDomain: "galzin-eval.firebaseapp.com",
+  projectId: "galzin-eval",
+  storageBucket: "galzin-eval.firebasestorage.app",
+  messagingSenderId: "946333593114",
+  appId: "1:946333593114:web:71a11333c9e33644c0aba3"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+
+// Collections Firestore
+const COL_PROFILES = 'eval_profiles';
+const COL_CHECKS   = 'eval_checks';
+const COL_NOTES    = 'eval_notes';
+const COL_HISTORY  = 'eval_history';
 
 const api = {
-  async get(table, qs='') {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { headers:H_READ });
-    if (!r.ok) throw new Error(`GET ${table} ${r.status}: ${await r.text()}`);
-    return r.json();
+  // ── Chargement complet ──────────────────────────────
+  async loadAll() {
+    const [profSnap, checkSnap, noteSnap, histSnap] = await Promise.all([
+      getDocs(query(collection(db, COL_PROFILES), orderBy('created_at', 'asc'))),
+      getDocs(collection(db, COL_CHECKS)),
+      getDocs(collection(db, COL_NOTES)),
+      getDocs(query(collection(db, COL_HISTORY), orderBy('eval_date', 'desc')))
+    ]);
+
+    const chByProf = {};
+    checkSnap.forEach(d => {
+      const c = d.data();
+      if (!VALID_IDS.has(c.criterion_id)) return;
+      if (!chByProf[c.profile_id]) chByProf[c.profile_id] = {};
+      chByProf[c.profile_id][c.criterion_id] = { checked:!!c.checked, disabled:!!c.disabled };
+    });
+
+    const noteByProf = {};
+    noteSnap.forEach(d => { noteByProf[d.data().profile_id] = d.data(); });
+
+    const histByProf = {};
+    histSnap.forEach(d => {
+      const h = { id: d.id, ...d.data() };
+      if (!histByProf[h.profile_id]) histByProf[h.profile_id] = [];
+      histByProf[h.profile_id].push(h);
+    });
+
+    const profiles = [];
+    profSnap.forEach(d => {
+      const p = { id: d.id, ...d.data() };
+      profiles.push({
+        id: p.id, name: p.name||'', poste: p.poste||'', boutique: p.boutique||'',
+        date_entree: p.date_entree||'', eval_for: p.eval_for||p.name,
+        eval_by: p.eval_by||'', eval_date: p.eval_date||'', rappel_months: p.rappel_months||0,
+        _checks: chByProf[p.id] || {},
+        _note: noteByProf[p.id]?.content || '',
+        _note_updated: noteByProf[p.id]?.updated_at || null,
+        _history: histByProf[p.id] || []
+      });
+    });
+    return profiles;
   },
-  async post(table, body) {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}`, { method:'POST', headers:H_READ, body:JSON.stringify(body) });
-    if (!r.ok) throw new Error(`POST ${table} ${r.status}: ${await r.text()}`);
-    return r.json();
+
+  // ── Profils ──────────────────────────────────────────
+  async createProfile(data) {
+    const ref = await addDoc(collection(db, COL_PROFILES), {
+      ...data, created_at: new Date().toISOString()
+    });
+    return { id: ref.id, ...data };
   },
-  async patch(table, qs, body) {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'PATCH', headers:H_WRITE, body:JSON.stringify(body) });
-    if (!r.ok) throw new Error(`PATCH ${table} ${r.status}: ${await r.text()}`);
+  async updateProfile(id, data) {
+    await updateDoc(doc(db, COL_PROFILES, id), data);
   },
-  async del(table, qs) {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${qs}`, { method:'DELETE', headers:H_WRITE });
-    if (!r.ok) throw new Error(`DELETE ${table} ${r.status}: ${await r.text()}`);
+  async deleteProfile(id) {
+    // Supprimer en cascade : checks, note, historique
+    const [checkSnap, noteSnap, histSnap] = await Promise.all([
+      getDocs(query(collection(db, COL_CHECKS),  where('profile_id','==',id))),
+      getDocs(query(collection(db, COL_NOTES),   where('profile_id','==',id))),
+      getDocs(query(collection(db, COL_HISTORY), where('profile_id','==',id)))
+    ]);
+    const dels = [];
+    checkSnap.forEach(d => dels.push(deleteDoc(d.ref)));
+    noteSnap.forEach(d  => dels.push(deleteDoc(d.ref)));
+    histSnap.forEach(d  => dels.push(deleteDoc(d.ref)));
+    dels.push(deleteDoc(doc(db, COL_PROFILES, id)));
+    await Promise.all(dels);
   },
-  async saveCheck(profileId, criterionId, checked, disabled, existed) {
-    if (existed) {
-      const r = await fetch(`${SB_URL}/rest/v1/eval_checks?profile_id=eq.${profileId}&criterion_id=eq.${criterionId}`,
-        { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ checked, disabled }) });
-      if (!r.ok) throw new Error(`PATCH check ${r.status}: ${await r.text()}`);
-    } else {
-      const r = await fetch(`${SB_URL}/rest/v1/eval_checks`,
-        { method:'POST', headers:H_WRITE, body:JSON.stringify({ profile_id:profileId, criterion_id:criterionId, checked, disabled }) });
-      if (r.status === 409) {
-        const r2 = await fetch(`${SB_URL}/rest/v1/eval_checks?profile_id=eq.${profileId}&criterion_id=eq.${criterionId}`,
-          { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ checked, disabled }) });
-        if (!r2.ok) throw new Error(`PATCH check retry ${r2.status}: ${await r2.text()}`);
-      } else if (!r.ok) throw new Error(`POST check ${r.status}: ${await r.text()}`);
-    }
+
+  // ── Checks ───────────────────────────────────────────
+  async saveCheck(profileId, criterionId, checked, disabled) {
+    // Utiliser un ID déterministe pour éviter les doublons
+    const docId = `${profileId}_${criterionId}`;
+    await setDoc(doc(db, COL_CHECKS, docId), {
+      profile_id: profileId, criterion_id: criterionId, checked, disabled
+    });
   },
-  async saveNote(profileId, content, existed) {
-    if (existed) {
-      const r = await fetch(`${SB_URL}/rest/v1/eval_notes?profile_id=eq.${profileId}`,
-        { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ content }) });
-      if (!r.ok) throw new Error(`PATCH note ${r.status}: ${await r.text()}`);
-    } else {
-      const r = await fetch(`${SB_URL}/rest/v1/eval_notes`,
-        { method:'POST', headers:H_WRITE, body:JSON.stringify({ profile_id:profileId, content }) });
-      if (r.status === 409) {
-        const r2 = await fetch(`${SB_URL}/rest/v1/eval_notes?profile_id=eq.${profileId}`,
-          { method:'PATCH', headers:H_WRITE, body:JSON.stringify({ content }) });
-        if (!r2.ok) throw new Error(`PATCH note retry ${r2.status}: ${await r2.text()}`);
-      } else if (!r.ok) throw new Error(`POST note ${r.status}: ${await r.text()}`);
-    }
+
+  // ── Notes ────────────────────────────────────────────
+  async saveNote(profileId, content) {
+    const docId = `note_${profileId}`;
+    await setDoc(doc(db, COL_NOTES, docId), {
+      profile_id: profileId, content,
+      updated_at: new Date().toISOString()
+    });
+  },
+
+  // ── Historique ───────────────────────────────────────
+  async createSnapshot(data) {
+    const ref = await addDoc(collection(db, COL_HISTORY), {
+      ...data, created_at: new Date().toISOString()
+    });
+    return { id: ref.id, ...data };
+  },
+  async deleteSnapshot(id) {
+    await deleteDoc(doc(db, COL_HISTORY, id));
   }
 };
 
@@ -759,34 +826,7 @@ function assertCid(cid) {
 async function loadAll() {
   try {
     sync('saving','Chargement…');
-    const [profs, checks, notes, history] = await Promise.all([
-      api.get('eval_profiles','?order=created_at.asc'),
-      api.get('eval_checks','?select=profile_id,criterion_id,checked,disabled'),
-      api.get('eval_notes','?select=profile_id,content,updated_at'),
-      api.get('eval_history','?select=id,profile_id,eval_date,eval_by,boutique,score,max_score,checks,note&order=eval_date.desc')
-    ]);
-    const chByProf = {};
-    for (const c of checks) {
-      if (!VALID_IDS.has(c.criterion_id)) continue;
-      if (!chByProf[c.profile_id]) chByProf[c.profile_id] = {};
-      chByProf[c.profile_id][c.criterion_id] = { checked:!!c.checked, disabled:!!c.disabled };
-    }
-    const noteByProf = {};
-    for (const n of notes) noteByProf[n.profile_id] = { content:n.content||'', updated_at:n.updated_at };
-    const histByProf = {};
-    for (const h of history) {
-      if (!histByProf[h.profile_id]) histByProf[h.profile_id] = [];
-      histByProf[h.profile_id].push(h);
-    }
-    profiles = profs.map(p => ({
-      id:p.id, name:p.name, poste:p.poste||'', boutique:p.boutique||'',
-      date_entree:p.date_entree||'', eval_for:p.eval_for||p.name,
-      eval_by:p.eval_by||'', eval_date:p.eval_date||'', rappel_months:p.rappel_months||0,
-      _checks: chByProf[p.id] || {},
-      _note: noteByProf[p.id]?.content || '',
-      _note_updated: noteByProf[p.id]?.updated_at || null,
-      _history: histByProf[p.id] || []
-    }));
+    profiles = await api.loadAll();
     sync('ok','✓ Sync');
     renderSidebar(); renderCurrentView();
   } catch(e) {
@@ -1004,7 +1044,7 @@ async function saveNote(pid) {
   if(btn){btn.classList.add('saving');btn.textContent='Sauvegarde…';btn.disabled=true;}
   try{
     sync('saving','Sync note…');
-    await api.saveNote(pid,noteContent,existed);
+    await api.saveNote(pid,noteContent);
     p._note=noteContent; p._note_updated=new Date().toISOString();
     sync('ok','✓ Sync');
     if(btn){btn.classList.remove('dirty','saving');btn.textContent='Enregistrer';btn.disabled=false;}
@@ -1166,7 +1206,7 @@ async function createProfile() {
     sync('saving','Enregistrement…');
     const evalBy = document.getElementById('input-evalby').value.trim();
     const evalDate = document.getElementById('input-evaldate').value || new Date().toISOString().slice(0,10);
-    const [created] = await api.post('eval_profiles',{
+    const created = await api.createProfile({
       name, poste:document.getElementById('input-poste').value,
       boutique:newBoutiqueSelected,
       date_entree:document.getElementById('input-date').value||null,
@@ -1190,7 +1230,7 @@ async function confirmDeleteProfile() {
   btn.disabled=true; btn.textContent='Suppression…';
   try {
     sync('saving','Suppression…');
-    await api.del('eval_profiles',`?id=eq.${pendingDeleteProfileId}`);
+    await api.deleteProfile(pendingDeleteProfileId);
     profiles=profiles.filter(p=>p.id!==pendingDeleteProfileId);
     if(currentProfileId===pendingDeleteProfileId)currentProfileId=null;
     sync('ok','✓ Sync');
@@ -1210,7 +1250,7 @@ async function toggleCheck(pid, cid) {
   renderSidebar(); renderCurrentView();
   try{
     sync('saving','Sync…');
-    await api.saveCheck(pid,cid,nv,false,existed);
+    await api.saveCheck(pid,cid,nv,false);
     sync('ok','✓ Sync');
   }catch(e){
     p._checks[cid]=ch; renderSidebar(); renderCurrentView();
@@ -1231,7 +1271,7 @@ async function confirmDeleteCriterion() {
   closeModal('modal-delete-criterion'); renderSidebar(); renderCurrentView();
   try{
     sync('saving','Sync…');
-    await api.saveCheck(pid,cid,false,true,existed);
+    await api.saveCheck(pid,cid,false,true);
     sync('ok','✓ Sync'); showToast('Critère désactivé');
   }catch(e){
     p._checks[cid]=old; renderSidebar(); renderCurrentView();
@@ -1245,7 +1285,7 @@ async function reactivate(pid,cid) {
   renderSidebar(); renderCurrentView();
   try{
     sync('saving','Sync…');
-    await api.saveCheck(pid,cid,false,false,existed);
+    await api.saveCheck(pid,cid,false,false);
     sync('ok','✓ Sync'); showToast('Critère réactivé');
   }catch(e){
     p._checks[cid]=old; renderSidebar(); renderCurrentView();
@@ -1263,7 +1303,7 @@ async function validateAllTheme(pid,tid) {
   renderSidebar(); renderCurrentView();
   try{
     sync('saving','Sync…');
-    await Promise.all(todo.map(c=>api.saveCheck(pid,c.id,true,false,snap[c.id].existed)));
+    await Promise.all(todo.map(c=>api.saveCheck(pid,c.id,true,false)));
     sync('ok','✓ Sync'); showToast(`${todo.length} critère${todo.length>1?'s':''} validé${todo.length>1?'s':''}`);
   }catch(e){
     todo.forEach(c=>{p._checks[c.id]=snap[c.id].old;}); renderSidebar(); renderCurrentView();
@@ -1279,7 +1319,7 @@ async function resetEval(pid) {
   renderSidebar(); renderCurrentView();
   try{
     sync('saving','Sync…');
-    await Promise.all(toReset.map(cid=>api.saveCheck(pid,cid,false,snap[cid].disabled,true)));
+    await Promise.all(toReset.map(cid=>api.saveCheck(pid,cid,false,snap[cid]?.disabled||false)));
     sync('ok','✓ Sync'); showToast('Évaluation réinitialisée');
   }catch(e){
     p._checks=snap; renderSidebar(); renderCurrentView();
@@ -1323,7 +1363,7 @@ async function saveEvalInfo() {
   closeModal('modal-evalinfo'); renderSidebar(); renderCurrentView();
   try{
     sync('saving','Sync…');
-    await api.patch('eval_profiles',`?id=eq.${pid}`,body);
+    await api.updateProfile(pid,body);
     sync('ok','✓ Sync'); showToast('Informations enregistrées');
   }catch(e){
     Object.assign(p,snap); renderSidebar(); renderCurrentView();
@@ -1405,7 +1445,7 @@ async function saveSnapshot(pid) {
   }));
   try{
     sync('saving','Snapshot…');
-    const [created]=await api.post('eval_history',{
+    const created=await api.createSnapshot({
       profile_id:pid,
       eval_date:p.eval_date||new Date().toISOString().slice(0,10),
       eval_by:p.eval_by||'', boutique:p.boutique||'',
@@ -1425,7 +1465,7 @@ async function deleteSnapshot(pid,snapshotId) {
   renderCurrentView();
   try{
     sync('saving','Suppression…');
-    await api.del('eval_history',`?id=eq.${snapshotId}`);
+    await api.deleteSnapshot(snapshotId);
     sync('ok','✓ Sync'); showToast('Snapshot supprimé');
   }catch(e){
     p._history=old; renderCurrentView();
@@ -1630,6 +1670,21 @@ document.querySelectorAll('.modal-backdrop').forEach(el=>{
 });
 document.getElementById('main-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlockApp();});
 document.getElementById('stats-pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')unlockStats();});
+
+// Exposer toutes les fonctions au scope global (requis pour les onclick= inline avec type="module")
+Object.assign(window, {
+  unlockApp, unlockStats, unlockStatsInline,
+  setView, selectProfile, closeSidebar, toggleSidebar,
+  openNewProfileModal, createProfile, confirmDeleteProfile, openDeleteModal,
+  openEvalInfoModal, saveEvalInfo,
+  toggleTheme, toggleAllThemes,
+  toggleCheck, openDisableModal, confirmDeleteCriterion, reactivate,
+  validateAllTheme, resetEval,
+  saveNote, onNoteInput,
+  saveSnapshot, deleteSnapshot, exportPDF,
+  renderCarousel, selectRappel, selectNewRappel,
+  closeModal, importData
+});
 </script>
 </body>
 </html>
